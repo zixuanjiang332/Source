@@ -11,16 +11,19 @@
 - `GameEvents`: 全局事件总线，负责生命/能量、VFX、SFX、镜头震动、敌人死亡和重开请求。
 - `InputBootstrap`: 启动时注册默认输入，避免空项目缺少 InputMap。
 - `CharacterStats`: 角色数值 Resource，玩家、普通敌人、Boss 共用。
-- `AttackData`: 攻击数据 Resource，统一伤害、击退、命中停顿、VFX、SFX。
+- `AttackData`: 攻击数据 Resource，统一伤害、击退、命中停顿、VFX、SFX，并可通过 `animation_id` 映射角色攻击动画。
 - `WeaponData`: 当前武器数据 Resource，保存武器 ID、显示名、普攻链、Demo 技能攻击和 HUD 名称。
 - `Hitbox` / `Hurtbox`: 所有攻击命中都走这两个 Area2D。
 - `VfxCatalog`: 通过 `vfx_id` 查找特效场景，便于后续替换为正式帧动画或粒子效果。
+- `PlayerAnimationController`: 玩家动画桥接层，正式 spritesheet 缺失或动画标签缺失时回退到灰盒视觉。
 
 ## Current Scene Flow
 
 `Main.tscn` 启动时只显示标题菜单和空 `GameRoot`。标题菜单使用脸部主题 AI final 图，点击“开始游戏”后才动态创建 `VfxSpawner`、`Hud.tscn` 和 `DemoLevel.tscn`，进入实验室到城市的演示路线。这样标题页不会提前显示正式关卡、HUD、玩家或动态背景。
 
-当前“源”的概念图已全量导出到 `assets/pixel/characters/yuan/`。运行时玩家显示使用 `spr_yuan_demo_idle.png`，HUD 使用 `portrait_yuan_stage_01.png`，初始匕首 HUD 图标使用 `icon_initial_dagger.png`。完整动作帧尚未制作前，战斗状态仍由玩家控制器、Hitbox、VFX 和 HUD 事件反馈表现。
+当前“源”的概念图已全量导出到 `assets/pixel/characters/yuan/`。运行时玩家使用 `assets/pixel/spr_player_yuan_early_clone.png` 和 `resources/characters/player_yuan_early_clone_frames.tres` 播放 `idle/run/jump/fall/dash/atk_1/atk_2/atk_3/skill/hit/death`。HUD 使用 `portrait_yuan_stage_01.png`，初始匕首 HUD 图标使用 `icon_initial_dagger.png`。
+
+玩家视觉缩放为 70%，相机 `zoom` 为 `0.65`，用于大幅放宽录屏视距。Demo 关卡使用不可见边界限制玩家离开路线，并通过相机 `limit_*` 避免显示明显地图外空白。
 
 ## Dynamic Background
 
