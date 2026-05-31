@@ -1,14 +1,15 @@
 class_name Hud
 extends CanvasLayer
 
-@onready var health_label: Label = $Root/Margin/Stats/Health
-@onready var energy_label: Label = $Root/Margin/Stats/Energy
+const HEALTH_FILL_WIDTH := 118.0
+
+@onready var health_fill: ColorRect = $Root/Margin/HealthBack/HealthFill
+@onready var health_label: Label = $Root/Margin/HealthLabel
 @onready var objective_label: Label = $Root/Margin/Objective
 @onready var toast_label: Label = $Root/Margin/Toast
 
 func _ready() -> void:
 	GameEvents.player_health_changed.connect(_on_player_health_changed)
-	GameEvents.player_energy_changed.connect(_on_player_energy_changed)
 	GameEvents.enemy_defeated.connect(_on_enemy_defeated)
 	GameEvents.item_collected.connect(_on_item_collected)
 	GameEvents.objective_changed.connect(_on_objective_changed)
@@ -19,10 +20,10 @@ func _ready() -> void:
 
 func _on_player_health_changed(current_health: int, max_health: int) -> void:
 	health_label.text = "HP %03d/%03d" % [current_health, max_health]
-
-
-func _on_player_energy_changed(current_energy: int, max_energy: int) -> void:
-	energy_label.text = "EN %03d/%03d" % [current_energy, max_energy]
+	var ratio := 0.0
+	if max_health > 0:
+		ratio = clampf(float(current_health) / float(max_health), 0.0, 1.0)
+	health_fill.size = Vector2(roundf(HEALTH_FILL_WIDTH * ratio), health_fill.size.y)
 
 
 func _on_enemy_defeated(enemy_id: StringName) -> void:
