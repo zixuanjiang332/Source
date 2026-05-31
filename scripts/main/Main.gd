@@ -1,6 +1,7 @@
 extends Node
 
 const REBIRTH_LEVEL_SCENE = preload("res://scenes/levels/RebirthLevel.tscn")
+const WORKSHOP_LEVEL_SCENE = preload("res://scenes/levels/DemoLevel.tscn")
 const MAIN_CITY_LEVEL_SCENE = preload("res://scenes/levels/MainCityLevel.tscn")
 const HUD_SCENE = preload("res://scenes/ui/Hud.tscn")
 const VFX_SPAWNER_SCRIPT = preload("res://scripts/vfx/VfxSpawner.gd")
@@ -118,6 +119,7 @@ func _build_gameplay() -> void:
 
 
 func _clear_gameplay() -> void:
+	_close_shop()
 	_current_level = null
 	_transitioning = false
 	for child in game_root.get_children():
@@ -217,6 +219,9 @@ func _tween_button_scale(button: Button, target_scale: Vector2, animate := true)
 func _load_level(level_id: StringName) -> void:
 	_clear_current_level()
 	match level_id:
+		&"workshop":
+			_current_level = WORKSHOP_LEVEL_SCENE.instantiate()
+			_current_level.name = "WorkshopLevel"
 		&"main_city":
 			_current_level = MAIN_CITY_LEVEL_SCENE.instantiate()
 			_current_level.name = "MainCityLevel"
@@ -257,3 +262,8 @@ func _transition_to_level(level_id: StringName) -> void:
 	await fade_out.finished
 	transition_overlay.visible = false
 	_transitioning = false
+
+
+func _close_shop() -> void:
+	if shop != null and shop.has_method("close"):
+		shop.call("close")

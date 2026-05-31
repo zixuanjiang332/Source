@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/DemoLevel.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2"]
@@ -13,6 +13,9 @@ size = Vector2(32, 540)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interact"]
 size = Vector2(76, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_elevator"]
+size = Vector2(110, 160)
 
 [node name="DemoLevel" type="Node2D"]
 script = ExtResource("1")
@@ -87,6 +90,32 @@ offset_left = -24.0
 offset_top = -58.0
 offset_right = 24.0
 offset_bottom = -42.0
+theme_override_font_sizes/font_size = 8
+text = "E"
+horizontal_alignment = 1
+
+[node name="ElevatorInteract" type="Area2D" parent="Interactables"]
+position = Vector2(396, 154)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4")
+level_change_id = &"main_city"
+prompt_text = "E LIFT"
+speaker = "LIFT"
+dialogue_lines = PackedStringArray("Workshop lift online. entering the combat route.")
+one_shot = true
+completed_text = "city lift already used"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/ElevatorInteract"]
+scale = Vector2(1.0, 1.0)
+shape = SubResource("RectangleShape2D_elevator")
+
+[node name="PromptLabel" type="Label" parent="Interactables/ElevatorInteract"]
+visible = false
+offset_left = -30.0
+offset_top = -104.0
+offset_right = 30.0
+offset_bottom = -80.0
 theme_override_font_sizes/font_size = 8
 text = "E"
 horizontal_alignment = 1
