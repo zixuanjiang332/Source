@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/main/Main.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/vfx/VfxSpawner.gd" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/levels/DemoLevel.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/ui/Hud.tscn" id="4"]
+[ext_resource type="Texture2D" path="res://assets/ui/main_menu_concept_01.png" id="5"]
 
 [node name="Main" type="Node"]
 process_mode = 3
@@ -15,6 +16,52 @@ script = ExtResource("2")
 [node name="DemoLevel" parent="." instance=ExtResource("3")]
 
 [node name="Hud" parent="." instance=ExtResource("4")]
+
+[node name="TitleLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 30
+
+[node name="TitleArt" type="Sprite2D" parent="TitleLayer"]
+position = Vector2(240, 135)
+scale = Vector2(0.287, 0.287)
+modulate = Color(0.86, 0.94, 1, 0.76)
+texture = ExtResource("5")
+
+[node name="TitleDim" type="ColorRect" parent="TitleLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.005, 0.008, 0.015, 0.34)
+
+[node name="StartButton" type="Button" parent="TitleLayer"]
+layout_mode = 0
+offset_left = 324.0
+offset_top = 82.0
+offset_right = 454.0
+offset_bottom = 110.0
+theme_override_font_sizes/font_size = 11
+text = "START ROUTE"
+
+[node name="RestartButton" type="Button" parent="TitleLayer"]
+layout_mode = 0
+offset_left = 324.0
+offset_top = 116.0
+offset_right = 454.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 11
+text = "RESTART"
+
+[node name="ExitButton" type="Button" parent="TitleLayer"]
+layout_mode = 0
+offset_left = 324.0
+offset_top = 184.0
+offset_right = 454.0
+offset_bottom = 212.0
+theme_override_font_sizes/font_size = 11
+text = "EXIT"
 
 [node name="PauseLayer" type="CanvasLayer" parent="."]
 process_mode = 3
@@ -39,4 +86,3 @@ offset_bottom = 148.0
 theme_override_font_sizes/font_size = 12
 text = "PAUSED"
 horizontal_alignment = 1
-

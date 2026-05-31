@@ -34,10 +34,11 @@
 - 登记完整动态背景氛围包的源文件路径、导出路径和规格。
 - 完成实验室首批 AI final 背景 tiles/props，生成 58 张单帧 PNG 并拼接运行时 spritesheet。
 - 更新 AI 素材规则，允许 AI 生成图、动作帧和 spritesheet 直接作为 final 素材接入。
+- 将当前主角、主菜单 UI、武器概念图全量导出到 `assets/`，并接入主菜单、玩家显示、HUD 头像和匕首图标。
 
 ### 当前阻塞
 
-- 正式主角、武器和特效风格尚待负责人最终确认。
+- 当前主角和武器已接入 AI final 运行时资源，但正式动作帧、敌人帧动画和特效 spritesheet 尚待补齐。
 - 当前战斗切片仍需 Godot GUI 手动试玩确认手感。
 - 城市动态背景仍使用 placeholder sheet 驱动，正式 tiles/props spritesheet 待后续处理。
 
@@ -56,8 +57,8 @@
 | 项目骨架初始化 | Codex / 程序 | Done | 已推送远程仓库 |
 | GitHub 协作流程 | Codex / 团队 | Done | `main` 已保护 |
 | 文档治理规则 | Codex | Done | 已加入核心文档和校验 |
-| 主角视觉草案 | 美术/VFX | Review | AI 概念参考已入库，等待确认是否直接接入或重绘 |
-| 武器视觉草案 | 策划 / 美术 | Review | 武器轮廓参考已入库，等待确认是否直接接入或重绘 |
+| 主角视觉草案 | 美术/VFX | Review | 已导出到 `assets/` 并接入玩家/HUD，待正式动作帧 |
+| 武器视觉草案 | 策划 / 美术 | Review | 已导出到 `assets/` 并接入初始匕首 HUD 图标 |
 | 初始匕首玩法切片 | Codex / 程序 | Review | 待 GUI 手动试玩和手感微调 |
 | 动态背景框架 | Codex / 程序 | Review | 通用动画节点已搭建，待 GUI 检查视觉节奏 |
 | 实验室背景 AI final 素材 | Codex | Review | 已接入 Godot，待 GUI 视觉验收 |

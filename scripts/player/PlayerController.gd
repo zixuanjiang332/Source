@@ -4,15 +4,16 @@ extends CharacterBody2D
 const DEFAULT_STATS = preload("res://resources/characters/player_stats.tres")
 const DEFAULT_WEAPON = preload("res://resources/weapons/initial_dagger.tres")
 const ATTACK_CHAIN = [
-	preload("res://resources/attacks/player_slash_1.tres"),
-	preload("res://resources/attacks/player_slash_2.tres"),
-	preload("res://resources/attacks/player_slash_3.tres"),
+	preload("res://resources/attacks/dagger_cut_1.tres"),
+	preload("res://resources/attacks/dagger_cut_2.tres"),
+	preload("res://resources/attacks/dagger_cut_3.tres"),
 ]
-const SKILL_ATTACK = preload("res://resources/attacks/player_energy_cleave.tres")
+const SKILL_ATTACK = preload("res://resources/attacks/dagger_flash_step.tres")
 
 @export var stats = DEFAULT_STATS
 @export var weapon_data = DEFAULT_WEAPON
 
+@onready var character_sprite: Sprite2D = $VisualRoot/YuanSprite
 @onready var body: Polygon2D = $VisualRoot/Body
 @onready var visor: Polygon2D = $VisualRoot/Visor
 @onready var hitbox = $FacingPivot/Hitbox
@@ -270,9 +271,11 @@ func _report_combo(combo_step: int) -> void:
 
 
 func _flash(color: Color) -> void:
+	character_sprite.modulate = color
 	body.modulate = color
 	visor.modulate = Color.WHITE
 	var tween := create_tween()
+	tween.tween_property(character_sprite, "modulate", Color.WHITE, 0.1)
 	tween.tween_property(body, "modulate", Color.WHITE, 0.1)
 	tween.parallel().tween_property(visor, "modulate", Color(0.35, 1.0, 1.0, 1.0), 0.1)
 
@@ -280,6 +283,7 @@ func _flash(color: Color) -> void:
 func _die() -> void:
 	_dead = true
 	hitbox.deactivate()
+	character_sprite.modulate = Color(0.22, 0.22, 0.28, 1.0)
 	body.modulate = Color(0.22, 0.22, 0.28, 1.0)
 	debug_label.text = "OFFLINE - R"
 	GameEvents.request_camera_impulse(1.2, 0.18)

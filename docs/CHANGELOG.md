@@ -18,6 +18,7 @@
 - 登记实验室与城市完整动态背景氛围包的 tiles/props 交付清单。
 - 新增实验室 AI final 背景 tiles/props 运行时素材和逐帧源文件。
 - 新增 `tools/stitch_spritesheet.py`，用于从 AI 帧板生成单帧 PNG 与横向 spritesheet。
+- 新增“源”主角运行时 sprite、HUD 头像、初始匕首图标和主菜单背景接入资源。
 
 ### Changed
 
@@ -28,6 +29,8 @@
 - 背景动画从 `DemoLevel.gd` 的硬编码逻辑迁移到各个 `AnimatedBackgroundProp` 节点。
 - 实验室背景从 placeholder sheet 切换到 `assets/pixel/background/lab/` 的 final 运行时素材。
 - AI 使用规则改为允许 AI 生成图、动作帧和 spritesheet 直接作为 final 素材接入。
+- 主场景接入标题菜单，玩家场景从几何占位角色切换为“源”运行时 sprite，HUD 接入头像和武器图标。
+- 玩家控制器的兜底攻击资源对齐 `initial_dagger.tres` 使用的 `dagger_cut_*` 和 `dagger_flash_step`。
 
 ### Fixed
 
@@ -43,6 +46,7 @@
 - 同步初始匕首切片的框架、程序规范、进度和设计决策记录。
 - 同步动态背景交付路径、素材清单、框架和程序规范。
 - 同步 AI final 素材政策、像素图/VFX 提示词规范和 GitHub 禁止事项。
+- 同步全量美术资源接入后的素材清单、进度记录和框架说明。
 
 ## [0.1.0] - 2026-05-31
 
