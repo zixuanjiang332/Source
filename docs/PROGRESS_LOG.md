@@ -33,6 +33,7 @@
 - 搭建动态背景通用节点和实验室/城市背景分层结构。
 - 登记完整动态背景氛围包的源文件路径、导出路径和规格。
 - 完成实验室首批 AI final 背景 tiles/props，生成 58 张单帧 PNG 并拼接运行时 spritesheet。
+- 生成初始商店 1920x1080 AI final 背景图，定位为出生点相邻维修补给间，暂未接入运行时场景。
 - 更新 AI 素材规则，允许 AI 生成图、动作帧和 spritesheet 直接作为 final 素材接入。
 - 将当前主角、主菜单 UI、武器概念图全量导出到 `assets/`，并接入主菜单、玩家显示、HUD 头像和匕首图标。
 - 修复主菜单：切换到脸部主题图，点击开始前不加载关卡、HUD、VFX 或玩家。
@@ -69,6 +70,7 @@
 | 初始匕首玩法切片 | Codex / 程序 | Review | 已接入玩家动作帧、大视距相机和地图边界，待 GUI 手动试玩 |
 | 动态背景框架 | Codex / 程序 | Review | 已改为 1920x1080 连续主背景，待 GUI 检查视觉节奏 |
 | 实验室背景 AI final 素材 | Codex | Review | 重生段已接入高清背景，待 GUI 视觉验收 |
+| 初始商店背景 AI final 素材 | Codex | Review | 已生成 1920x1080 单图，并随 develop 合入；出生点/商店流程仍待 UI 适配 |
 | 城市背景 tiles/props 正式素材 | 美术/VFX | Doing | 主关卡 4 张连续背景已接入，局部动态 props 待替换 |
 | 菜单与 HUD 清晰度修复 | Codex | Review | 菜单组件化和 1080p HUD 已实现，待 GUI 交互验收 |
 | 电子光刀终结技 | Codex / 美术/VFX | Review | VFX/SFX/角色重击帧和长按 K 逻辑已接入，待 GUI 手感验收 |

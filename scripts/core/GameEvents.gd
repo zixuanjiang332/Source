@@ -14,6 +14,10 @@ signal objective_changed(message: String)
 signal toast_requested(message: String)
 signal run_reset_requested
 signal level_change_requested(level_id: StringName)
+signal shop_requested(shop_id: StringName)
+signal shop_closed
+signal currency_changed(current_amount: int)
+signal item_purchased(shop_item_id: StringName, item_data: Resource)
 
 func report_player_health(current_health: int, max_health: int) -> void:
 	player_health_changed.emit(current_health, max_health)
@@ -69,3 +73,19 @@ func request_run_reset() -> void:
 
 func request_level_change(level_id: StringName) -> void:
 	level_change_requested.emit(level_id)
+
+
+func request_shop(shop_id: StringName = &"main") -> void:
+	shop_requested.emit(shop_id)
+
+
+func report_shop_closed() -> void:
+	shop_closed.emit()
+
+
+func report_currency_changed(current_amount: int) -> void:
+	currency_changed.emit(current_amount)
+
+
+func report_item_purchased(shop_item_id: StringName, item_data: Resource) -> void:
+	item_purchased.emit(shop_item_id, item_data)

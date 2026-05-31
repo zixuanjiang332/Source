@@ -17,12 +17,14 @@ const VFX_SPAWNER_SCRIPT = preload("res://scripts/vfx/VfxSpawner.gd")
 @onready var menu_notice: Label = $TitleLayer/MenuNotice
 @onready var pause_overlay: CanvasItem = $PauseLayer/PauseOverlay
 @onready var transition_overlay: ColorRect = $TransitionLayer/TransitionOverlay
+@onready var shop: Node = get_node_or_null("Shop")
 
 var _title_active := true
 var _game_started := false
 var _notice_tween: Tween
 var _current_level: Node = null
 var _transitioning := false
+var _shop_open := false
 var _selected_button_index := 0
 var _menu_buttons: Array[Button] = []
 var _button_tweens: Dictionary = {}
@@ -32,6 +34,8 @@ func _ready() -> void:
 	randomize()
 	GameEvents.run_reset_requested.connect(_reload_run)
 	GameEvents.level_change_requested.connect(_on_level_change_requested)
+	GameEvents.shop_requested.connect(_on_shop_requested)
+	GameEvents.shop_closed.connect(_on_shop_closed)
 	_menu_buttons = [start_button, combat_button, archive_button, chip_button, settings_button]
 	for button: Button in _menu_buttons:
 		_setup_menu_button(button)
@@ -56,6 +60,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 		or Input.is_action_just_pressed("interact")
 	):
 		_menu_buttons[_selected_button_index].emit_signal("pressed")
+	elif _game_started and _shop_open and Input.is_action_just_pressed("pause"):
+		return
 	elif _game_started and Input.is_action_just_pressed("restart"):
 		_reload_run()
 	elif _game_started and Input.is_action_just_pressed("pause"):
@@ -122,6 +128,20 @@ func _clear_gameplay() -> void:
 func _toggle_pause() -> void:
 	get_tree().paused = not get_tree().paused
 	pause_overlay.visible = get_tree().paused
+
+
+func _on_shop_requested(shop_id: StringName) -> void:
+	if shop == null or not _game_started or not shop.has_method("open"):
+		return
+
+	_shop_open = true
+	shop.call("open", shop_id)
+	get_tree().paused = true
+
+
+func _on_shop_closed() -> void:
+	_shop_open = false
+	get_tree().paused = false
 
 
 func _show_locked_notice(option_name: String) -> void:

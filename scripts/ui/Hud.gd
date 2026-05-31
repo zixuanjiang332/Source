@@ -15,6 +15,7 @@ const ENERGY_FILL_WIDTH := 356.0
 @onready var combo_label: Label = $Root/Margin/ComboLabel
 @onready var objective_label: Label = $Root/Margin/Objective
 @onready var toast_label: Label = $Root/Margin/Toast
+@onready var currency_label: Label = $Root/Margin/CurrencyLabel
 
 var _current_energy := 0
 var _skill_cost := 0
@@ -33,6 +34,8 @@ func _ready() -> void:
 	GameEvents.item_collected.connect(_on_item_collected)
 	GameEvents.objective_changed.connect(_on_objective_changed)
 	GameEvents.toast_requested.connect(_show_toast)
+	GameEvents.currency_changed.connect(_on_currency_changed)
+	currency_label.text = "CR 0500"
 	objective_label.text = "WAKE // speak with Dr. Lin"
 	toast_label.text = "A/D move  Space jump  J cut  K skill  E interact"
 	weapon_label.text = "WEAPON // initializing"
@@ -90,6 +93,10 @@ func _on_item_collected(item_id: StringName) -> void:
 
 func _on_objective_changed(message: String) -> void:
 	objective_label.text = message
+
+
+func _on_currency_changed(amount: int) -> void:
+	currency_label.text = "CR %04d" % amount
 
 
 func _show_toast(message: String) -> void:

@@ -80,6 +80,16 @@ theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.92)
 theme_override_font_sizes/font_size = 28
 text = "HP 000/000"
 
+[node name="CurrencyLabel" type="Label" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 552.0
+offset_top = 78.0
+offset_right = 820.0
+offset_bottom = 114.0
+theme_override_colors/font_color = Color(0.16, 0.95, 1, 0.9)
+theme_override_font_sizes/font_size = 28
+text = "CR 0500"
+
 [node name="EnergyBack" type="ColorRect" parent="Root/Margin"]
 layout_mode = 0
 offset_left = 160.0
