@@ -6,6 +6,7 @@
 script = ExtResource("1")
 attack_id = &"dagger_cut_1"
 display_name = "Needle Cut"
+animation_id = &"atk_1"
 damage = 12
 energy_cost = 0
 knockback = Vector2(125, -34)

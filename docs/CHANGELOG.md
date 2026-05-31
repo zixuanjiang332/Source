@@ -20,6 +20,7 @@
 - 新增 `tools/stitch_spritesheet.py`，用于从 AI 帧板生成单帧 PNG 与横向 spritesheet。
 - 新增“源”主角运行时 sprite、HUD 头像、初始匕首图标和主菜单背景接入资源。
 - 新增脸部主题主菜单背景 `bg_start_menu_yuan_face_v2.png`。
+- 新增“源”早期克隆体 66 帧动作 spritesheet、逐帧 PNG、动画规格文档和玩家动画控制器。
 
 ### Changed
 
@@ -33,11 +34,15 @@
 - 主场景接入标题菜单，玩家场景从几何占位角色切换为“源”运行时 sprite，HUD 接入头像和武器图标。
 - 玩家控制器的兜底攻击资源对齐 `initial_dagger.tres` 使用的 `dagger_cut_*` 和 `dagger_flash_step`。
 - 主菜单按钮改为贴合背景中文字的透明点击区域，未开放选项只显示提示。
+- 玩家显示从静态图切换为 `AnimatedSprite2D` 动作帧，并把匕首三段与技能映射到 `atk_1/atk_2/atk_3/skill`。
+- 玩家视觉缩放到 70%，相机视距大幅拉远，并为 Demo 地图添加不可见边界和相机限制。
+- `AttackData` 增加可选 `animation_id` 字段，用于将攻击数据映射到角色动画标签。
 
 ### Fixed
 
 - 避免 Godot 导入 `art_src/` 源稿和 `docs/` 文档时生成无关 `.import` 噪声。
 - 修复标题页打开时已经加载正式关卡、HUD、动态背景并允许角色移动的问题。
+- 加固主场景校验，防止 `Main.tscn` 再次静态实例化正式 gameplay 节点。
 
 ### Removed
 
@@ -50,6 +55,7 @@
 - 同步动态背景交付路径、素材清单、框架和程序规范。
 - 同步 AI final 素材政策、像素图/VFX 提示词规范和 GitHub 禁止事项。
 - 同步全量美术资源接入后的素材清单、进度记录和框架说明。
+- 同步玩家动作帧规格、素材清单、框架说明和进度记录。
 
 ## [0.1.0] - 2026-05-31
 
