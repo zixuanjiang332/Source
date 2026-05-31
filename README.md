@@ -13,7 +13,7 @@ Godot 和 Aseprite 当前未在本机 PATH 中检测到；项目文件已经准�
 
 ## Controls
 
-- Start: 点击 `START ROUTE`，或按 `J` / `Space` / `E`
+- Start: 点击主菜单里的“开始游戏”，或按 `J` / `Space` / `E`
 - Move: `A/D` 或方向键
 - Jump: `Space`
 - Dash: `Shift`
@@ -33,7 +33,7 @@ Godot 和 Aseprite 当前未在本机 PATH 中检测到；项目文件已经准�
 
 ## Current Slice
 
-当前骨架提供可跑的灰盒切片：标题菜单、玩家移动、跳跃、冲刺、初始匕首三段攻击、Demo 能量技 `Flash Step`、Hitbox/Hurtbox、敌人受击/死亡、掉落道具、镜头震动、武器/能量/连段 HUD、已接入的“源”主角/HUD/武器视觉资源、实验室动态背景、赛博朋克城市占位段、命中特效和动态背景 props 框架。
+当前骨架提供可跑的灰盒切片：脸部主题标题菜单、玩家移动、跳跃、冲刺、初始匕首三段攻击、Demo 能量技 `Flash Step`、Hitbox/Hurtbox、敌人受击/死亡、掉落道具、镜头震动、武器/能量/连段 HUD、已接入的“源”主角/HUD/武器视觉资源、实验室动态背景、赛博朋克城市占位段、命中特效和动态背景 props 框架。
 
 ## Team Docs
 

@@ -21,6 +21,7 @@ $required = @(
   "assets/pixel/characters/yuan/chr_yuan_concept_03_machine_eye_heart.png",
   "assets/pixel/characters/yuan/chr_yuan_concept_03_machine_eye_heart_no_weapon.png",
   "assets/pixel/weapons/weapon_concept_sheet_01.png",
+  "assets/ui/bg_start_menu_yuan_face_v2.png",
   "assets/ui/main_menu_concept_01.png",
   "assets/ui/portrait_yuan_stage_01.png",
   "assets/ui/icon_initial_dagger.png",

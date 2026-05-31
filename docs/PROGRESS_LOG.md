@@ -35,6 +35,7 @@
 - 完成实验室首批 AI final 背景 tiles/props，生成 58 张单帧 PNG 并拼接运行时 spritesheet。
 - 更新 AI 素材规则，允许 AI 生成图、动作帧和 spritesheet 直接作为 final 素材接入。
 - 将当前主角、主菜单 UI、武器概念图全量导出到 `assets/`，并接入主菜单、玩家显示、HUD 头像和匕首图标。
+- 修复主菜单：切换到脸部主题图，点击开始前不加载关卡、HUD、VFX 或玩家。
 
 ### 当前阻塞
 
@@ -59,7 +60,7 @@
 | 文档治理规则 | Codex | Done | 已加入核心文档和校验 |
 | 主角视觉草案 | 美术/VFX | Review | 已导出到 `assets/` 并接入玩家/HUD，待正式动作帧 |
 | 武器视觉草案 | 策划 / 美术 | Review | 已导出到 `assets/` 并接入初始匕首 HUD 图标 |
-| 初始匕首玩法切片 | Codex / 程序 | Review | 待 GUI 手动试玩和手感微调 |
+| 初始匕首玩法切片 | Codex / 程序 | Review | 标题页不再提前运行关卡，待 GUI 手动试玩和手感微调 |
 | 动态背景框架 | Codex / 程序 | Review | 通用动画节点已搭建，待 GUI 检查视觉节奏 |
 | 实验室背景 AI final 素材 | Codex | Review | 已接入 Godot，待 GUI 视觉验收 |
 | 城市背景 tiles/props 正式素材 | 美术/VFX | Todo | 依据 `ASSET_MANIFEST.csv` 的 city background 条目绘制 |
