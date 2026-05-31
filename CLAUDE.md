@@ -20,6 +20,7 @@ Neon Machine Demo — 赛博朋克智械危机题材的 2D 像素动作垂直切
 
 - `GameEvents`（全局事件总线）：所有跨系统通信走这里——生命/能量变化、VFX/SFX 请求、镜头震动、敌人死亡、重开。不直接实例化特效或驱动战斗逻辑。
 - `InputBootstrap`：启动时注册默认 InputMap，避免空项目缺输入。
+- `AnimatedBackgroundProp`：Sprite2D 背景动画脚本，只负责帧循环、横向滚动和包裹，不参与玩法逻辑。
 
 ### 核心数据流
 
@@ -72,6 +73,7 @@ class_name → extends → signal → enum → const → @export var → 成员�
 - UI 只监听事件/读状态，不驱动战斗逻辑
 - 特效/音效通过 `GameEvents` 请求，不直接实例化
 - 当前玩法分支只实现初始匕首切片，不加入多武器槽、数字键切换或 `Q` 切换
+- 背景动态素材使用拆分 tiles/props 和横向 spritesheet，不做全屏背景帧序列
 - 脚本超 250 行需在 PR 说明原因
 - 代码不引用 `art_src/`，运行时只引用 `assets/`、`resources/`、`scenes/`、`scripts/`
 

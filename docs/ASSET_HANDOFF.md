@@ -76,7 +76,33 @@ FPS: 18
 - 图标不带文字。
 - 道具功能写入 `ItemData` 或策划表，不写在图片上。
 
-## 6. 音效交付
+## 6. 动态背景交付
+
+动态背景只交付拆分后的 tiles 和 props，不交付整张全屏帧动画。
+
+每个背景动画至少包含：
+
+- 源文件。
+- 导出 spritesheet。
+- 单帧尺寸。
+- 帧数。
+- 推荐 FPS。
+- 是否需要 Godot 侧移动循环。
+- 推荐放置层：LabStaticTiles / LabAnimatedProps / CityFar / CityMid / CityAnimatedProps / CityForegroundDecor。
+
+示例：
+
+```text
+素材: prop_city_traffic_a
+画布: 64x32
+帧数: 8
+FPS: 8
+移动: Godot scroll_velocity 控制
+导出: assets/pixel/background/city/prop_city_traffic_a.png
+源文件: art_src/background/city/prop_city_traffic_a.aseprite
+```
+
+## 7. 音效交付
 
 - 短音效用 WAV。
 - 环境和音乐循环用 OGG。
@@ -84,7 +110,7 @@ FPS: 18
 - 音频头尾清理静音。
 - 需要循环的文件必须标注 loop。
 
-## 7. 接入验收
+## 8. 接入验收
 
 程序接入后，美术负责人检查：
 
@@ -94,4 +120,3 @@ FPS: 18
 - 是否脚底漂移。
 - 是否命中特效遮挡过多。
 - 是否符合当前人工风格方向。
-

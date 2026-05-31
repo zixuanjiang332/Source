@@ -20,6 +20,19 @@
 
 `Main.tscn` 加载 `DemoLevel.tscn`、`Hud.tscn` 和 `VfxSpawner`。玩家相机跟随主角，关卡内放置侦察机、重装机体和 Boss 展示单位。
 
+## Dynamic Background
+
+背景使用全拆 tiles/props 的结构，不做全屏帧序列。`DemoLevel.tscn` 内的背景层固定为：
+
+- `Background/LabStaticTiles`
+- `Background/LabAnimatedProps`
+- `Background/CityFar`
+- `Background/CityMid`
+- `Background/CityAnimatedProps`
+- `Background/CityForegroundDecor`
+
+所有循环背景动画挂 `AnimatedBackgroundProp`。该脚本只更新 Sprite2D 的 `region_rect`、位置循环和帧序，不参与碰撞、交互、战斗或关卡目标逻辑。正式美术导出后，替换节点 texture 并按素材规格填写 `frame_size`、`frame_count`、`fps` 和 `columns`。
+
 ## Current Combat Slice
 
 当前玩法只精修第一把近战武器“匕首”。`resources/weapons/initial_dagger.tres` 绑定三段普攻和一个 Demo 能量技：

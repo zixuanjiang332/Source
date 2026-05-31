@@ -11,6 +11,7 @@ $required = @(
   "scripts/core/GameEvents.gd",
   "scripts/combat/Hitbox.gd",
   "scripts/combat/Hurtbox.gd",
+  "scripts/levels/AnimatedBackgroundProp.gd",
   "scripts/resources/WeaponData.gd",
   "resources/characters/player_stats.tres",
   "resources/weapons/initial_dagger.tres",
