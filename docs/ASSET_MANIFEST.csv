@@ -6,6 +6,9 @@ boss,foundry_warden,art_src/boss_foundry_warden.aseprite,assets/pixel/spr_foundr
 vfx,hit_spark_metal,art_src/vfx_hit_spark_metal.aseprite,assets/pixel/vfx_hit_spark_metal.png,Pixel/VFX Owner,planned,64x64 or 96x96
 vfx,dash_burst,art_src/vfx_dash_burst.aseprite,assets/pixel/vfx_dash_burst.png,Pixel/VFX Owner,planned,64x64
 tiles,foundry_lab,art_src/tiles_foundry_lab.aseprite,assets/pixel/tiles_foundry_lab.png,Pixel/VFX Owner,planned,32x32 tiles
+placeholder,birth_lab_background,Codex built-in image_gen 2026-05-31,assets/pixel/placeholders/bg_lab_birth_wide.png,Codex,placeholder,AI placeholder for dark blue laboratory awakening room
+placeholder,robot_city_panorama,Codex built-in image_gen 2026-05-31,assets/pixel/placeholders/bg_city_panorama_wide.png,Codex,placeholder,AI placeholder for open-air neon robot city skyline
+placeholder,hologram_city_sheet,Codex built-in image_gen 2026-05-31,assets/pixel/placeholders/sheet_hologram_city.png,Codex,placeholder,AI placeholder sheet for hologram billboards and rings
+placeholder,lab_city_prop_sheet,Codex built-in image_gen 2026-05-31,assets/pixel/placeholders/sheet_lab_city_props.png,Codex,placeholder,AI placeholder sheet for flying traffic and lab/city props
 sfx,player_dash,art_src/audio/sfx_player_dash_01.wav,assets/audio/sfx_player_dash_01.wav,Programmer B,planned,temporary jsfxr ok
 sfx,hit_metal_light,art_src/audio/sfx_hit_metal_light_01.wav,assets/audio/sfx_hit_metal_light_01.wav,Programmer B,planned,temporary jsfxr ok
-

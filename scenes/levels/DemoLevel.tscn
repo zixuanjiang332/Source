@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/DemoLevel.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2"]
@@ -7,18 +7,42 @@
 [ext_resource type="PackedScene" path="res://scenes/enemies/FoundryWarden.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/items/PickupRepairCell.tscn" id="6"]
 [ext_resource type="PackedScene" path="res://scenes/items/PickupDashCore.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/items/PickupDamageAmp.tscn" id="8"]
+[ext_resource type="Script" path="res://scripts/levels/DemoInteractable.gd" id="9"]
+[ext_resource type="Texture2D" path="res://assets/pixel/placeholders/bg_lab_birth_wide.png" id="10"]
+[ext_resource type="Texture2D" path="res://assets/pixel/placeholders/bg_city_panorama_wide.png" id="11"]
+[ext_resource type="Texture2D" path="res://assets/pixel/placeholders/sheet_hologram_city.png" id="12"]
+[ext_resource type="Texture2D" path="res://assets/pixel/placeholders/sheet_lab_city_props.png" id="13"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
-size = Vector2(940, 28)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lab_ground"]
+size = Vector2(920, 28)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
-size = Vector2(28, 220)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_elevator_floor"]
+size = Vector2(240, 28)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_a"]
-size = Vector2(144, 12)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_city_ground"]
+size = Vector2(1500, 28)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_b"]
-size = Vector2(104, 12)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_left_wall"]
+size = Vector2(28, 260)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_wide"]
+size = Vector2(172, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_mid"]
+size = Vector2(132, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_small"]
+size = Vector2(108, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interact_wide"]
+size = Vector2(92, 78)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interact_tall"]
+size = Vector2(68, 92)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_elevator"]
+size = Vector2(98, 150)
 
 [node name="DemoLevel" type="Node2D"]
 script = ExtResource("1")
@@ -26,114 +50,386 @@ script = ExtResource("1")
 [node name="Background" type="Node2D" parent="."]
 z_index = -100
 
-[node name="Sky" type="Polygon2D" parent="Background"]
-color = Color(0.018, 0.021, 0.033, 1)
-polygon = PackedVector2Array(-180, -120, 920, -120, 920, 280, -180, 280)
+[node name="LabBackdrop" type="Sprite2D" parent="Background"]
+position = Vector2(300, 96)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("10")
 
-[node name="Haze" type="Polygon2D" parent="Background"]
-color = Color(0.04, 0.055, 0.09, 1)
-polygon = PackedVector2Array(-180, 92, 920, 72, 920, 280, -180, 280)
+[node name="CityBackdrop" type="Sprite2D" parent="Background"]
+position = Vector2(1680, 92)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("11")
 
-[node name="NeonRailA" type="Line2D" parent="Background"]
-points = PackedVector2Array(-120, 84, 820, 42)
-width = 2.0
-default_color = Color(0.15, 0.9, 1, 0.65)
+[node name="ElevatorShaftGlow" type="Polygon2D" parent="Background"]
+color = Color(0.04, 0.08, 0.12, 0.82)
+polygon = PackedVector2Array(742, -140, 982, -140, 982, 270, 742, 270)
 
-[node name="NeonRailB" type="Line2D" parent="Background"]
-points = PackedVector2Array(-120, 132, 820, 98)
-width = 1.0
-default_color = Color(1, 0.14, 0.36, 0.5)
-
-[node name="TowerA" type="Polygon2D" parent="Background"]
-position = Vector2(70, 120)
-color = Color(0.035, 0.043, 0.064, 1)
-polygon = PackedVector2Array(-18, -96, 26, -96, 26, 110, -18, 110)
-
-[node name="TowerB" type="Polygon2D" parent="Background"]
-position = Vector2(485, 116)
-color = Color(0.03, 0.038, 0.058, 1)
-polygon = PackedVector2Array(-36, -120, 38, -120, 38, 120, -36, 120)
-
-[node name="TowerGlow" type="Line2D" parent="Background/TowerB"]
-points = PackedVector2Array(-24, -86, 24, -86)
-width = 3.0
-default_color = Color(0.2, 0.95, 1, 0.75)
+[node name="ElevatorShaftCore" type="Line2D" parent="Background"]
+points = PackedVector2Array(862, -120, 862, 232)
+width = 8.0
+default_color = Color(0.12, 0.95, 1, 0.25)
 
 [node name="RouteLabel" type="Label" parent="."]
-position = Vector2(14, 44)
+position = Vector2(16, 36)
 theme_override_font_sizes/font_size = 8
-text = "Foundry access route"
+text = "Awakening route"
+
+[node name="Lab" type="Node2D" parent="."]
+
+[node name="DrLin" type="Node2D" parent="Lab"]
+position = Vector2(178, 220)
+
+[node name="Coat" type="Polygon2D" parent="Lab/DrLin"]
+color = Color(0.72, 0.83, 0.94, 1)
+polygon = PackedVector2Array(-11, -50, 10, -50, 17, 0, -17, 0)
+
+[node name="Head" type="Polygon2D" parent="Lab/DrLin"]
+color = Color(0.95, 0.84, 0.76, 1)
+polygon = PackedVector2Array(-9, -68, 8, -68, 12, -56, 5, -48, -6, -48, -12, -56)
+
+[node name="Visor" type="Polygon2D" parent="Lab/DrLin"]
+color = Color(0.25, 1, 1, 0.9)
+polygon = PackedVector2Array(-8, -61, 10, -61, 8, -56, -10, -56)
+
+[node name="AwakeningBedInteract" type="Area2D" parent="Lab"]
+position = Vector2(92, 186)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("9")
+prompt_text = "E BED"
+speaker = "SYSTEM"
+dialogue_lines = PackedStringArray("Vitals restored. neural lag falling inside acceptable range.")
+objective_after = "SYNC // talk to Dr. Lin"
+one_shot = true
+completed_text = "bed diagnostics already read"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lab/AwakeningBedInteract"]
+shape = SubResource("RectangleShape2D_interact_wide")
+
+[node name="PromptLabel" type="Label" parent="Lab/AwakeningBedInteract"]
+visible = false
+offset_left = -24.0
+offset_top = -58.0
+offset_right = 24.0
+offset_bottom = -42.0
+theme_override_font_sizes/font_size = 8
+text = "E"
+horizontal_alignment = 1
+
+[node name="DoctorInteract" type="Area2D" parent="Lab"]
+position = Vector2(178, 180)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("9")
+prompt_text = "E DR"
+speaker = "Dr. Lin"
+dialogue_lines = PackedStringArray("You woke before the city found this lab.", "The surface is bright, prosperous, and empty of free people.", "Take the cores. The machines above will not negotiate.")
+objective_after = "SUPPLY // inspect terminal and take the cores"
+completed_text = "Dr. Lin is watching the elevator feed"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lab/DoctorInteract"]
+shape = SubResource("RectangleShape2D_interact_tall")
+
+[node name="PromptLabel" type="Label" parent="Lab/DoctorInteract"]
+visible = false
+offset_left = -18.0
+offset_top = -78.0
+offset_right = 18.0
+offset_bottom = -62.0
+theme_override_font_sizes/font_size = 8
+text = "E"
+horizontal_alignment = 1
+
+[node name="TerminalInteract" type="Area2D" parent="Lab"]
+position = Vector2(328, 186)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("9")
+prompt_text = "E TERM"
+speaker = "TERMINAL"
+dialogue_lines = PackedStringArray("Surface census: zero free humans. labor signatures routed below machine towers.")
+objective_after = "SUPPLY // collect repair cell, dash core, and neon edge"
+one_shot = true
+completed_text = "terminal log cached"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lab/TerminalInteract"]
+shape = SubResource("RectangleShape2D_interact_wide")
+
+[node name="PromptLabel" type="Label" parent="Lab/TerminalInteract"]
+visible = false
+offset_left = -24.0
+offset_top = -58.0
+offset_right = 24.0
+offset_bottom = -42.0
+theme_override_font_sizes/font_size = 8
+text = "E"
+horizontal_alignment = 1
+
+[node name="SupplyStationInteract" type="Area2D" parent="Lab"]
+position = Vector2(534, 186)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("9")
+prompt_text = "E SUPPLY"
+speaker = "STATION"
+dialogue_lines = PackedStringArray("Emergency kit unlocked. take every core before leaving.")
+objective_after = "ELEVATOR // reach the surface lift"
+one_shot = true
+completed_text = "supply station already unlocked"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lab/SupplyStationInteract"]
+shape = SubResource("RectangleShape2D_interact_wide")
+
+[node name="PromptLabel" type="Label" parent="Lab/SupplyStationInteract"]
+visible = false
+offset_left = -24.0
+offset_top = -58.0
+offset_right = 24.0
+offset_bottom = -42.0
+theme_override_font_sizes/font_size = 8
+text = "E"
+horizontal_alignment = 1
+
+[node name="ElevatorInteract" type="Area2D" parent="Lab"]
+position = Vector2(844, 154)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("9")
+prompt_text = "E LIFT"
+speaker = "LIFT"
+dialogue_lines = PackedStringArray("Surface lock accepted. rising to the neon city.")
+objective_after = "SURFACE // cross the robot high road"
+one_shot = true
+completed_text = "surface lift already used"
+teleport_enabled = true
+teleport_target = Vector2(1040, 220)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lab/ElevatorInteract"]
+shape = SubResource("RectangleShape2D_elevator")
+
+[node name="PromptLabel" type="Label" parent="Lab/ElevatorInteract"]
+visible = false
+offset_left = -20.0
+offset_top = -94.0
+offset_right = 20.0
+offset_bottom = -78.0
+theme_override_font_sizes/font_size = 8
+text = "E"
+horizontal_alignment = 1
+
+[node name="City" type="Node2D" parent="."]
+
+[node name="Holograms" type="Node2D" parent="City"]
+z_index = -20
+
+[node name="RobotBroadcastA" type="Sprite2D" parent="City/Holograms"]
+position = Vector2(1200, 70)
+scale = Vector2(0.22, 0.22)
+texture = ExtResource("12")
+region_enabled = true
+region_rect = Rect2(0, 0, 330, 210)
+modulate = Color(0.35, 1, 1, 0.68)
+
+[node name="RingHoloA" type="Sprite2D" parent="City/Holograms"]
+position = Vector2(1510, 50)
+scale = Vector2(0.18, 0.18)
+texture = ExtResource("12")
+region_enabled = true
+region_rect = Rect2(330, 0, 310, 210)
+modulate = Color(1, 0.25, 0.9, 0.62)
+
+[node name="RobotBroadcastB" type="Sprite2D" parent="City/Holograms"]
+position = Vector2(1984, 72)
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("12")
+region_enabled = true
+region_rect = Rect2(0, 210, 360, 210)
+modulate = Color(0.42, 0.9, 1, 0.68)
+
+[node name="RingHoloB" type="Sprite2D" parent="City/Holograms"]
+position = Vector2(2220, 48)
+scale = Vector2(0.18, 0.18)
+texture = ExtResource("12")
+region_enabled = true
+region_rect = Rect2(360, 210, 330, 220)
+modulate = Color(0.2, 1, 0.9, 0.62)
+
+[node name="FlyingTraffic" type="Node2D" parent="City"]
+z_index = -10
+
+[node name="TrafficA" type="Sprite2D" parent="City/FlyingTraffic"]
+position = Vector2(1120, 92)
+scale = Vector2(0.16, 0.16)
+texture = ExtResource("13")
+region_enabled = true
+region_rect = Rect2(0, 0, 260, 150)
+modulate = Color(0.55, 0.9, 1, 0.8)
+
+[node name="TrafficB" type="Sprite2D" parent="City/FlyingTraffic"]
+position = Vector2(1450, 116)
+scale = Vector2(0.14, 0.14)
+texture = ExtResource("13")
+region_enabled = true
+region_rect = Rect2(260, 0, 260, 150)
+modulate = Color(1, 0.45, 0.85, 0.72)
+
+[node name="TrafficC" type="Sprite2D" parent="City/FlyingTraffic"]
+position = Vector2(1840, 98)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("13")
+region_enabled = true
+region_rect = Rect2(520, 0, 250, 150)
+modulate = Color(0.6, 1, 0.9, 0.78)
+
+[node name="HighRoadDecor" type="Node2D" parent="City"]
+
+[node name="RailLineA" type="Line2D" parent="City/HighRoadDecor"]
+points = PackedVector2Array(980, 206, 2410, 206)
+width = 2.0
+default_color = Color(0.1, 0.95, 1, 0.9)
+
+[node name="RailLineB" type="Line2D" parent="City/HighRoadDecor"]
+points = PackedVector2Array(1000, 232, 2430, 224)
+width = 1.0
+default_color = Color(1, 0.12, 0.5, 0.55)
+
+[node name="RobotOverseer" type="Polygon2D" parent="City/HighRoadDecor"]
+position = Vector2(1168, 220)
+color = Color(0.04, 0.06, 0.09, 1)
+polygon = PackedVector2Array(-14, -74, 14, -74, 18, -42, 10, 0, -10, 0, -18, -42)
+
+[node name="RobotEye" type="Polygon2D" parent="City/HighRoadDecor/RobotOverseer"]
+color = Color(1, 0.12, 0.24, 1)
+polygon = PackedVector2Array(-8, -60, 8, -60, 8, -54, -8, -54)
+
+[node name="LaborSilhouetteA" type="Polygon2D" parent="City/HighRoadDecor"]
+position = Vector2(1226, 220)
+color = Color(0.01, 0.012, 0.018, 0.92)
+polygon = PackedVector2Array(-7, -42, 7, -42, 9, -22, 5, 0, -5, 0, -9, -22)
+
+[node name="LaborSilhouetteB" type="Polygon2D" parent="City/HighRoadDecor"]
+position = Vector2(1252, 220)
+color = Color(0.01, 0.012, 0.018, 0.88)
+polygon = PackedVector2Array(-6, -38, 6, -38, 8, -19, 4, 0, -4, 0, -8, -19)
+
+[node name="CageLineA" type="Line2D" parent="City/HighRoadDecor"]
+points = PackedVector2Array(1204, 156, 1272, 156, 1272, 222, 1204, 222, 1204, 156)
+width = 1.0
+default_color = Color(0.2, 0.85, 1, 0.35)
 
 [node name="Collision" type="Node2D" parent="."]
 
-[node name="Ground" type="StaticBody2D" parent="Collision"]
+[node name="LabGround" type="StaticBody2D" parent="Collision"]
 collision_layer = 1
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/Ground"]
-position = Vector2(320, 234)
-shape = SubResource("RectangleShape2D_ground")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/LabGround"]
+position = Vector2(350, 234)
+shape = SubResource("RectangleShape2D_lab_ground")
 
-[node name="Visual" type="Polygon2D" parent="Collision/Ground"]
-color = Color(0.09, 0.1, 0.13, 1)
-polygon = PackedVector2Array(-150, 220, 790, 220, 790, 270, -150, 270)
+[node name="Visual" type="Polygon2D" parent="Collision/LabGround"]
+color = Color(0.055, 0.065, 0.085, 1)
+polygon = PackedVector2Array(-110, 220, 810, 220, 850, 270, -110, 270)
 
-[node name="GroundNeon" type="Line2D" parent="Collision/Ground"]
-points = PackedVector2Array(-150, 220, 790, 220)
+[node name="GroundNeon" type="Line2D" parent="Collision/LabGround"]
+points = PackedVector2Array(-110, 220, 810, 220)
 width = 2.0
-default_color = Color(0.14, 0.9, 1, 0.9)
+default_color = Color(0.12, 0.92, 1, 0.86)
+
+[node name="ElevatorFloor" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/ElevatorFloor"]
+position = Vector2(850, 234)
+shape = SubResource("RectangleShape2D_elevator_floor")
+
+[node name="Visual" type="Polygon2D" parent="Collision/ElevatorFloor"]
+color = Color(0.07, 0.08, 0.105, 1)
+polygon = PackedVector2Array(750, 220, 970, 220, 1002, 270, 736, 270)
+
+[node name="CityGround" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/CityGround"]
+position = Vector2(1700, 234)
+shape = SubResource("RectangleShape2D_city_ground")
+
+[node name="Visual" type="Polygon2D" parent="Collision/CityGround"]
+color = Color(0.065, 0.07, 0.092, 1)
+polygon = PackedVector2Array(950, 220, 2450, 220, 2490, 270, 930, 270)
+
+[node name="GroundNeon" type="Line2D" parent="Collision/CityGround"]
+points = PackedVector2Array(950, 220, 2450, 220)
+width = 2.0
+default_color = Color(0.18, 0.95, 1, 0.92)
 
 [node name="LeftWall" type="StaticBody2D" parent="Collision"]
 collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/LeftWall"]
-position = Vector2(-32, 124)
-shape = SubResource("RectangleShape2D_wall")
+position = Vector2(-82, 120)
+shape = SubResource("RectangleShape2D_left_wall")
 
 [node name="PlatformA" type="StaticBody2D" parent="Collision"]
 collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/PlatformA"]
-position = Vector2(242, 176)
-shape = SubResource("RectangleShape2D_platform_a")
+position = Vector2(1360, 176)
+shape = SubResource("RectangleShape2D_platform_wide")
 
 [node name="Visual" type="Polygon2D" parent="Collision/PlatformA"]
-color = Color(0.11, 0.12, 0.16, 1)
-polygon = PackedVector2Array(170, 169, 314, 169, 306, 183, 178, 183)
+color = Color(0.08, 0.095, 0.13, 1)
+polygon = PackedVector2Array(1274, 169, 1446, 169, 1436, 184, 1284, 184)
 
 [node name="PlatformB" type="StaticBody2D" parent="Collision"]
 collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/PlatformB"]
-position = Vector2(430, 136)
-shape = SubResource("RectangleShape2D_platform_b")
+position = Vector2(1610, 136)
+shape = SubResource("RectangleShape2D_platform_mid")
 
 [node name="Visual" type="Polygon2D" parent="Collision/PlatformB"]
-color = Color(0.11, 0.12, 0.16, 1)
-polygon = PackedVector2Array(378, 129, 482, 129, 476, 143, 384, 143)
+color = Color(0.08, 0.095, 0.13, 1)
+polygon = PackedVector2Array(1544, 129, 1676, 129, 1666, 144, 1554, 144)
+
+[node name="PlatformC" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/PlatformC"]
+position = Vector2(1950, 184)
+shape = SubResource("RectangleShape2D_platform_small")
+
+[node name="Visual" type="Polygon2D" parent="Collision/PlatformC"]
+color = Color(0.08, 0.095, 0.13, 1)
+polygon = PackedVector2Array(1896, 177, 2004, 177, 1994, 192, 1906, 192)
 
 [node name="Actors" type="Node2D" parent="."]
 
 [node name="Player" parent="Actors" instance=ExtResource("2")]
-position = Vector2(68, 220)
+position = Vector2(72, 220)
 
 [node name="TrainingDrone" parent="Actors" instance=ExtResource("3")]
-position = Vector2(220, 220)
+position = Vector2(1320, 220)
 
 [node name="RiotFrame" parent="Actors" instance=ExtResource("4")]
-position = Vector2(355, 220)
+position = Vector2(1740, 220)
 
 [node name="FoundryWarden" parent="Actors" instance=ExtResource("5")]
-position = Vector2(610, 220)
+position = Vector2(2220, 220)
 
 [node name="Pickups" type="Node2D" parent="."]
 
 [node name="RepairCell" parent="Pickups" instance=ExtResource("6")]
-position = Vector2(246, 150)
+position = Vector2(504, 190)
 
 [node name="DashCore" parent="Pickups" instance=ExtResource("7")]
-position = Vector2(430, 110)
+position = Vector2(578, 190)
 
+[node name="DamageAmp" parent="Pickups" instance=ExtResource("8")]
+position = Vector2(652, 190)
