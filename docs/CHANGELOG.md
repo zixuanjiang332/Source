@@ -17,6 +17,7 @@
 - 新增实验室/城市背景源文件和运行时导出目录。
 - 登记实验室与城市完整动态背景氛围包的 tiles/props 交付清单。
 - 新增实验室 AI final 背景 tiles/props 运行时素材和逐帧源文件。
+- 新增初始商店 AI final 单张背景图，作为出生点相邻维修间/补给商店视觉素材。
 - 新增 `tools/stitch_spritesheet.py`，用于从 AI 帧板生成单帧 PNG 与横向 spritesheet。
 - 新增“源”主角运行时 sprite、HUD 头像、初始匕首图标和主菜单背景接入资源。
 - 新增脸部主题主菜单背景 `bg_start_menu_yuan_face_v2.png`。
