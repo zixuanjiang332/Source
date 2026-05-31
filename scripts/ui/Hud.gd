@@ -8,6 +8,7 @@ const ENERGY_FILL_WIDTH := 88.0
 @onready var health_label: Label = $Root/Margin/HealthLabel
 @onready var energy_fill: ColorRect = $Root/Margin/EnergyBack/EnergyFill
 @onready var energy_label: Label = $Root/Margin/EnergyLabel
+@onready var weapon_icon: TextureRect = $Root/Margin/WeaponIcon
 @onready var weapon_label: Label = $Root/Margin/WeaponLabel
 @onready var skill_label: Label = $Root/Margin/SkillLabel
 @onready var combo_label: Label = $Root/Margin/ComboLabel
@@ -97,4 +98,5 @@ func _update_skill_label() -> void:
 	var state := "READY" if _current_energy >= _skill_cost else "CHARGING"
 	if _skill_cost <= 0:
 		state = "--"
+	weapon_icon.modulate = Color.WHITE if state == "READY" else Color(0.45, 0.65, 0.72, 0.72)
 	skill_label.text = "K %s // %s %d EN" % [_skill_name, state, _skill_cost]

@@ -18,7 +18,9 @@
 
 ## Current Scene Flow
 
-`Main.tscn` 加载 `DemoLevel.tscn`、`Hud.tscn` 和 `VfxSpawner`。玩家相机跟随主角，关卡内放置侦察机、重装机体和 Boss 展示单位。
+`Main.tscn` 启动时只显示标题菜单和空 `GameRoot`。标题菜单使用脸部主题 AI final 图，点击“开始游戏”后才动态创建 `VfxSpawner`、`Hud.tscn` 和 `DemoLevel.tscn`，进入实验室到城市的演示路线。这样标题页不会提前显示正式关卡、HUD、玩家或动态背景。
+
+当前“源”的概念图已全量导出到 `assets/pixel/characters/yuan/`。运行时玩家显示使用 `spr_yuan_demo_idle.png`，HUD 使用 `portrait_yuan_stage_01.png`，初始匕首 HUD 图标使用 `icon_initial_dagger.png`。完整动作帧尚未制作前，战斗状态仍由玩家控制器、Hitbox、VFX 和 HUD 事件反馈表现。
 
 ## Dynamic Background
 

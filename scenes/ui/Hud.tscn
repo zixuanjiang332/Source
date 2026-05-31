@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/Hud.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/ui/portrait_yuan_stage_01.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_initial_dagger.png" id="3"]
 
 [node name="Hud" type="CanvasLayer"]
 layer = 10
@@ -37,6 +39,15 @@ position = Vector2(18, 18)
 points = PackedVector2Array(8, -13, 14, -6, 16, 0)
 width = 1.0
 default_color = Color(1, 0.18, 0.68, 0.95)
+
+[node name="PortraitImage" type="TextureRect" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 33.0
+offset_bottom = 33.0
+texture = ExtResource("2")
+stretch_mode = 5
 
 [node name="HealthBack" type="ColorRect" parent="Root/Margin"]
 layout_mode = 0
@@ -108,6 +119,15 @@ offset_right = 216.0
 offset_bottom = 49.0
 theme_override_font_sizes/font_size = 7
 text = "EN 000/000"
+
+[node name="WeaponIcon" type="TextureRect" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 48.0
+offset_right = 34.0
+offset_bottom = 74.0
+texture = ExtResource("3")
+stretch_mode = 5
 
 [node name="WeaponLabel" type="Label" parent="Root/Margin"]
 layout_mode = 0
