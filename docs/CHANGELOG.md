@@ -18,6 +18,8 @@
 - 登记实验室与城市完整动态背景氛围包的 tiles/props 交付清单。
 - 新增实验室 AI final 背景 tiles/props 运行时素材和逐帧源文件。
 - 新增 `tools/stitch_spritesheet.py`，用于从 AI 帧板生成单帧 PNG 与横向 spritesheet。
+- 添加主角“源”早期克隆体动作帧规格，并接入玩家动画控制接口与近战动作动画映射。
+- 生成并接入主角“源”早期克隆体 66 帧 AI 最终运行时 spritesheet。
 
 ### Changed
 
@@ -28,6 +30,8 @@
 - 背景动画从 `DemoLevel.gd` 的硬编码逻辑迁移到各个 `AnimatedBackgroundProp` 节点。
 - 实验室背景从 placeholder sheet 切换到 `assets/pixel/background/lab/` 的 final 运行时素材。
 - AI 使用规则改为允许 AI 生成图、动作帧和 spritesheet 直接作为 final 素材接入。
+- `AttackData` 增加可选 `animation_id` 字段，用于将攻击数据映射到角色动画标签。
+- 允许经明确批准的 AI 素材作为 `final` 运行时素材接入，并要求保留来源标记。
 
 ### Fixed
 

@@ -1,5 +1,6 @@
 type,id,source_path,export_path,owner,status,notes
 character,player_neon_runner,art_src/chr_player_neon_runner.aseprite,assets/pixel/spr_player_neon_runner.png,Pixel/VFX Owner,planned,96x96 canvas
+character,player_yuan_early_clone_animation,art_src/generated/player_yuan_early_clone/strips,assets/pixel/spr_player_yuan_early_clone.png,Codex,final,AI-generated final runtime spritesheet; 66 frames; frame PNGs in assets/pixel/characters/player_yuan_early_clone/frames; spec in docs/PLAYER_ANIMATION_SPEC.md
 enemy,scout_drone,art_src/enm_scout_drone.aseprite,assets/pixel/spr_scout_drone.png,Pixel/VFX Owner,planned,96x96 canvas
 enemy,riot_frame,art_src/enm_riot_frame.aseprite,assets/pixel/spr_riot_frame.png,Pixel/VFX Owner,planned,128x128 canvas
 boss,foundry_warden,art_src/boss_foundry_warden.aseprite,assets/pixel/spr_foundry_warden.png,Pixel/VFX Owner,planned,192x192 canvas

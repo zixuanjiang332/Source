@@ -6,6 +6,7 @@
 script = ExtResource("1")
 attack_id = &"player_slash_1"
 display_name = "Light Cut"
+animation_id = &"atk_1"
 damage = 14
 energy_cost = 0
 knockback = Vector2(145, -42)
@@ -17,4 +18,3 @@ hit_stop = 0.03
 screen_shake = 0.42
 vfx_id = &"hit_spark_metal"
 sfx_id = &"sfx_hit_metal_light_01"
-

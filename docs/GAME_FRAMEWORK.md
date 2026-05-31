@@ -11,10 +11,11 @@
 - `GameEvents`: 全局事件总线，负责生命/能量、VFX、SFX、镜头震动、敌人死亡和重开请求。
 - `InputBootstrap`: 启动时注册默认输入，避免空项目缺少 InputMap。
 - `CharacterStats`: 角色数值 Resource，玩家、普通敌人、Boss 共用。
-- `AttackData`: 攻击数据 Resource，统一伤害、击退、命中停顿、VFX、SFX。
+- `AttackData`: 攻击数据 Resource，统一伤害、击退、命中停顿、VFX、SFX，并可通过 `animation_id` 映射角色攻击动画。
 - `WeaponData`: 当前武器数据 Resource，保存武器 ID、显示名、普攻链、Demo 技能攻击和 HUD 名称。
 - `Hitbox` / `Hurtbox`: 所有攻击命中都走这两个 Area2D。
 - `VfxCatalog`: 通过 `vfx_id` 查找特效场景，便于后续替换为正式帧动画或粒子效果。
+- `PlayerAnimationController`: 玩家动画桥接层，正式 spritesheet 缺失或动画标签缺失时回退到灰盒视觉。
 
 ## Current Scene Flow
 

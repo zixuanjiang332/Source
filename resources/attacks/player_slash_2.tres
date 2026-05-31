@@ -6,6 +6,7 @@
 script = ExtResource("1")
 attack_id = &"player_slash_2"
 display_name = "Reverse Cut"
+animation_id = &"atk_2"
 damage = 18
 energy_cost = 0
 knockback = Vector2(170, -50)
@@ -17,4 +18,3 @@ hit_stop = 0.035
 screen_shake = 0.5
 vfx_id = &"hit_spark_metal"
 sfx_id = &"sfx_hit_metal_light_02"
-

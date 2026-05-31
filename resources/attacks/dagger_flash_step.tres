@@ -6,6 +6,7 @@
 script = ExtResource("1")
 attack_id = &"dagger_flash_step"
 display_name = "Flash Step"
+animation_id = &"skill"
 damage = 36
 energy_cost = 32
 knockback = Vector2(300, -110)

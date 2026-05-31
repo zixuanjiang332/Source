@@ -6,6 +6,7 @@
 script = ExtResource("1")
 attack_id = &"player_energy_cleave"
 display_name = "Arc Cleave"
+animation_id = &"skill"
 damage = 38
 energy_cost = 35
 knockback = Vector2(290, -120)
@@ -17,4 +18,3 @@ hit_stop = 0.06
 screen_shake = 1.05
 vfx_id = &"hit_spark_metal"
 sfx_id = &"sfx_energy_cleave_01"
-

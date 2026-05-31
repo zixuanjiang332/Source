@@ -6,6 +6,7 @@
 script = ExtResource("1")
 attack_id = &"player_slash_3"
 display_name = "Breaker Cut"
+animation_id = &"atk_3"
 damage = 26
 energy_cost = 0
 knockback = Vector2(240, -85)
@@ -17,4 +18,3 @@ hit_stop = 0.045
 screen_shake = 0.78
 vfx_id = &"hit_spark_metal"
 sfx_id = &"sfx_hit_metal_heavy_01"
-
