@@ -16,18 +16,19 @@
 - `Hitbox` / `Hurtbox`: 所有攻击命中都走这两个 Area2D。
 - `VfxCatalog`: 通过 `vfx_id` / `sfx_id` 查找特效和音效。旧特效可继续返回 PackedScene；spritesheet VFX 和 SFX 使用 `VfxEntry` / `SfxEntry` 登记。
 - `PlayerAnimationController`: 玩家动画桥接层，正式 spritesheet 缺失或动画标签缺失时回退到灰盒视觉。
-- `level_change_requested`: `GameEvents` 上的关卡切换事件，当前由重生段电梯触发，`Main.gd` 播放转场后加载主关卡。
+- `level_change_requested`: `GameEvents` 上的关卡切换事件，当前由重生段与作坊段的电梯触发，`Main.gd` 播放转场后加载对应关卡。
 
 ## Current Scene Flow
 
 `Main.tscn` 启动时只显示标题菜单和空 `GameRoot`。标题菜单使用 1920x1080 清洁版脸部主题 AI final 图，菜单选项由 Godot 蓝色中文按钮组件显示，支持鼠标悬停高亮放大。点击“开始游戏”后才动态创建 `VfxSpawner`、`Hud.tscn` 和 `RebirthLevel.tscn`，因此标题页不会提前显示正式关卡、HUD、玩家或动态背景。
 
-当前路线拆分为两个运行场景：
+当前路线拆分为三个运行场景：
 
-- `RebirthLevel.tscn`: 重生实验室段，负责醒来、Dr. Lin、终端、补给和电梯交互。
+- `RebirthLevel.tscn`: 重生实验室段，负责醒来、Dr. Lin、终端、补给和通往作坊的电梯交互。
+- `DemoLevel.tscn`: 作坊/维修间段，负责商店界面和通往主关卡的电梯交互。
 - `MainCityLevel.tscn`: 城市高架主战斗段，负责训练敌人、Riot Frame、Foundry Warden 和 30-60 秒战斗录屏路线。
 
-重生段电梯不再把玩家 teleport 到同一张长地图右侧，而是通过 `GameEvents.request_level_change(&"main_city")` 请求关卡切换。`Main.gd` 播放短暂蓝色扫描/淡出转场后卸载重生段并加载主关卡。
+重生段电梯通过 `GameEvents.request_level_change(&"workshop")` 进入作坊段。作坊段电梯再通过 `GameEvents.request_level_change(&"main_city")` 进入主关卡。`Main.gd` 播放短暂蓝色扫描/淡出转场后卸载当前场景并加载对应关卡。
 
 当前“源”的概念图已全量导出到 `assets/pixel/characters/yuan/`。运行时玩家使用 `assets/pixel/spr_player_yuan_early_clone.png` 和 `resources/characters/player_yuan_early_clone_frames.tres` 播放 `idle/run/jump/fall/dash/atk_1/atk_2/atk_3/skill/hit/death`。HUD 使用 `portrait_yuan_stage_01.png`，初始匕首 HUD 图标使用 `icon_initial_dagger.png`。
 
