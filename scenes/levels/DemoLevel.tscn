@@ -21,19 +21,19 @@ size = Vector2(920, 28)
 size = Vector2(240, 28)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_city_ground"]
-size = Vector2(1500, 28)
+size = Vector2(1580, 28)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_left_wall"]
 size = Vector2(28, 260)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_wide"]
-size = Vector2(172, 14)
+size = Vector2(180, 14)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_mid"]
-size = Vector2(132, 14)
+size = Vector2(148, 14)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_small"]
-size = Vector2(108, 14)
+size = Vector2(124, 14)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interact_wide"]
 size = Vector2(92, 78)
@@ -283,18 +283,58 @@ modulate = Color(0.6, 1, 0.9, 0.78)
 
 [node name="HighRoadDecor" type="Node2D" parent="City"]
 
+[node name="RoadPanelLines" type="Line2D" parent="City/HighRoadDecor"]
+points = PackedVector2Array(1010, 226, 1230, 222, 1450, 226, 1670, 222, 1890, 226, 2110, 222, 2360, 226)
+width = 1.0
+default_color = Color(0.22, 0.32, 0.38, 0.7)
+
 [node name="RailLineA" type="Line2D" parent="City/HighRoadDecor"]
-points = PackedVector2Array(980, 206, 2410, 206)
+points = PackedVector2Array(970, 206, 2460, 206)
 width = 2.0
 default_color = Color(0.1, 0.95, 1, 0.9)
 
 [node name="RailLineB" type="Line2D" parent="City/HighRoadDecor"]
-points = PackedVector2Array(1000, 232, 2430, 224)
+points = PackedVector2Array(1000, 232, 2460, 224)
 width = 1.0
 default_color = Color(1, 0.12, 0.5, 0.55)
 
+[node name="GuardRailA" type="Line2D" parent="City/HighRoadDecor"]
+points = PackedVector2Array(1010, 193, 1260, 190, 1510, 194, 1760, 190, 2010, 194, 2280, 190)
+width = 1.0
+default_color = Color(0.15, 0.42, 0.5, 0.65)
+
+[node name="GuardRailPosts" type="Line2D" parent="City/HighRoadDecor"]
+points = PackedVector2Array(1050, 194, 1050, 218, 1230, 192, 1230, 218, 1410, 194, 1410, 218, 1590, 192, 1590, 218, 1770, 194, 1770, 218, 1950, 192, 1950, 218, 2130, 194, 2130, 218, 2310, 192, 2310, 218)
+width = 1.0
+default_color = Color(0.15, 0.42, 0.5, 0.55)
+
+[node name="HazardStripeA" type="Line2D" parent="City/HighRoadDecor"]
+points = PackedVector2Array(1030, 214, 1100, 214, 1355, 214, 1425, 214, 2050, 214, 2120, 214, 2380, 214, 2450, 214)
+width = 3.0
+default_color = Color(1, 0.58, 0.08, 0.78)
+
+[node name="MaintenanceBoxA" type="Polygon2D" parent="City/HighRoadDecor"]
+position = Vector2(1088, 220)
+color = Color(0.035, 0.045, 0.06, 1)
+polygon = PackedVector2Array(-20, -34, 22, -34, 25, 0, -24, 0)
+
+[node name="MaintenanceBoxAGlow" type="Line2D" parent="City/HighRoadDecor/MaintenanceBoxA"]
+points = PackedVector2Array(-14, -24, 16, -24)
+width = 2.0
+default_color = Color(0.1, 0.95, 1, 0.8)
+
+[node name="MaintenanceBoxB" type="Polygon2D" parent="City/HighRoadDecor"]
+position = Vector2(2048, 220)
+color = Color(0.035, 0.045, 0.06, 1)
+polygon = PackedVector2Array(-18, -28, 20, -28, 23, 0, -22, 0)
+
+[node name="MaintenanceBoxBGlow" type="Line2D" parent="City/HighRoadDecor/MaintenanceBoxB"]
+points = PackedVector2Array(-12, -19, 14, -19)
+width = 2.0
+default_color = Color(1, 0.18, 0.66, 0.76)
+
 [node name="RobotOverseer" type="Polygon2D" parent="City/HighRoadDecor"]
-position = Vector2(1168, 220)
+position = Vector2(1180, 220)
 color = Color(0.04, 0.06, 0.09, 1)
 polygon = PackedVector2Array(-14, -74, 14, -74, 18, -42, 10, 0, -10, 0, -18, -42)
 
@@ -303,19 +343,56 @@ color = Color(1, 0.12, 0.24, 1)
 polygon = PackedVector2Array(-8, -60, 8, -60, 8, -54, -8, -54)
 
 [node name="LaborSilhouetteA" type="Polygon2D" parent="City/HighRoadDecor"]
-position = Vector2(1226, 220)
+position = Vector2(1238, 220)
 color = Color(0.01, 0.012, 0.018, 0.92)
 polygon = PackedVector2Array(-7, -42, 7, -42, 9, -22, 5, 0, -5, 0, -9, -22)
 
 [node name="LaborSilhouetteB" type="Polygon2D" parent="City/HighRoadDecor"]
-position = Vector2(1252, 220)
+position = Vector2(1264, 220)
 color = Color(0.01, 0.012, 0.018, 0.88)
 polygon = PackedVector2Array(-6, -38, 6, -38, 8, -19, 4, 0, -4, 0, -8, -19)
 
 [node name="CageLineA" type="Line2D" parent="City/HighRoadDecor"]
-points = PackedVector2Array(1204, 156, 1272, 156, 1272, 222, 1204, 222, 1204, 156)
+points = PackedVector2Array(1216, 156, 1284, 156, 1284, 222, 1216, 222, 1216, 156)
 width = 1.0
 default_color = Color(0.2, 0.85, 1, 0.35)
+
+[node name="OverseerCameraB" type="Polygon2D" parent="City/HighRoadDecor"]
+position = Vector2(1888, 182)
+color = Color(0.035, 0.045, 0.06, 1)
+polygon = PackedVector2Array(-18, -16, 18, -16, 24, -6, 18, 4, -18, 4, -24, -6)
+
+[node name="OverseerCameraBEye" type="Polygon2D" parent="City/HighRoadDecor/OverseerCameraB"]
+color = Color(1, 0.1, 0.22, 1)
+polygon = PackedVector2Array(-6, -8, 7, -8, 7, -3, -6, -3)
+
+[node name="CageLineB" type="Line2D" parent="City/HighRoadDecor"]
+points = PackedVector2Array(2168, 165, 2244, 165, 2244, 222, 2168, 222, 2168, 165)
+width = 1.0
+default_color = Color(1, 0.2, 0.65, 0.28)
+
+[node name="LaborSilhouetteC" type="Polygon2D" parent="City/HighRoadDecor"]
+position = Vector2(2192, 220)
+color = Color(0.01, 0.012, 0.018, 0.86)
+polygon = PackedVector2Array(-7, -39, 7, -39, 9, -20, 5, 0, -5, 0, -9, -20)
+
+[node name="LaborSilhouetteD" type="Polygon2D" parent="City/HighRoadDecor"]
+position = Vector2(2220, 220)
+color = Color(0.01, 0.012, 0.018, 0.82)
+polygon = PackedVector2Array(-6, -36, 6, -36, 8, -18, 4, 0, -4, 0, -8, -18)
+
+[node name="ExitGateProp" type="Sprite2D" parent="City/HighRoadDecor"]
+position = Vector2(2388, 181)
+scale = Vector2(0.28, 0.28)
+texture = ExtResource("13")
+region_enabled = true
+region_rect = Rect2(610, 346, 250, 180)
+modulate = Color(0.8, 0.95, 1, 0.9)
+
+[node name="ExitGateLock" type="Line2D" parent="City/HighRoadDecor"]
+points = PackedVector2Array(2356, 166, 2420, 166)
+width = 2.0
+default_color = Color(1, 0.58, 0.08, 0.86)
 
 [node name="Collision" type="Node2D" parent="."]
 
@@ -353,15 +430,15 @@ collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/CityGround"]
-position = Vector2(1700, 234)
+position = Vector2(1730, 234)
 shape = SubResource("RectangleShape2D_city_ground")
 
 [node name="Visual" type="Polygon2D" parent="Collision/CityGround"]
 color = Color(0.065, 0.07, 0.092, 1)
-polygon = PackedVector2Array(950, 220, 2450, 220, 2490, 270, 930, 270)
+polygon = PackedVector2Array(940, 220, 2520, 220, 2560, 270, 920, 270)
 
 [node name="GroundNeon" type="Line2D" parent="Collision/CityGround"]
-points = PackedVector2Array(950, 220, 2450, 220)
+points = PackedVector2Array(940, 220, 2520, 220)
 width = 2.0
 default_color = Color(0.18, 0.95, 1, 0.92)
 
@@ -378,36 +455,66 @@ collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/PlatformA"]
-position = Vector2(1360, 176)
+position = Vector2(1258, 184)
 shape = SubResource("RectangleShape2D_platform_wide")
 
 [node name="Visual" type="Polygon2D" parent="Collision/PlatformA"]
 color = Color(0.08, 0.095, 0.13, 1)
-polygon = PackedVector2Array(1274, 169, 1446, 169, 1436, 184, 1284, 184)
+polygon = PackedVector2Array(1168, 177, 1348, 177, 1338, 193, 1178, 193)
+
+[node name="TopNeon" type="Line2D" parent="Collision/PlatformA"]
+points = PackedVector2Array(1168, 177, 1348, 177)
+width = 2.0
+default_color = Color(0.14, 0.95, 1, 0.88)
+
+[node name="Underglow" type="Line2D" parent="Collision/PlatformA"]
+points = PackedVector2Array(1190, 192, 1320, 192)
+width = 1.0
+default_color = Color(1, 0.15, 0.58, 0.52)
 
 [node name="PlatformB" type="StaticBody2D" parent="Collision"]
 collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/PlatformB"]
-position = Vector2(1610, 136)
+position = Vector2(1510, 148)
 shape = SubResource("RectangleShape2D_platform_mid")
 
 [node name="Visual" type="Polygon2D" parent="Collision/PlatformB"]
 color = Color(0.08, 0.095, 0.13, 1)
-polygon = PackedVector2Array(1544, 129, 1676, 129, 1666, 144, 1554, 144)
+polygon = PackedVector2Array(1436, 141, 1584, 141, 1574, 157, 1446, 157)
+
+[node name="TopNeon" type="Line2D" parent="Collision/PlatformB"]
+points = PackedVector2Array(1436, 141, 1584, 141)
+width = 2.0
+default_color = Color(0.14, 0.95, 1, 0.88)
+
+[node name="HazardEdge" type="Line2D" parent="Collision/PlatformB"]
+points = PackedVector2Array(1540, 156, 1572, 156)
+width = 2.0
+default_color = Color(1, 0.58, 0.08, 0.72)
 
 [node name="PlatformC" type="StaticBody2D" parent="Collision"]
 collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/PlatformC"]
-position = Vector2(1950, 184)
+position = Vector2(1868, 176)
 shape = SubResource("RectangleShape2D_platform_small")
 
 [node name="Visual" type="Polygon2D" parent="Collision/PlatformC"]
 color = Color(0.08, 0.095, 0.13, 1)
-polygon = PackedVector2Array(1896, 177, 2004, 177, 1994, 192, 1906, 192)
+polygon = PackedVector2Array(1806, 169, 1930, 169, 1920, 185, 1816, 185)
+
+[node name="TopNeon" type="Line2D" parent="Collision/PlatformC"]
+points = PackedVector2Array(1806, 169, 1930, 169)
+width = 2.0
+default_color = Color(0.14, 0.95, 1, 0.88)
+
+[node name="Underglow" type="Line2D" parent="Collision/PlatformC"]
+points = PackedVector2Array(1824, 184, 1904, 184)
+width = 1.0
+default_color = Color(1, 0.15, 0.58, 0.52)
 
 [node name="Actors" type="Node2D" parent="."]
 
@@ -415,13 +522,13 @@ polygon = PackedVector2Array(1896, 177, 2004, 177, 1994, 192, 1906, 192)
 position = Vector2(72, 220)
 
 [node name="TrainingDrone" parent="Actors" instance=ExtResource("3")]
-position = Vector2(1320, 220)
+position = Vector2(1328, 220)
 
 [node name="RiotFrame" parent="Actors" instance=ExtResource("4")]
-position = Vector2(1740, 220)
+position = Vector2(1728, 220)
 
 [node name="FoundryWarden" parent="Actors" instance=ExtResource("5")]
-position = Vector2(2220, 220)
+position = Vector2(2280, 220)
 
 [node name="Pickups" type="Node2D" parent="."]
 
