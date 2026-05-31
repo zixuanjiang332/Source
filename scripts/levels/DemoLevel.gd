@@ -5,8 +5,11 @@ extends Node2D
 @onready var flying_traffic: Node2D = get_node_or_null("City/FlyingTraffic") as Node2D
 @onready var holograms: Node2D = get_node_or_null("City/Holograms") as Node2D
 
+var _defeated_count := 0
+
 func _ready() -> void:
 	route_label.text = "Awakening route // lab to surface city"
+	GameEvents.enemy_defeated.connect(_on_enemy_defeated)
 	call_deferred("_announce_start")
 
 
@@ -48,3 +51,20 @@ func _animate_holograms() -> void:
 
 		canvas_item.modulate.a = 0.58 + sin(ticks + float(index)) * 0.18
 		index += 1
+
+
+func _on_enemy_defeated(_enemy_id: StringName) -> void:
+	_defeated_count += 1
+	match _defeated_count:
+		1:
+			route_label.text = "Combat route // scout cleared"
+			GameEvents.request_objective("CHAIN // break the riot frame")
+			GameEvents.request_toast("chain window // J-J-J")
+		2:
+			route_label.text = "Combat route // frame broken"
+			GameEvents.request_objective("FINISH // spend K Flash Step")
+			GameEvents.request_toast("energy live // K Flash Step")
+		_:
+			route_label.text = "Combat route // clear"
+			GameEvents.request_objective("CLEAR // route recorded")
+			GameEvents.request_toast("combat slice complete // press R to rerun")

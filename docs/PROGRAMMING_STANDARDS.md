@@ -77,10 +77,13 @@
 
 - `CharacterStats`: 生命、速度、冲刺、重力、接触伤害。
 - `AttackData`: 伤害、击退、主动帧、冷却、命中停顿、VFX/SFX ID。
+- `WeaponData`: 武器 ID、显示名、三段普攻、Demo 技能攻击和 HUD 技能名。
 - `ItemData`: 道具 ID、描述、效果 ID、倍率。
 - `VfxCatalog`: VFX ID 到场景的映射。
 
 新增数据时优先扩展 Resource，而不是新增全局单例。只有跨系统事件才进入 `GameEvents`。
+
+当前 `WeaponData` 只服务初始匕首切片。不要在本阶段加入武器栏、快速切换、背包或完整装备系统；如果后续确实需要扩展，先更新 `GAME_FRAMEWORK.md` 和 `DECISION_LOG.md`。
 
 ## 7. 输入与手感
 
@@ -88,6 +91,7 @@
 - 所有手感参数先从 Resource 或 export 变量暴露。
 - 冲刺、攻击、受击、死亡这类状态必须互相排斥或明确优先级。
 - 命中停顿和屏幕震动要短，先保证操作可读。
+- 连段、能量和技能 UI 通过 `GameEvents` 广播，不允许 UI 直接调用玩家战斗方法。
 
 ## 8. 碰撞层约定
 
