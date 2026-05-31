@@ -16,6 +16,8 @@
 - 新增通用 `AnimatedBackgroundProp`，支持背景帧动画和横向循环移动。
 - 新增实验室/城市背景源文件和运行时导出目录。
 - 登记实验室与城市完整动态背景氛围包的 tiles/props 交付清单。
+- 新增实验室 AI final 背景 tiles/props 运行时素材和逐帧源文件。
+- 新增 `tools/stitch_spritesheet.py`，用于从 AI 帧板生成单帧 PNG 与横向 spritesheet。
 
 ### Changed
 
@@ -24,6 +26,8 @@
 - 关卡目标会随敌人击杀推进，便于录制冲刺、连段、技能收尾路线。
 - 将关卡背景拆为实验室静态层、实验室动画层、城市远景、中景、动画层和前景装饰层。
 - 背景动画从 `DemoLevel.gd` 的硬编码逻辑迁移到各个 `AnimatedBackgroundProp` 节点。
+- 实验室背景从 placeholder sheet 切换到 `assets/pixel/background/lab/` 的 final 运行时素材。
+- AI 使用规则增加背景素材 final 例外说明。
 
 ### Fixed
 

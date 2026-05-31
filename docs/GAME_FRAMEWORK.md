@@ -33,6 +33,8 @@
 
 所有循环背景动画挂 `AnimatedBackgroundProp`。该脚本只更新 Sprite2D 的 `region_rect`、位置循环和帧序，不参与碰撞、交互、战斗或关卡目标逻辑。正式美术导出后，替换节点 texture 并按素材规格填写 `frame_size`、`frame_count`、`fps` 和 `columns`。
 
+当前实验室段已切换到 `assets/pixel/background/lab/` 的 AI final 背景 tiles/props，用来验证动态背景管线和运行时接入。城市高架段仍保留 placeholder sheet，等待后续同流程替换。
+
 ## Current Combat Slice
 
 当前玩法只精修第一把近战武器“匕首”。`resources/weapons/initial_dagger.tres` 绑定三段普攻和一个 Demo 能量技：

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3]
+[gd_scene load_steps=35 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/DemoLevel.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2"]
@@ -14,6 +14,16 @@
 [ext_resource type="Texture2D" path="res://assets/pixel/placeholders/sheet_hologram_city.png" id="12"]
 [ext_resource type="Texture2D" path="res://assets/pixel/placeholders/sheet_lab_city_props.png" id="13"]
 [ext_resource type="Script" path="res://scripts/levels/AnimatedBackgroundProp.gd" id="14"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/bg_lab_wall_tiles.png" id="15"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/bg_lab_floor_tiles.png" id="16"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/prop_lab_med_bed_glow.png" id="17"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/prop_lab_tank_liquid.png" id="18"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/prop_lab_terminal_scan.png" id="19"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/prop_lab_warning_light.png" id="20"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/prop_lab_cable_spark.png" id="21"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/prop_lab_elevator_pulse.png" id="22"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/prop_lab_mech_arm_idle.png" id="23"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/prop_lab_floor_light_strip.png" id="24"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lab_ground"]
 size = Vector2(920, 28)
@@ -55,6 +65,7 @@ z_index = -100
 z_index = -120
 
 [node name="LabBackdrop" type="Sprite2D" parent="Background/ReferenceBackdrops"]
+visible = false
 position = Vector2(300, 96)
 scale = Vector2(0.5, 0.5)
 modulate = Color(1, 1, 1, 0.22)
@@ -72,6 +83,18 @@ z_index = -90
 [node name="LabBackWall" type="Polygon2D" parent="Background/LabStaticTiles"]
 color = Color(0.018, 0.026, 0.04, 0.92)
 polygon = PackedVector2Array(-120, -60, 720, -60, 740, 234, -120, 234)
+
+[node name="LabWallTiles" type="Sprite2D" parent="Background/LabStaticTiles"]
+position = Vector2(300, 88)
+scale = Vector2(3.28, 1.78)
+modulate = Color(0.72, 0.86, 1, 0.72)
+texture = ExtResource("15")
+
+[node name="LabFloorTiles" type="Sprite2D" parent="Background/LabStaticTiles"]
+position = Vector2(300, 220)
+scale = Vector2(3.28, 0.36)
+modulate = Color(0.78, 0.9, 1, 0.7)
+texture = ExtResource("16")
 
 [node name="LabPanelSeams" type="Line2D" parent="Background/LabStaticTiles"]
 points = PackedVector2Array(-60, 52, 700, 52, -60, 118, 700, 118, -60, 184, 700, 184, 48, -44, 48, 224, 244, -44, 244, 224, 466, -44, 466, 224)
@@ -94,27 +117,27 @@ z_index = -80
 position = Vector2(92, 183)
 scale = Vector2(0.28, 0.28)
 modulate = Color(0.28, 1, 1, 0.58)
-texture = ExtResource("13")
+texture = ExtResource("17")
 script = ExtResource("14")
 frame_size = Vector2i(128, 64)
 frame_count = 8
-columns = 4
+columns = 8
 
 [node name="TankLiquid" type="Sprite2D" parent="Background/LabAnimatedProps"]
 position = Vector2(236, 142)
 scale = Vector2(0.34, 0.34)
 modulate = Color(0.16, 0.92, 1, 0.36)
-texture = ExtResource("12")
+texture = ExtResource("18")
 script = ExtResource("14")
 frame_size = Vector2i(96, 128)
 frame_count = 8
-columns = 5
+columns = 8
 
 [node name="TerminalScan" type="Sprite2D" parent="Background/LabAnimatedProps"]
 position = Vector2(328, 166)
 scale = Vector2(0.24, 0.24)
 modulate = Color(0.2, 1, 0.9, 0.74)
-texture = ExtResource("12")
+texture = ExtResource("19")
 script = ExtResource("14")
 frame_size = Vector2i(64, 48)
 frame_count = 6
@@ -125,7 +148,7 @@ columns = 6
 position = Vector2(524, 132)
 scale = Vector2(0.36, 0.36)
 modulate = Color(1, 0.42, 0.08, 0.78)
-texture = ExtResource("13")
+texture = ExtResource("20")
 script = ExtResource("14")
 frame_size = Vector2i(32, 32)
 frame_count = 6
@@ -135,7 +158,7 @@ columns = 6
 position = Vector2(436, 72)
 scale = Vector2(0.35, 0.35)
 modulate = Color(0.2, 0.95, 1, 0.72)
-texture = ExtResource("13")
+texture = ExtResource("21")
 script = ExtResource("14")
 frame_size = Vector2i(64, 32)
 frame_count = 6
@@ -146,32 +169,32 @@ columns = 6
 position = Vector2(862, 72)
 scale = Vector2(0.42, 0.42)
 modulate = Color(0.16, 0.95, 1, 0.28)
-texture = ExtResource("12")
+texture = ExtResource("22")
 script = ExtResource("14")
 frame_size = Vector2i(96, 160)
 frame_count = 8
-columns = 5
+columns = 8
 
 [node name="MechArmIdle" type="Sprite2D" parent="Background/LabAnimatedProps"]
 position = Vector2(584, 146)
 scale = Vector2(0.34, 0.34)
 modulate = Color(0.62, 0.82, 0.94, 0.38)
-texture = ExtResource("13")
+texture = ExtResource("23")
 script = ExtResource("14")
 frame_size = Vector2i(96, 96)
 frame_count = 8
 fps = 6.0
-columns = 5
+columns = 8
 
 [node name="FloorLightStrip" type="Sprite2D" parent="Background/LabAnimatedProps"]
 position = Vector2(380, 219)
 scale = Vector2(1.7, 0.18)
 modulate = Color(0.12, 0.92, 1, 0.48)
-texture = ExtResource("12")
+texture = ExtResource("24")
 script = ExtResource("14")
 frame_size = Vector2i(128, 16)
 frame_count = 8
-columns = 7
+columns = 8
 
 [node name="ElevatorShaftCore" type="Line2D" parent="Background/LabAnimatedProps"]
 points = PackedVector2Array(862, -120, 862, 232)

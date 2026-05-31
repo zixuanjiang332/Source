@@ -32,12 +32,13 @@
 - 完成初始匕首三段普攻、Demo 能量技、HUD 武器/能量/连段反馈和击杀目标推进。
 - 搭建动态背景通用节点和实验室/城市背景分层结构。
 - 登记完整动态背景氛围包的源文件路径、导出路径和规格。
+- 完成实验室首批 AI final 背景 tiles/props，生成 58 张单帧 PNG 并拼接运行时 spritesheet。
 
 ### 当前阻塞
 
 - 正式主角、武器和特效风格尚未人工定稿。
 - 当前战斗切片仍需 Godot GUI 手动试玩确认手感。
-- 动态背景当前使用 placeholder sheet 驱动，正式 tiles/props spritesheet 待人工绘制。
+- 城市动态背景仍使用 placeholder sheet 驱动，正式 tiles/props spritesheet 待后续处理。
 
 ### 下周计划
 
@@ -58,7 +59,8 @@
 | 武器视觉草案 | 策划 / 美术 | Review | 武器轮廓参考已入库，等待人工重绘 |
 | 初始匕首玩法切片 | Codex / 程序 | Review | 待 GUI 手动试玩和手感微调 |
 | 动态背景框架 | Codex / 程序 | Review | 通用动画节点已搭建，待 GUI 检查视觉节奏 |
-| 背景 tiles/props 正式素材 | 美术/VFX | Todo | 依据 `ASSET_MANIFEST.csv` 的 background 条目绘制 |
+| 实验室背景 AI final 素材 | Codex | Review | 已接入 Godot，待 GUI 视觉验收 |
+| 城市背景 tiles/props 正式素材 | 美术/VFX | Todo | 依据 `ASSET_MANIFEST.csv` 的 city background 条目绘制 |
 | 世界观文档整理 | 策划 | Todo | 建议新增 `WORLDVIEW.md` |
 
 ## 周报模板

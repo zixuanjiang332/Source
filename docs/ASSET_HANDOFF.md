@@ -4,7 +4,7 @@
 
 ## 1. 基本原则
 
-- 人工设计最终风格，AI 只做草稿或参考。
+- 人工设计最终风格，AI 默认只做草稿或参考；经负责人明确批准的背景素材例外见 `AI_ASSET_POLICY.md`。
 - 源文件和导出文件分离。
 - 每个素材都有负责人、状态和导出目标。
 - 程序只接入 `assets/` 中的最终导出素材。
@@ -101,6 +101,8 @@ FPS: 8
 导出: assets/pixel/background/city/prop_city_traffic_a.png
 源文件: art_src/background/city/prop_city_traffic_a.aseprite
 ```
+
+AI final 背景例外素材可以使用 `art_src/generated_frames/background/` 保存逐帧 PNG，再输出 spritesheet 到 `assets/pixel/background/`。实验室批次使用 `python tools/stitch_spritesheet.py --process-lab --check` 生成并校验运行时 spritesheet。
 
 ## 7. 音效交付
 
