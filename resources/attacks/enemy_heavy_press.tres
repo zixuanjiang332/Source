@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"enemy_heavy_press"
+display_name = "Hydraulic Press"
+damage = 18
+energy_cost = 0
+knockback = Vector2(230, -105)
+lunge = 22.0
+active_time = 0.16
+cooldown = 0.48
+hit_stun = 0.28
+hit_stop = 0.04
+screen_shake = 0.9
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_enemy_heavy_01"
+

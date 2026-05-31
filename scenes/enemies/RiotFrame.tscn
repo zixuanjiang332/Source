@@ -1,0 +1,79 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/EnemyController.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/characters/bruiser_stats.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/attacks/enemy_heavy_press.tres" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/items/PickupRepairCell.tscn" id="4"]
+[ext_resource type="Script" path="res://scripts/combat/Hitbox.gd" id="5"]
+[ext_resource type="Script" path="res://scripts/combat/Hurtbox.gd" id="6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(40, 58)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(48, 46)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(44, 62)
+
+[node name="RiotFrame" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+floor_snap_length = 4.0
+script = ExtResource("1")
+enemy_id = &"riot_frame"
+stats = ExtResource("2")
+attack_data = ExtResource("3")
+aggro_range = 175.0
+attack_range = 50.0
+attack_interval = 1.25
+patrol_width = 60.0
+drop_item_scene = ExtResource("4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="VisualRoot" type="Node2D" parent="."]
+
+[node name="Body" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.18, 0.2, 0.25, 1)
+polygon = PackedVector2Array(-25, -64, 22, -64, 29, -15, 16, 0, -17, 0, -30, -15)
+
+[node name="Armor" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.46, 0.52, 0.6, 1)
+polygon = PackedVector2Array(-18, -54, 18, -54, 22, -34, -22, -34)
+
+[node name="Eye" type="Polygon2D" parent="VisualRoot"]
+color = Color(1, 0.08, 0.12, 1)
+polygon = PackedVector2Array(-11, -48, 12, -48, 10, -42, -13, -42)
+
+[node name="FacingPivot" type="Node2D" parent="."]
+
+[node name="Hitbox" type="Area2D" parent="FacingPivot"]
+position = Vector2(34, -31)
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FacingPivot/Hitbox"]
+shape = SubResource("RectangleShape2D_hitbox")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+position = Vector2(0, -32)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="DebugLabel" type="Label" parent="."]
+offset_left = -42.0
+offset_top = -82.0
+offset_right = 42.0
+offset_bottom = -66.0
+theme_override_font_sizes/font_size = 7
+text = "riot"
+horizontal_alignment = 1
+

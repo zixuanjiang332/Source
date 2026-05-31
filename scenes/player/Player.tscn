@@ -1,0 +1,82 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/PlayerController.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/characters/player_stats.tres" id="2"]
+[ext_resource type="Script" path="res://scripts/combat/Hitbox.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/combat/Hurtbox.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/camera/CameraJuice.gd" id="5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(22, 52)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(54, 42)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(26, 58)
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+floor_snap_length = 4.0
+script = ExtResource("1")
+stats = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -26)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="VisualRoot" type="Node2D" parent="."]
+
+[node name="Body" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.9, 0.94, 1, 1)
+polygon = PackedVector2Array(-14, -68, 10, -68, 18, -47, 15, -13, 8, 0, -9, 0, -17, -13, -20, -47)
+
+[node name="Coat" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.06, 0.08, 0.13, 1)
+polygon = PackedVector2Array(-18, -42, 18, -42, 24, -10, 10, 2, -11, 2, -24, -10)
+
+[node name="Visor" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.35, 1, 1, 1)
+polygon = PackedVector2Array(-10, -61, 13, -61, 11, -54, -12, -54)
+
+[node name="EnergyBlade" type="Polygon2D" parent="VisualRoot"]
+position = Vector2(25, -41)
+color = Color(0.2, 0.95, 1, 0.62)
+polygon = PackedVector2Array(0, -4, 44, -1, 44, 3, 0, 5)
+
+[node name="FacingPivot" type="Node2D" parent="."]
+
+[node name="Hitbox" type="Area2D" parent="FacingPivot"]
+position = Vector2(34, -36)
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FacingPivot/Hitbox"]
+shape = SubResource("RectangleShape2D_hitbox")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+position = Vector2(0, -29)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(58, -54)
+enabled = true
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+script = ExtResource("5")
+
+[node name="DebugLabel" type="Label" parent="."]
+offset_left = -34.0
+offset_top = -91.0
+offset_right = 34.0
+offset_bottom = -75.0
+theme_override_font_sizes/font_size = 8
+text = "READY"
+horizontal_alignment = 1

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/vfx/HitSpark.gd" id="1"]
+
+[node name="HitSpark" type="Node2D"]
+script = ExtResource("1")
+lifetime = 0.18
+spark_count = 7
+color_a = Color(0.25, 1, 1, 1)
+color_b = Color(1, 0.18, 0.34, 1)
+

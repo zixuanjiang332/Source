@@ -1,0 +1,83 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/EnemyController.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/characters/boss_stats.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/attacks/enemy_heavy_press.tres" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/items/PickupDashCore.tscn" id="4"]
+[ext_resource type="Script" path="res://scripts/combat/Hitbox.gd" id="5"]
+[ext_resource type="Script" path="res://scripts/combat/Hurtbox.gd" id="6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(66, 92)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(70, 66)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(72, 98)
+
+[node name="FoundryWarden" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+floor_snap_length = 4.0
+script = ExtResource("1")
+enemy_id = &"foundry_warden"
+stats = ExtResource("2")
+attack_data = ExtResource("3")
+aggro_range = 250.0
+attack_range = 74.0
+attack_interval = 1.55
+patrol_width = 42.0
+drop_item_scene = ExtResource("4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -46)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="VisualRoot" type="Node2D" parent="."]
+
+[node name="Body" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.12, 0.13, 0.18, 1)
+polygon = PackedVector2Array(-44, -106, 38, -106, 51, -28, 30, 2, -31, 2, -54, -28)
+
+[node name="Armor" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.5, 0.54, 0.62, 1)
+polygon = PackedVector2Array(-36, -88, 34, -88, 42, -58, 24, -42, -28, -42, -46, -58)
+
+[node name="Eye" type="Polygon2D" parent="VisualRoot"]
+color = Color(1, 0.07, 0.12, 1)
+polygon = PackedVector2Array(-20, -78, 24, -78, 20, -67, -24, -67)
+
+[node name="Core" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.2, 0.95, 1, 1)
+polygon = PackedVector2Array(0, -48, 13, -36, 0, -24, -13, -36)
+
+[node name="FacingPivot" type="Node2D" parent="."]
+
+[node name="Hitbox" type="Area2D" parent="FacingPivot"]
+position = Vector2(56, -43)
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FacingPivot/Hitbox"]
+shape = SubResource("RectangleShape2D_hitbox")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+position = Vector2(0, -51)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="DebugLabel" type="Label" parent="."]
+offset_left = -58.0
+offset_top = -126.0
+offset_right = 58.0
+offset_bottom = -108.0
+theme_override_font_sizes/font_size = 8
+text = "warden"
+horizontal_alignment = 1
+

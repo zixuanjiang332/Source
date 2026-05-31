@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/items/PickupItem.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/items/damage_amp.tres" id="2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
+radius = 13.0
+
+[node name="PickupDamageAmp" type="Area2D"]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1")
+item_data = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="Body" type="Polygon2D" parent="."]
+color = Color(0.25, 1, 1, 1)
+polygon = PackedVector2Array(0, -14, 12, 0, 0, 14, -12, 0)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(1, 0.16, 0.34, 1)
+polygon = PackedVector2Array(0, -7, 6, 0, 0, 7, -6, 0)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -30.0
+offset_top = -31.0
+offset_right = 30.0
+offset_bottom = -10.0
+theme_override_font_sizes/font_size = 7
+text = "AMP"
+horizontal_alignment = 1
+

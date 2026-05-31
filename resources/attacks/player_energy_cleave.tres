@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"player_energy_cleave"
+display_name = "Arc Cleave"
+damage = 38
+energy_cost = 35
+knockback = Vector2(290, -120)
+lunge = 86.0
+active_time = 0.14
+cooldown = 0.42
+hit_stun = 0.26
+hit_stop = 0.06
+screen_shake = 1.05
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_energy_cleave_01"
+

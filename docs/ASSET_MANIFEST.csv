@@ -1,0 +1,11 @@
+type,id,source_path,export_path,owner,status,notes
+character,player_neon_runner,art_src/chr_player_neon_runner.aseprite,assets/pixel/spr_player_neon_runner.png,Pixel/VFX Owner,planned,96x96 canvas
+enemy,scout_drone,art_src/enm_scout_drone.aseprite,assets/pixel/spr_scout_drone.png,Pixel/VFX Owner,planned,96x96 canvas
+enemy,riot_frame,art_src/enm_riot_frame.aseprite,assets/pixel/spr_riot_frame.png,Pixel/VFX Owner,planned,128x128 canvas
+boss,foundry_warden,art_src/boss_foundry_warden.aseprite,assets/pixel/spr_foundry_warden.png,Pixel/VFX Owner,planned,192x192 canvas
+vfx,hit_spark_metal,art_src/vfx_hit_spark_metal.aseprite,assets/pixel/vfx_hit_spark_metal.png,Pixel/VFX Owner,planned,64x64 or 96x96
+vfx,dash_burst,art_src/vfx_dash_burst.aseprite,assets/pixel/vfx_dash_burst.png,Pixel/VFX Owner,planned,64x64
+tiles,foundry_lab,art_src/tiles_foundry_lab.aseprite,assets/pixel/tiles_foundry_lab.png,Pixel/VFX Owner,planned,32x32 tiles
+sfx,player_dash,art_src/audio/sfx_player_dash_01.wav,assets/audio/sfx_player_dash_01.wav,Programmer B,planned,temporary jsfxr ok
+sfx,hit_metal_light,art_src/audio/sfx_hit_metal_light_01.wav,assets/audio/sfx_hit_metal_light_01.wav,Programmer B,planned,temporary jsfxr ok
+

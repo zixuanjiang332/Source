@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/ItemData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+item_id = &"dash_core"
+display_name = "Dash Core"
+description = "Reduces dash cooldown for a snappier recording route."
+icon_id = &"icon_dash_core"
+effect_id = &"dash_cooldown"
+magnitude = 0.08
+stackable = true
+

@@ -1,0 +1,80 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/EnemyController.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/characters/drone_stats.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/attacks/enemy_metal_swipe.tres" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/items/PickupDamageAmp.tscn" id="4"]
+[ext_resource type="Script" path="res://scripts/combat/Hitbox.gd" id="5"]
+[ext_resource type="Script" path="res://scripts/combat/Hurtbox.gd" id="6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(30, 34)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hitbox"]
+size = Vector2(34, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
+size = Vector2(34, 38)
+
+[node name="TrainingDrone" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+floor_snap_length = 4.0
+script = ExtResource("1")
+enemy_id = &"scout_drone"
+stats = ExtResource("2")
+attack_data = ExtResource("3")
+aggro_range = 185.0
+attack_range = 40.0
+attack_interval = 0.95
+patrol_width = 72.0
+drop_item_scene = ExtResource("4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -17)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="VisualRoot" type="Node2D" parent="."]
+
+[node name="Body" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.24, 0.28, 0.34, 1)
+polygon = PackedVector2Array(-18, -36, 18, -36, 23, -18, 14, 0, -14, 0, -23, -18)
+
+[node name="Eye" type="Polygon2D" parent="VisualRoot"]
+color = Color(1, 0.08, 0.12, 1)
+polygon = PackedVector2Array(-10, -26, 11, -26, 9, -19, -12, -19)
+
+[node name="Antenna" type="Line2D" parent="VisualRoot"]
+points = PackedVector2Array(0, -36, 0, -48)
+width = 2.0
+default_color = Color(0.25, 1, 1, 1)
+
+[node name="FacingPivot" type="Node2D" parent="."]
+
+[node name="Hitbox" type="Area2D" parent="FacingPivot"]
+position = Vector2(27, -22)
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FacingPivot/Hitbox"]
+shape = SubResource("RectangleShape2D_hitbox")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+position = Vector2(0, -20)
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_hurtbox")
+
+[node name="DebugLabel" type="Label" parent="."]
+offset_left = -38.0
+offset_top = -58.0
+offset_right = 38.0
+offset_bottom = -42.0
+theme_override_font_sizes/font_size = 7
+text = "drone"
+horizontal_alignment = 1
+

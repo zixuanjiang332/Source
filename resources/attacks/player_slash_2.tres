@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"player_slash_2"
+display_name = "Reverse Cut"
+damage = 18
+energy_cost = 0
+knockback = Vector2(170, -50)
+lunge = 36.0
+active_time = 0.08
+cooldown = 0.18
+hit_stun = 0.15
+hit_stop = 0.035
+screen_shake = 0.5
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_light_02"
+

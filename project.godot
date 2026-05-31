@@ -1,0 +1,39 @@
+; Engine configuration file.
+; Prefer editing project settings in Godot once the editor is installed.
+
+config_version=5
+
+[application]
+
+config/name="Neon Machine Demo"
+config/description="Cyberpunk 2D pixel action demo framework for the 2026-08-15 vertical slice."
+run/main_scene="res://scenes/main/Main.tscn"
+config/features=PackedStringArray("4.6")
+
+[autoload]
+
+GameEvents="*res://scripts/core/GameEvents.gd"
+InputBootstrap="*res://scripts/core/InputBootstrap.gd"
+
+[display]
+
+window/size/viewport_width=480
+window/size/viewport_height=270
+window/size/window_width_override=1920
+window/size/window_height_override=1080
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+window/stretch/scale_mode="integer"
+
+[physics]
+
+2d/default_gravity=1800.0
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+textures/canvas_textures/default_texture_filter=0
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
+environment/defaults/default_clear_color=Color(0.018, 0.021, 0.033, 1)
+

@@ -1,0 +1,144 @@
+# 特效生成规范提示词
+
+本文档只规定特效草稿的提示词结构和交付标准。具体特效形状、节奏、颜色、爆点由团队成员人工设计。
+
+AI 生成特效只能作为视觉参考或占位帧。正式特效必须由美术/VFX 负责人手工重绘、拆帧、控制节奏，并在 Godot 中调试命中可读性。
+
+## 1. 特效设计优先级
+
+1. 命中点清楚。
+2. 攻击方向清楚。
+3. 玩家和敌人不被长时间遮挡。
+4. 首帧冲击强。
+5. 余辉短而干净。
+6. 华丽度服务录屏，不牺牲操作可读性。
+
+## 2. 通用变量
+
+```text
+特效类型: 命中火花 / 刀光 / 冲刺残影 / 电弧 / 爆炸 / 全息闪烁 / 道具拾取
+用途: 概念参考 / 单帧 / spritesheet 草稿
+画布: 64x64 / 96x96 / 128x128
+帧数: 4 / 6 / 8 / 12
+方向: left-to-right / right-to-left / radial / upward
+主色: cyan / magenta / red-orange / electric blue
+背景: transparent background
+人工设计说明: 由 VFX 负责人填写
+```
+
+## 3. 通用提示词模板
+
+```text
+Create a 2D pixel art VFX [特效类型] for a cyberpunk melee action game.
+Purpose: [用途].
+Canvas target: [画布].
+Frame target: [帧数] frames if making a sprite animation reference.
+Direction: [方向].
+Human-defined VFX notes: [人工设计说明].
+Style constraints: crisp pixel art, strong first-frame impact, clean readable silhouette, limited palette, no smoky realistic particles.
+Color direction: [主色] neon energy with small white-hot core highlights.
+Background: transparent background.
+Do not include text, watermark, UI frame, character body, weapon sprite, photorealistic smoke, blurry glow, or full scene background.
+```
+
+## 4. 命中火花模板
+
+```text
+Create a 2D pixel art metal hit spark VFX for a cyberpunk action game.
+Canvas target: 64x64 or 96x96.
+Frame target: 4 to 6 frames.
+Impact point: center-left, burst moving outward to the right.
+Human-defined notes: [火花形状、大小、颜色比例].
+Visual language: metal shards, electric arc fragments, short cyan and red-orange sparks, white-hot center.
+Timing: frame 1 strongest, frame 2 expands, frame 3 breaks into fragments, final frames fade quickly.
+Background: transparent background.
+No text, no character, no weapon, no realistic smoke, no blurry glow.
+```
+
+## 5. 刀光模板
+
+```text
+Create a 2D pixel art slash trail VFX for a cyberpunk energy blade.
+Canvas target: 128x128.
+Frame target: 6 to 8 frames.
+Direction: [left-to-right / right-to-left / upward arc / downward arc].
+Human-defined arc shape: [由 VFX 负责人填写].
+Visual language: bright cyan energy edge, magenta secondary rim, broken pixel fragments, sharp readable arc.
+Timing: anticipation glow, main slash arc, trailing fragments, quick fade.
+Background: transparent background.
+No text, no character body, no full weapon sprite, no painterly smear, no soft airbrush.
+```
+
+## 6. 冲刺残影模板
+
+```text
+Create a 2D pixel art dash burst VFX for an agile cyberpunk melee character.
+Canvas target: 96x96.
+Frame target: 5 to 7 frames.
+Direction: horizontal movement.
+Human-defined notes: [残影宽度、速度感、颜色].
+Visual language: thin neon speed lines, broken holographic afterimage fragments, short-lived cyan glow.
+Readability: should not cover the player silhouette for more than one frame.
+Background: transparent background.
+No text, no full character, no realistic motion blur, no smoke cloud.
+```
+
+## 7. 电弧模板
+
+```text
+Create a 2D pixel art electric arc VFX for a machine-crisis cyberpunk game.
+Canvas target: 64x64 or 96x96.
+Frame target: 4 to 8 frames.
+Direction: [radial / chain lightning / downward strike].
+Human-defined notes: [电弧密度、形状、是否围绕机械核心].
+Visual language: jagged pixel lightning, white core, cyan outer glow, tiny magenta interference pixels.
+Timing: flicker on, branch split, snap fade.
+Background: transparent background.
+No text, no background, no realistic volumetric lightning, no excessive glow.
+```
+
+## 8. 爆炸/破碎模板
+
+```text
+Create a 2D pixel art mechanical destruction burst VFX.
+Canvas target: 128x128.
+Frame target: 8 to 12 frames.
+Human-defined notes: [爆点大小、碎片方向、是否有能量核心].
+Visual language: metal fragments, red-orange internal heat, cyan energy leak, short smoke pixels only if readable.
+Timing: flash, fragment burst, energy leak, fast fade.
+Background: transparent background.
+No text, no character, no full environment, no realistic smoke simulation.
+```
+
+## 9. 全息设备闪烁模板
+
+```text
+Create a 2D pixel art hologram flicker VFX for cyberpunk environment props.
+Canvas target: 64x64 or 96x96.
+Frame target: 6 to 10 frames.
+Human-defined notes: [全息形状、图案、颜色].
+Visual language: transparent cyan panels, scanline gaps, pixel glitch offsets, subtle magenta noise.
+Timing: stable frame, offset glitch, scanline break, recover.
+Background: transparent background.
+No readable text, no logo, no UI mockup, no full scene.
+```
+
+## 10. Sprite Sheet 交付要求
+
+正式导出时：
+
+- 背景透明。
+- 所有帧同尺寸。
+- 原点和命中点一致。
+- 文件名：`vfx_<name>_<size>_<frames>f.png`。
+- 源文件：`art_src/vfx_<name>.aseprite`。
+- Godot 导入后测试：播放速度、遮挡、首帧冲击、结束残留。
+
+## 11. Godot 接入清单
+
+- 在 `VfxCatalog` 中登记 VFX ID。
+- 命中类特效由 `AttackData.vfx_id` 调用。
+- 移动类特效由玩家/敌人状态调用。
+- 环境类特效放关卡场景。
+- 强特效必须测试低配 60 FPS。
+

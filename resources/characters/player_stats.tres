@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CharacterStats" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/CharacterStats.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+display_name = "Neon Runner"
+max_health = 120
+max_energy = 100
+move_speed = 135.0
+acceleration = 2300.0
+friction = 2600.0
+jump_velocity = -520.0
+dash_speed = 405.0
+dash_duration = 0.13
+dash_cooldown = 0.38
+gravity_scale = 1.0
+contact_damage = 0
+
