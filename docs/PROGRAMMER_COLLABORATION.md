@@ -58,6 +58,10 @@ Blocked: 卡在哪里，需要谁帮忙
 - 如何验证
 - 是否运行 `tools/validate_project.ps1`
 
+## Docs
+- Updated:
+- Not needed because:
+
 ## Risk
 - 可能影响哪些系统
 - 是否有临时实现
@@ -111,7 +115,8 @@ Review 不追求挑刺，优先看：
 - 没有控制台红色报错。
 - 相关数值可以通过 Resource 或 export 调。
 - PR 描述有测试方式。
-- 文档或清单已同步更新。
+- 已按 `docs/DOCUMENTATION_GOVERNANCE.md` 检查文档影响。
+- 需要同步的文档或清单已更新；不需要时已在 PR 描述中说明原因。
 
 美术接入完成必须满足：
 
@@ -120,4 +125,4 @@ Review 不追求挑刺，优先看：
 - Godot 引用的是导出图，不是源文件。
 - 动画名符合规范。
 - 替换后没有错位、裁切或透明边异常。
-
+- `docs/ASSET_MANIFEST.csv` 和当周 `docs/PROGRESS_LOG.md` 已同步。
