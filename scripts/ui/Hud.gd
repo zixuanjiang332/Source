@@ -11,6 +11,7 @@ const ENERGY_FILL_WIDTH := 356.0
 @onready var weapon_icon: TextureRect = $Root/Margin/WeaponIcon
 @onready var weapon_label: Label = $Root/Margin/WeaponLabel
 @onready var skill_label: Label = $Root/Margin/SkillLabel
+@onready var ultimate_label: Label = $Root/Margin/UltimateLabel
 @onready var combo_label: Label = $Root/Margin/ComboLabel
 @onready var objective_label: Label = $Root/Margin/Objective
 @onready var toast_label: Label = $Root/Margin/Toast
@@ -18,11 +19,15 @@ const ENERGY_FILL_WIDTH := 356.0
 var _current_energy := 0
 var _skill_cost := 0
 var _skill_name := "Skill"
+var _ultimate_cost := 100
+var _ultimate_name := "Ultimate"
+var _ultimate_hold_time := 0.45
 
 func _ready() -> void:
 	GameEvents.player_health_changed.connect(_on_player_health_changed)
 	GameEvents.player_energy_changed.connect(_on_player_energy_changed)
 	GameEvents.player_weapon_changed.connect(_on_player_weapon_changed)
+	GameEvents.player_ultimate_changed.connect(_on_player_ultimate_changed)
 	GameEvents.player_combo_changed.connect(_on_player_combo_changed)
 	GameEvents.enemy_defeated.connect(_on_enemy_defeated)
 	GameEvents.item_collected.connect(_on_item_collected)
@@ -32,6 +37,7 @@ func _ready() -> void:
 	toast_label.text = "A/D move  Space jump  J cut  K skill  E interact"
 	weapon_label.text = "WEAPON // initializing"
 	skill_label.text = "SKILL // --"
+	ultimate_label.text = "HOLD K // CHARGING"
 	combo_label.text = ""
 
 
@@ -57,6 +63,13 @@ func _on_player_weapon_changed(weapon_name: String, skill_name: String, skill_co
 	_skill_name = skill_name
 	_skill_cost = skill_cost
 	weapon_label.text = "WEAPON // %s" % weapon_name
+	_update_skill_label()
+
+
+func _on_player_ultimate_changed(ultimate_name: String, ultimate_cost: int, hold_time: float) -> void:
+	_ultimate_name = ultimate_name
+	_ultimate_cost = ultimate_cost
+	_ultimate_hold_time = hold_time
 	_update_skill_label()
 
 
@@ -93,3 +106,8 @@ func _update_skill_label() -> void:
 		state = "--"
 	weapon_icon.modulate = Color.WHITE if state == "READY" else Color(0.45, 0.65, 0.72, 0.72)
 	skill_label.text = "K %s // %s %d EN" % [_skill_name, state, _skill_cost]
+	var ultimate_state := "READY" if _current_energy >= _ultimate_cost else "CHARGING"
+	if _ultimate_cost <= 0:
+		ultimate_state = "--"
+	ultimate_label.text = "HOLD K %s // %s %d EN" % [_ultimate_name, ultimate_state, _ultimate_cost]
+	ultimate_label.modulate = Color(1.0, 1.0, 1.0, 0.92) if ultimate_state == "READY" else Color(1.0, 1.0, 1.0, 0.48)

@@ -14,7 +14,7 @@
 - `AttackData`: 攻击数据 Resource，统一伤害、击退、命中停顿、VFX、SFX，并可通过 `animation_id` 映射角色攻击动画。
 - `WeaponData`: 当前武器数据 Resource，保存武器 ID、显示名、普攻链、Demo 技能攻击和 HUD 名称。
 - `Hitbox` / `Hurtbox`: 所有攻击命中都走这两个 Area2D。
-- `VfxCatalog`: 通过 `vfx_id` 查找特效场景，便于后续替换为正式帧动画或粒子效果。
+- `VfxCatalog`: 通过 `vfx_id` / `sfx_id` 查找特效和音效。旧特效可继续返回 PackedScene；spritesheet VFX 和 SFX 使用 `VfxEntry` / `SfxEntry` 登记。
 - `PlayerAnimationController`: 玩家动画桥接层，正式 spritesheet 缺失或动画标签缺失时回退到灰盒视觉。
 - `level_change_requested`: `GameEvents` 上的关卡切换事件，当前由重生段电梯触发，`Main.gd` 播放转场后加载主关卡。
 
@@ -65,8 +65,11 @@
 - `dagger_cut_2`: 反手追击，延续短硬直。
 - `dagger_cut_3`: 连段收尾，击退和停顿更明显。
 - `dagger_flash_step`: Demo 用能量突进斩，用于展示位移收尾和 HUD 技能状态。
+- `Overdrive Sever`: 满能量长按 `K` 触发的 Demo 终结技。前 7 段为蓝色全息高速斩击，玩家本体隐藏，只留下残影和刀痕；第 8 段播放 `ultimate_slam`，角色双手持红色光刀下坠重击。
 
 玩家 HUD 通过 `GameEvents.player_weapon_changed`、`player_energy_changed` 和 `player_combo_changed` 显示武器名、能量、技能状态和连段。UI 只监听事件，不驱动战斗逻辑。
+
+终结技 HUD 通过 `GameEvents.player_ultimate_changed` 获取显示名、能量消耗和长按时间，并在能量满时显示 `HOLD K ... READY`。终结技仍复用当前玩家 Hitbox，但每一段会临时放大 hitbox 并在段落结束后恢复默认普攻尺寸。
 
 本阶段不做 1/2/3 武器槽、`Q` 切换、远程武器或正式多武器主技能框架。等初始匕首路线稳定并接入正式动画后，再抽象完整武器系统。
 
