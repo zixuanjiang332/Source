@@ -25,11 +25,14 @@ Then open this folder in Godot and run `scenes/main/Main.tscn`.
 
 1. `README.md`
 2. `docs/GITHUB_WORKFLOW.md`
-3. `docs/PROGRAMMING_STANDARDS.md`
-4. `docs/PROGRAMMER_COLLABORATION.md`
-5. `docs/ASSET_HANDOFF.md`
-6. `docs/PIXEL_ART_PROMPT_GUIDE.md` or `docs/VFX_PROMPT_GUIDE.md`
-7. `docs/MILESTONES.md`
+3. `docs/DOCUMENTATION_GOVERNANCE.md`
+4. `docs/PROGRESS_LOG.md`
+5. `docs/CHANGELOG.md`
+6. `docs/PROGRAMMING_STANDARDS.md`
+7. `docs/PROGRAMMER_COLLABORATION.md`
+8. `docs/ASSET_HANDOFF.md`
+9. `docs/PIXEL_ART_PROMPT_GUIDE.md` or `docs/VFX_PROMPT_GUIDE.md`
+10. `docs/MILESTONES.md`
 
 ## CodeGraph
 

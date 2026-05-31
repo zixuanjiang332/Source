@@ -145,6 +145,10 @@ PR 描述必须包含：
 - 如何验证
 - 是否运行 `.\tools\validate_project.ps1`
 
+## Docs
+- Updated:
+- Not needed because:
+
 ## Assets
 - 是否新增或替换素材
 - 源文件和导出文件路径
@@ -180,6 +184,12 @@ Godot 手动检查：
 - 源文件在 `art_src/`。
 - 运行时导出素材在 `assets/`。
 - `docs/ASSET_MANIFEST.csv` 已更新。
+
+文档同步检查：
+
+- 已按 `docs/DOCUMENTATION_GOVERNANCE.md` 的矩阵检查本次改动。
+- 需要同步的 `CHANGELOG.md`、`PROGRESS_LOG.md`、`ASSET_MANIFEST.csv` 或其他规范文档已更新。
+- 如果不需要同步文档，PR 描述中的 `Docs` 已写明原因。
 
 ## 8. Git LFS 与素材锁定
 
@@ -292,6 +302,9 @@ demo-2026-08-15-submission
 
 - 程序协作细则：`docs/PROGRAMMER_COLLABORATION.md`
 - 代码风格：`docs/PROGRAMMING_STANDARDS.md`
+- 文档同步规则：`docs/DOCUMENTATION_GOVERNANCE.md`
+- 进度记录：`docs/PROGRESS_LOG.md`
+- 更改日志：`docs/CHANGELOG.md`
+- 决策记录：`docs/DECISION_LOG.md`
 - 素材交付：`docs/ASSET_HANDOFF.md`
 - AI 素材规则：`docs/AI_ASSET_POLICY.md`
-

@@ -40,6 +40,10 @@ Godot 和 Aseprite 当前未在本机 PATH 中检测到；项目文件已经准�
 
 - [程序开发规范](docs/PROGRAMMING_STANDARDS.md)
 - [程序协同开发文档](docs/PROGRAMMER_COLLABORATION.md)
+- [文档治理规范](docs/DOCUMENTATION_GOVERNANCE.md)
+- [进度记录](docs/PROGRESS_LOG.md)
+- [更改日志](docs/CHANGELOG.md)
+- [决策记录](docs/DECISION_LOG.md)
 - [素材交付规范](docs/ASSET_HANDOFF.md)
 - [像素图生成规范提示词](docs/PIXEL_ART_PROMPT_GUIDE.md)
 - [特效生成规范提示词](docs/VFX_PROMPT_GUIDE.md)
