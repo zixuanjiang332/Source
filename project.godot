@@ -8,6 +8,7 @@ config_version=5
 config/name="Neon Machine Demo"
 config/description="Cyberpunk 2D pixel action demo framework for the 2026-08-15 vertical slice."
 run/main_scene="res://scenes/main/Main.tscn"
+config/icon="res://assets/ui/icon_neon_machine_demo_v1.png"
 config/features=PackedStringArray("4.6")
 
 [autoload]
@@ -36,4 +37,3 @@ textures/canvas_textures/default_texture_filter=0
 2d/snap/snap_2d_transforms_to_pixel=true
 2d/snap/snap_2d_vertices_to_pixel=true
 environment/defaults/default_clear_color=Color(0.018, 0.021, 0.033, 1)
-
