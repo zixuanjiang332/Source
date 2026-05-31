@@ -9,17 +9,19 @@ const ATTACK_CHAIN = [
 	preload("res://resources/attacks/dagger_cut_3.tres"),
 ]
 const SKILL_ATTACK = preload("res://resources/attacks/dagger_flash_step.tres")
+const VISUAL_SCALE := 0.70
 
 @export var stats = DEFAULT_STATS
 @export var weapon_data = DEFAULT_WEAPON
 
-@onready var character_sprite: Sprite2D = $VisualRoot/YuanSprite
-@onready var body: Polygon2D = $VisualRoot/Body
-@onready var visor: Polygon2D = $VisualRoot/Visor
+@onready var animated_sprite: AnimatedSprite2D = $VisualRoot/AnimatedSprite
+@onready var body: Polygon2D = $VisualRoot/FallbackRoot/Body
+@onready var visor: Polygon2D = $VisualRoot/FallbackRoot/Visor
 @onready var hitbox = $FacingPivot/Hitbox
 @onready var hurtbox = $Hurtbox
 @onready var facing_pivot: Node2D = $FacingPivot
 @onready var debug_label: Label = $DebugLabel
+@onready var animation_controller: PlayerAnimationController = $AnimationController
 
 var _runtime_stats
 var _health := 1
@@ -46,6 +48,7 @@ func _ready() -> void:
 	GameEvents.report_player_combo(0, _attack_chain().size())
 	hitbox.hit_landed.connect(_on_hit_landed)
 	_update_facing_visual()
+	_update_movement_animation()
 
 
 func _physics_process(delta: float) -> void:
@@ -61,6 +64,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = _facing * _runtime_stats.dash_speed
 		velocity.y = 0.0
 		move_and_slide()
+		animation_controller.play_state(&"dash")
 		_update_debug_label()
 		return
 
@@ -87,6 +91,7 @@ func _physics_process(delta: float) -> void:
 
 	_update_facing_visual()
 	move_and_slide()
+	_update_movement_animation()
 	_update_debug_label()
 
 
@@ -107,6 +112,8 @@ func apply_hit(attack_data, source: Node2D, _hit_position: Vector2, facing: int)
 
 	if _health <= 0:
 		_die()
+	else:
+		animation_controller.play_action(&"hit")
 
 
 func apply_item(item_data) -> void:
@@ -143,6 +150,7 @@ func _start_dash() -> void:
 	_dash_timer = _runtime_stats.dash_duration
 	_dash_cooldown_timer = _runtime_stats.dash_cooldown
 	_invulnerable_timer = max(_invulnerable_timer, _runtime_stats.dash_duration)
+	animation_controller.play_state(&"dash")
 	GameEvents.request_vfx(&"dash_burst", global_position + Vector2(0.0, -28.0), _facing)
 	GameEvents.request_camera_impulse(0.35, 0.04)
 
@@ -190,10 +198,13 @@ func _start_attack(template: Resource) -> void:
 	attack.damage = max(1, roundi(float(attack.damage) * _damage_multiplier))
 	velocity.x += _facing * attack.lunge
 	_update_facing_visual()
+	animation_controller.play_action(_resolve_attack_animation(attack))
 	hitbox.activate(attack, self, _facing)
 
 	await get_tree().create_timer(attack.cooldown).timeout
 	_attack_locked = false
+	animation_controller.clear_action()
+	_update_movement_animation()
 
 
 func _on_hit_landed(_target: Node, attack_data) -> void:
@@ -217,7 +228,24 @@ func _apply_hit_stop(duration: float) -> void:
 
 func _update_facing_visual() -> void:
 	facing_pivot.scale.x = _facing
-	$VisualRoot.scale.x = _facing
+	$VisualRoot.scale = Vector2(_facing * VISUAL_SCALE, VISUAL_SCALE)
+
+
+func _update_movement_animation() -> void:
+	if _dead:
+		return
+
+	if _dash_timer > 0.0:
+		animation_controller.play_state(&"dash")
+	elif not is_on_floor():
+		if velocity.y < 0.0:
+			animation_controller.play_state(&"jump")
+		else:
+			animation_controller.play_state(&"fall")
+	elif absf(velocity.x) > 4.0:
+		animation_controller.play_state(&"run")
+	else:
+		animation_controller.play_state(&"idle")
 
 
 func _update_debug_label() -> void:
@@ -271,11 +299,11 @@ func _report_combo(combo_step: int) -> void:
 
 
 func _flash(color: Color) -> void:
-	character_sprite.modulate = color
+	animated_sprite.modulate = color
 	body.modulate = color
 	visor.modulate = Color.WHITE
 	var tween := create_tween()
-	tween.tween_property(character_sprite, "modulate", Color.WHITE, 0.1)
+	tween.tween_property(animated_sprite, "modulate", Color.WHITE, 0.1)
 	tween.tween_property(body, "modulate", Color.WHITE, 0.1)
 	tween.parallel().tween_property(visor, "modulate", Color(0.35, 1.0, 1.0, 1.0), 0.1)
 
@@ -283,10 +311,18 @@ func _flash(color: Color) -> void:
 func _die() -> void:
 	_dead = true
 	hitbox.deactivate()
-	character_sprite.modulate = Color(0.22, 0.22, 0.28, 1.0)
 	body.modulate = Color(0.22, 0.22, 0.28, 1.0)
+	animation_controller.play_action(&"death")
 	debug_label.text = "OFFLINE - R"
 	GameEvents.request_camera_impulse(1.2, 0.18)
+
+
+func _resolve_attack_animation(attack) -> StringName:
+	if attack != null and attack.has_method("resolved_animation_id"):
+		return attack.resolved_animation_id()
+	if attack != null:
+		return attack.attack_id
+	return &"atk_1"
 
 
 func _gravity() -> float:

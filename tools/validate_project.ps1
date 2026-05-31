@@ -12,7 +12,10 @@ $required = @(
   "scripts/combat/Hitbox.gd",
   "scripts/combat/Hurtbox.gd",
   "scripts/levels/AnimatedBackgroundProp.gd",
+  "scripts/player/PlayerAnimationController.gd",
   "scripts/resources/WeaponData.gd",
+  "assets/pixel/spr_player_yuan_early_clone.png",
+  "assets/pixel/characters/player_yuan_early_clone/frames/idle_00.png",
   "assets/pixel/characters/yuan/spr_yuan_demo_idle.png",
   "assets/pixel/characters/yuan/chr_yuan_concept_01_early_clone.png",
   "assets/pixel/characters/yuan/chr_yuan_concept_01_early_clone_no_weapon.png",
@@ -36,6 +39,7 @@ $required = @(
   "assets/pixel/background/lab/prop_lab_mech_arm_idle.png",
   "assets/pixel/background/lab/prop_lab_floor_light_strip.png",
   "resources/characters/player_stats.tres",
+  "resources/characters/player_yuan_early_clone_frames.tres",
   "resources/weapons/initial_dagger.tres",
   "resources/attacks/dagger_cut_1.tres",
   "resources/attacks/dagger_cut_2.tres",
@@ -44,6 +48,7 @@ $required = @(
   "resources/attacks/player_slash_1.tres",
   "resources/vfx/vfx_catalog.tres",
   "docs/GAME_FRAMEWORK.md",
+  "docs/PLAYER_ANIMATION_SPEC.md",
   "docs/GITHUB_WORKFLOW.md",
   "docs/DOCUMENTATION_GOVERNANCE.md",
   "docs/PROGRESS_LOG.md",
@@ -91,6 +96,15 @@ foreach ($file in $scanFiles) {
 if ($brokenRefs.Count -gt 0) {
   Write-Host "Broken res:// references:" -ForegroundColor Red
   $brokenRefs | Sort-Object -Unique | ForEach-Object { Write-Host "  $_" -ForegroundColor Red }
+  exit 1
+}
+
+$mainScenePath = Join-Path $root "scenes/main/Main.tscn"
+$mainScene = Get-Content -LiteralPath $mainScenePath -Raw
+$staticGameplayNodes = [regex]::Matches($mainScene, '\[node name="(DemoLevel|Hud|VfxSpawner)"[^\]]*\]')
+if ($staticGameplayNodes.Count -gt 0) {
+  Write-Host "Main.tscn must not instantiate gameplay nodes before Start:" -ForegroundColor Red
+  $staticGameplayNodes | ForEach-Object { Write-Host "  $($_.Value)" -ForegroundColor Red }
   exit 1
 }
 

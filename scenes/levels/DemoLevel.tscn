@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3]
+[gd_scene load_steps=36 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/DemoLevel.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2"]
@@ -35,7 +35,10 @@ size = Vector2(240, 28)
 size = Vector2(1580, 28)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_left_wall"]
-size = Vector2(28, 260)
+size = Vector2(32, 540)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horizontal_bound"]
+size = Vector2(2760, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_wide"]
 size = Vector2(180, 14)
@@ -715,8 +718,32 @@ collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/LeftWall"]
-position = Vector2(-82, 120)
+position = Vector2(-104, 70)
 shape = SubResource("RectangleShape2D_left_wall")
+
+[node name="RightWall" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/RightWall"]
+position = Vector2(2584, 70)
+shape = SubResource("RectangleShape2D_left_wall")
+
+[node name="TopBoundary" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/TopBoundary"]
+position = Vector2(1240, -196)
+shape = SubResource("RectangleShape2D_horizontal_bound")
+
+[node name="BottomBoundary" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/BottomBoundary"]
+position = Vector2(1240, 336)
+shape = SubResource("RectangleShape2D_horizontal_bound")
 
 [node name="PlatformA" type="StaticBody2D" parent="Collision"]
 collision_layer = 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/PlayerController.gd" id="1"]
 [ext_resource type="Resource" path="res://resources/characters/player_stats.tres" id="2"]
@@ -6,7 +6,8 @@
 [ext_resource type="Script" path="res://scripts/combat/Hurtbox.gd" id="4"]
 [ext_resource type="Script" path="res://scripts/camera/CameraJuice.gd" id="5"]
 [ext_resource type="Resource" path="res://resources/weapons/initial_dagger.tres" id="6"]
-[ext_resource type="Texture2D" path="res://assets/pixel/characters/yuan/spr_yuan_demo_idle.png" id="7"]
+[ext_resource type="Script" path="res://scripts/player/PlayerAnimationController.gd" id="7"]
+[ext_resource type="SpriteFrames" path="res://resources/characters/player_yuan_early_clone_frames.tres" id="8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(22, 52)
@@ -31,29 +32,33 @@ shape = SubResource("RectangleShape2D_body")
 
 [node name="VisualRoot" type="Node2D" parent="."]
 
-[node name="YuanSprite" type="Sprite2D" parent="VisualRoot"]
-position = Vector2(0, -48)
-texture = ExtResource("7")
-
-[node name="Body" type="Polygon2D" parent="VisualRoot"]
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="VisualRoot"]
 visible = false
+position = Vector2(0, -44)
+sprite_frames = ExtResource("8")
+animation = &"idle"
+
+[node name="FallbackRoot" type="Node2D" parent="VisualRoot"]
+
+[node name="Body" type="Polygon2D" parent="VisualRoot/FallbackRoot"]
 color = Color(0.9, 0.94, 1, 1)
 polygon = PackedVector2Array(-14, -68, 10, -68, 18, -47, 15, -13, 8, 0, -9, 0, -17, -13, -20, -47)
 
-[node name="Coat" type="Polygon2D" parent="VisualRoot"]
-visible = false
+[node name="Coat" type="Polygon2D" parent="VisualRoot/FallbackRoot"]
 color = Color(0.06, 0.08, 0.13, 1)
 polygon = PackedVector2Array(-18, -42, 18, -42, 24, -10, 10, 2, -11, 2, -24, -10)
 
-[node name="Visor" type="Polygon2D" parent="VisualRoot"]
-visible = false
+[node name="Visor" type="Polygon2D" parent="VisualRoot/FallbackRoot"]
 color = Color(0.35, 1, 1, 1)
 polygon = PackedVector2Array(-10, -61, 13, -61, 11, -54, -12, -54)
 
-[node name="EnergyBlade" type="Polygon2D" parent="VisualRoot"]
+[node name="EnergyBlade" type="Polygon2D" parent="VisualRoot/FallbackRoot"]
 position = Vector2(25, -41)
 color = Color(0.2, 0.95, 1, 0.62)
 polygon = PackedVector2Array(0, -4, 44, -1, 44, 3, 0, 5)
+
+[node name="AnimationController" type="Node" parent="."]
+script = ExtResource("7")
 
 [node name="FacingPivot" type="Node2D" parent="."]
 
@@ -77,7 +82,12 @@ shape = SubResource("RectangleShape2D_hurtbox")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(58, -54)
+zoom = Vector2(0.65, 0.65)
 enabled = true
+limit_left = -120
+limit_top = -180
+limit_right = 2600
+limit_bottom = 320
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 script = ExtResource("5")
