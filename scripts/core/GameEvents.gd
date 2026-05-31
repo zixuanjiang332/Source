@@ -7,6 +7,8 @@ signal camera_impulse_requested(strength: float, duration: float)
 signal vfx_requested(vfx_id: StringName, world_position: Vector2, facing: int)
 signal sfx_requested(sfx_id: StringName, world_position: Vector2)
 signal item_collected(item_id: StringName)
+signal objective_changed(message: String)
+signal toast_requested(message: String)
 signal run_reset_requested
 
 func report_player_health(current_health: int, max_health: int) -> void:
@@ -37,6 +39,13 @@ func report_item_collected(item_id: StringName) -> void:
 	item_collected.emit(item_id)
 
 
+func request_objective(message: String) -> void:
+	objective_changed.emit(message)
+
+
+func request_toast(message: String) -> void:
+	toast_requested.emit(message)
+
+
 func request_run_reset() -> void:
 	run_reset_requested.emit()
-

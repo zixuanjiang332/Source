@@ -11,8 +11,10 @@ func _ready() -> void:
 	GameEvents.player_energy_changed.connect(_on_player_energy_changed)
 	GameEvents.enemy_defeated.connect(_on_enemy_defeated)
 	GameEvents.item_collected.connect(_on_item_collected)
-	objective_label.text = "NEON MACHINE // demo route"
-	toast_label.text = "J attack  K skill  Shift dash  R restart"
+	GameEvents.objective_changed.connect(_on_objective_changed)
+	GameEvents.toast_requested.connect(_show_toast)
+	objective_label.text = "WAKE // speak with Dr. Lin"
+	toast_label.text = "A/D move  Space jump  E interact"
 
 
 func _on_player_health_changed(current_health: int, max_health: int) -> void:
@@ -29,6 +31,10 @@ func _on_enemy_defeated(enemy_id: StringName) -> void:
 
 func _on_item_collected(item_id: StringName) -> void:
 	_show_toast("upgrade linked: %s" % String(item_id))
+
+
+func _on_objective_changed(message: String) -> void:
+	objective_label.text = message
 
 
 func _show_toast(message: String) -> void:
