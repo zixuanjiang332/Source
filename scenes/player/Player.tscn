@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/PlayerController.gd" id="1"]
 [ext_resource type="Resource" path="res://resources/characters/player_stats.tres" id="2"]
 [ext_resource type="Script" path="res://scripts/combat/Hitbox.gd" id="3"]
 [ext_resource type="Script" path="res://scripts/combat/Hurtbox.gd" id="4"]
 [ext_resource type="Script" path="res://scripts/camera/CameraJuice.gd" id="5"]
+[ext_resource type="Resource" path="res://resources/weapons/initial_dagger.tres" id="6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(22, 52)
@@ -21,6 +22,7 @@ collision_mask = 1
 floor_snap_length = 4.0
 script = ExtResource("1")
 stats = ExtResource("2")
+weapon_data = ExtResource("6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -26)

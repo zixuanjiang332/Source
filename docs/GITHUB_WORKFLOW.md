@@ -241,7 +241,7 @@ git lfs unlock art_src/chr_player_neon_runner.aseprite
 - 禁止提交导出包、录屏临时文件和本地工具索引。
 - 禁止随意 `git push --force` 到公共分支。
 - 禁止未经沟通覆盖别人的素材源文件。
-- 禁止把 AI 参考图当作最终素材直接提交。
+- 禁止提交带水印、明显侵权、未登记来源或未通过负责人验收的 AI 素材。
 
 如果确实需要 force push，只允许对自己的功能分支使用：
 
