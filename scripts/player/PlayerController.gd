@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 const DEFAULT_STATS = preload("res://resources/characters/player_stats.tres")
 const DEFAULT_WEAPON = preload("res://resources/weapons/initial_dagger.tres")
+const MINIMAL_VISUAL_MODE := true
 const ATTACK_CHAIN = [
 	preload("res://resources/attacks/dagger_cut_1.tres"),
 	preload("res://resources/attacks/dagger_cut_2.tres"),
@@ -21,7 +22,7 @@ const VISUAL_SCALE := 0.70
 @onready var hurtbox = $Hurtbox
 @onready var facing_pivot: Node2D = $FacingPivot
 @onready var debug_label: Label = $DebugLabel
-@onready var animation_controller: PlayerAnimationController = $AnimationController
+@onready var animation_controller: Node = $AnimationController
 
 var _runtime_stats
 var _health := 1
@@ -38,6 +39,8 @@ var _dead := false
 var _last_reported_combo := -1
 
 func _ready() -> void:
+	if MINIMAL_VISUAL_MODE and debug_label != null:
+		debug_label.visible = false
 	add_to_group("player")
 	_runtime_stats = stats.runtime_copy()
 	_health = _runtime_stats.max_health
@@ -249,6 +252,8 @@ func _update_movement_animation() -> void:
 
 
 func _update_debug_label() -> void:
+	if debug_label == null or not debug_label.visible:
+		return
 	var state := "AIR"
 	if is_on_floor():
 		state = "READY"
@@ -313,7 +318,8 @@ func _die() -> void:
 	hitbox.deactivate()
 	body.modulate = Color(0.22, 0.22, 0.28, 1.0)
 	animation_controller.play_action(&"death")
-	debug_label.text = "OFFLINE - R"
+	if debug_label != null and debug_label.visible:
+		debug_label.text = "OFFLINE - R"
 	GameEvents.request_camera_impulse(1.2, 0.18)
 
 

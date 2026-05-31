@@ -81,13 +81,13 @@ script = ExtResource("4")
 shape = SubResource("RectangleShape2D_hurtbox")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(58, -54)
-zoom = Vector2(0.65, 0.65)
+position = Vector2(0, -54)
+zoom = Vector2(1, 1)
 enabled = true
-limit_left = -120
-limit_top = -180
-limit_right = 2600
-limit_bottom = 320
+limit_left = 0
+limit_top = 0
+limit_right = 480
+limit_bottom = 270
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 script = ExtResource("5")
