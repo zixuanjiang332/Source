@@ -12,10 +12,14 @@
       "Bash('E:\\\\Godot\\\\Godot_v4.6.3-stable_win64_console.exe' --headless --export-release \"Windows Demo\" \"builds/windows/NeonMachineDemo.exe\")",
       "Bash(ls 'C:/Users/Lenzo/AppData/Roaming/Godot/export_templates/' 2>/dev/null; ls 'C:/Users/Lenovo/AppData/Roaming/Godot/export_templates/' 2>/dev/null || echo \"模板目录不存在\")",
       "Read(//c/Users/Lenzo/AppData/Roaming/Godot/**)",
-      "Bash('E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe')"
+      "Bash('E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe')",
+      "PowerShell(Start-Process -FilePath $godotExe -ArgumentList \"--path\", $projectPath -WindowStyle Normal)",
+      "PowerShell($godotExe = \"D:\\\\steam\\\\steamapps\\\\common\\\\Godot Engine\\\\godot.windows.opt.tools.64.exe\")",
+      "PowerShell($projectPath = \"e:\\\\Project\\\\game\\\\Source\\\\project.godot\")"
     ],
     "additionalDirectories": [
-      "e:\\Project\\game\\Source"
+      "e:\\Project\\game\\Source",
+      "C:\\Users\\Lenovo\\AppData\\Roaming\\Godot"
     ]
   }
 }

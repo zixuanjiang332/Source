@@ -2,6 +2,7 @@ class_name PlayerController
 extends CharacterBody2D
 
 const DEFAULT_STATS = preload("res://resources/characters/player_stats.tres")
+const DEFAULT_WEAPON = preload("res://resources/weapons/initial_dagger.tres")
 const ATTACK_CHAIN = [
 	preload("res://resources/attacks/player_slash_1.tres"),
 	preload("res://resources/attacks/player_slash_2.tres"),
@@ -10,6 +11,7 @@ const ATTACK_CHAIN = [
 const SKILL_ATTACK = preload("res://resources/attacks/player_energy_cleave.tres")
 
 @export var stats = DEFAULT_STATS
+@export var weapon_data = DEFAULT_WEAPON
 
 @onready var body: Polygon2D = $VisualRoot/Body
 @onready var visor: Polygon2D = $VisualRoot/Visor
@@ -30,6 +32,7 @@ var _combo_reset_timer := 0.0
 var _invulnerable_timer := 0.0
 var _damage_multiplier := 1.0
 var _dead := false
+var _last_reported_combo := -1
 
 func _ready() -> void:
 	add_to_group("player")
@@ -38,6 +41,8 @@ func _ready() -> void:
 	_energy = _runtime_stats.max_energy
 	GameEvents.report_player_health(_health, _runtime_stats.max_health)
 	GameEvents.report_player_energy(_energy, _runtime_stats.max_energy)
+	_report_weapon()
+	GameEvents.report_player_combo(0, _attack_chain().size())
 	hitbox.hit_landed.connect(_on_hit_landed)
 	_update_facing_visual()
 
@@ -128,8 +133,9 @@ func _tick_timers(delta: float) -> void:
 	_dash_cooldown_timer = max(0.0, _dash_cooldown_timer - delta)
 	_invulnerable_timer = max(0.0, _invulnerable_timer - delta)
 	_combo_reset_timer = max(0.0, _combo_reset_timer - delta)
-	if _combo_reset_timer <= 0.0:
+	if _combo_reset_timer <= 0.0 and _last_reported_combo != 0:
 		_combo_index = 0
+		_report_combo(0)
 
 
 func _start_dash() -> void:
@@ -144,22 +150,40 @@ func _try_attack() -> void:
 	if _attack_locked:
 		return
 
-	var template: Resource = ATTACK_CHAIN[_combo_index]
-	_combo_index = (_combo_index + 1) % ATTACK_CHAIN.size()
-	_combo_reset_timer = 0.55
+	var chain := _attack_chain()
+	if chain.is_empty():
+		return
+
+	var combo_step := _combo_index + 1
+	var template: Resource = chain[_combo_index]
+	_combo_index = (_combo_index + 1) % chain.size()
+	_combo_reset_timer = 0.72
+	_report_combo(combo_step)
 	_start_attack(template)
 
 
 func _try_skill() -> void:
-	if _attack_locked or _energy < SKILL_ATTACK.energy_cost:
+	var skill_attack: Resource = _skill_attack()
+	if skill_attack == null:
 		return
 
-	_energy -= SKILL_ATTACK.energy_cost
+	if _attack_locked:
+		return
+
+	if _energy < skill_attack.energy_cost:
+		GameEvents.request_toast("%s charging // %d EN" % [_skill_name(), skill_attack.energy_cost])
+		return
+
+	_energy -= skill_attack.energy_cost
 	GameEvents.report_player_energy(_energy, _runtime_stats.max_energy)
-	_start_attack(SKILL_ATTACK)
+	_combo_index = 0
+	_report_combo(0)
+	GameEvents.request_vfx(&"dash_burst", global_position + Vector2(0.0, -30.0), _facing)
+	GameEvents.request_toast("%s // execution window" % _skill_name())
+	_start_attack(skill_attack)
 
 
-func _start_attack(template) -> void:
+func _start_attack(template: Resource) -> void:
 	_attack_locked = true
 	var attack = template.duplicate(true)
 	attack.damage = max(1, roundi(float(attack.damage) * _damage_multiplier))
@@ -172,7 +196,10 @@ func _start_attack(template) -> void:
 
 
 func _on_hit_landed(_target: Node, attack_data) -> void:
-	_energy = min(_runtime_stats.max_energy, _energy + 8)
+	var energy_gain := 9
+	if attack_data.attack_id == &"dagger_flash_step":
+		energy_gain = 3
+	_energy = min(_runtime_stats.max_energy, _energy + energy_gain)
 	GameEvents.report_player_energy(_energy, _runtime_stats.max_energy)
 	_apply_hit_stop(attack_data.hit_stop)
 
@@ -201,6 +228,45 @@ func _update_debug_label() -> void:
 	if _attack_locked:
 		state = "STRIKE"
 	debug_label.text = state
+
+
+func _attack_chain() -> Array:
+	if weapon_data != null and weapon_data.has_method("attack_chain"):
+		var chain: Array = weapon_data.attack_chain()
+		if not chain.is_empty():
+			return chain
+	return ATTACK_CHAIN
+
+
+func _skill_attack() -> Resource:
+	if weapon_data != null and weapon_data.get("skill_attack") != null:
+		return weapon_data.skill_attack
+	return SKILL_ATTACK
+
+
+func _skill_name() -> String:
+	if weapon_data != null and weapon_data.get("skill_display_name") != null:
+		return weapon_data.skill_display_name
+	return "Skill"
+
+
+func _report_weapon() -> void:
+	var weapon_name := "Dagger"
+	var skill_name := _skill_name()
+	var skill_attack: Resource = _skill_attack()
+	var skill_cost := 0
+	if skill_attack != null:
+		skill_cost = skill_attack.energy_cost
+	if weapon_data != null and weapon_data.get("display_name") != null:
+		weapon_name = weapon_data.display_name
+	GameEvents.report_player_weapon(weapon_name, skill_name, skill_cost)
+
+
+func _report_combo(combo_step: int) -> void:
+	if _last_reported_combo == combo_step:
+		return
+	_last_reported_combo = combo_step
+	GameEvents.report_player_combo(combo_step, _attack_chain().size())
 
 
 func _flash(color: Color) -> void:
