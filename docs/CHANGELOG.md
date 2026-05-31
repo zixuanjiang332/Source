@@ -27,7 +27,7 @@
 - 将关卡背景拆为实验室静态层、实验室动画层、城市远景、中景、动画层和前景装饰层。
 - 背景动画从 `DemoLevel.gd` 的硬编码逻辑迁移到各个 `AnimatedBackgroundProp` 节点。
 - 实验室背景从 placeholder sheet 切换到 `assets/pixel/background/lab/` 的 final 运行时素材。
-- AI 使用规则增加背景素材 final 例外说明。
+- AI 使用规则改为允许 AI 生成图、动作帧和 spritesheet 直接作为 final 素材接入。
 
 ### Fixed
 
@@ -42,6 +42,7 @@
 - 新增 `DOCUMENTATION_GOVERNANCE.md`、`PROGRESS_LOG.md`、`DECISION_LOG.md`。
 - 同步初始匕首切片的框架、程序规范、进度和设计决策记录。
 - 同步动态背景交付路径、素材清单、框架和程序规范。
+- 同步 AI final 素材政策、像素图/VFX 提示词规范和 GitHub 禁止事项。
 
 ## [0.1.0] - 2026-05-31
 
