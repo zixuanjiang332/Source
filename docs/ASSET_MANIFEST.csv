@@ -16,5 +16,7 @@ concept,player_yuan_machine_eye_heart,Codex built-in image_gen 2026-05-31,art_sr
 concept,player_yuan_early_clone_no_weapon,Codex built-in image_gen edit 2026-05-31,art_src/concepts/chr_yuan_concept_01_early_clone_no_weapon.png,Codex,concept,Reference sketch only; weapon removed from early cloned human execution body
 concept,player_yuan_machine_arms_no_weapon,Codex built-in image_gen edit 2026-05-31,art_src/concepts/chr_yuan_concept_02_machine_arms_no_weapon.png,Codex,concept,Reference sketch only; weapon removed from mid-game mechanical limb adaptation
 concept,player_yuan_machine_eye_heart_no_weapon,Codex built-in image_gen edit 2026-05-31,art_src/concepts/chr_yuan_concept_03_machine_eye_heart_no_weapon.png,Codex,concept,Reference sketch only; weapon removed from late-game mechanical eye and heart reveal
+concept,ui_main_menu_concept_01,Codex built-in image_gen 2026-05-31,art_src/concepts/ui_main_menu_concept_01.png,Codex,concept,Reference only; Birth Lab main menu UI art direction
+concept,weapon_concept_sheet_01,Codex built-in image_gen 2026-05-31,art_src/concepts/weapon_concept_sheet_01.png,Codex,concept,Reference only; six weapon silhouettes from weapon.md
 sfx,player_dash,art_src/audio/sfx_player_dash_01.wav,assets/audio/sfx_player_dash_01.wav,Programmer B,planned,temporary jsfxr ok
 sfx,hit_metal_light,art_src/audio/sfx_hit_metal_light_01.wav,assets/audio/sfx_hit_metal_light_01.wav,Programmer B,planned,temporary jsfxr ok
