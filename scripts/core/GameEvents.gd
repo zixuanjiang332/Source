@@ -2,6 +2,8 @@ extends Node
 
 signal player_health_changed(current_health: int, max_health: int)
 signal player_energy_changed(current_energy: int, max_energy: int)
+signal player_weapon_changed(weapon_name: String, skill_name: String, skill_cost: int)
+signal player_combo_changed(combo_step: int, combo_size: int)
 signal enemy_defeated(enemy_id: StringName)
 signal camera_impulse_requested(strength: float, duration: float)
 signal vfx_requested(vfx_id: StringName, world_position: Vector2, facing: int)
@@ -17,6 +19,14 @@ func report_player_health(current_health: int, max_health: int) -> void:
 
 func report_player_energy(current_energy: int, max_energy: int) -> void:
 	player_energy_changed.emit(current_energy, max_energy)
+
+
+func report_player_weapon(weapon_name: String, skill_name: String, skill_cost: int) -> void:
+	player_weapon_changed.emit(weapon_name, skill_name, skill_cost)
+
+
+func report_player_combo(combo_step: int, combo_size: int) -> void:
+	player_combo_changed.emit(combo_step, combo_size)
 
 
 func report_enemy_defeated(enemy_id: StringName) -> void:

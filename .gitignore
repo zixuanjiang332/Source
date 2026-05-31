@@ -1,6 +1,8 @@
 # Godot generated data.
 .godot/
 *.translation
+art_src/**/*.import
+docs/**/*.import
 
 # Local exports and recordings.
 builds/

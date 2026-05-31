@@ -1,8 +1,8 @@
 # 特效生成规范提示词
 
-本文档只规定特效草稿的提示词结构和交付标准。具体特效形状、节奏、颜色、爆点由团队成员人工设计。
+本文档规定特效提示词结构和交付标准。具体特效形状、节奏、颜色、爆点由团队成员决定。
 
-AI 生成特效只能作为视觉参考或占位帧。正式特效必须由美术/VFX 负责人手工重绘、拆帧、控制节奏，并在 Godot 中调试命中可读性。
+AI 生成特效图、动作帧和 spritesheet 可以直接作为最终特效素材。负责人需要在 Godot 中调试播放速度、遮挡、首帧冲击和命中可读性；后续要改为人工重绘时再单独提出。
 
 ## 1. 特效设计优先级
 
@@ -17,7 +17,7 @@ AI 生成特效只能作为视觉参考或占位帧。正式特效必须由美�
 
 ```text
 特效类型: 命中火花 / 刀光 / 冲刺残影 / 电弧 / 爆炸 / 全息闪烁 / 道具拾取
-用途: 概念参考 / 单帧 / spritesheet 草稿
+用途: 最终成品 / 概念参考 / 单帧 / spritesheet
 画布: 64x64 / 96x96 / 128x128
 帧数: 4 / 6 / 8 / 12
 方向: left-to-right / right-to-left / radial / upward
@@ -131,7 +131,7 @@ No readable text, no logo, no UI mockup, no full scene.
 - 所有帧同尺寸。
 - 原点和命中点一致。
 - 文件名：`vfx_<name>_<size>_<frames>f.png`。
-- 源文件：`art_src/vfx_<name>.aseprite`。
+- 源文件：`art_src/vfx_<name>.aseprite`，或 `art_src/generated_frames/vfx/<name>/` 中的 AI 源图和逐帧 PNG。
 - Godot 导入后测试：播放速度、遮挡、首帧冲击、结束残留。
 
 ## 11. Godot 接入清单
@@ -141,4 +141,3 @@ No readable text, no logo, no UI mockup, no full scene.
 - 移动类特效由玩家/敌人状态调用。
 - 环境类特效放关卡场景。
 - 强特效必须测试低配 60 FPS。
-

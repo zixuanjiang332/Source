@@ -1,15 +1,15 @@
 # 像素图生成规范提示词
 
-本文档只定义“如何写提示词”和“交付规格”。具体角色长相、服装、配色、武器、场景风格由团队成员人工决定。
+本文档只定义“如何写提示词”和“交付规格”。具体角色长相、服装、配色、武器、场景风格由团队成员决定。
 
-AI 生成图只能作为参考、草稿、灵感或占位，不直接代表最终美术风格。最终可用素材必须由美术负责人手工整理、重绘、修帧和导出。
+AI 生成图、动作帧和 spritesheet 可以直接作为最终可用素材。负责人需要先明确设计意图和规格，并在接入前检查命名、尺寸、帧数、透明背景和战斗可读性；后续要改为人工重绘时再单独提出。
 
 ## 1. 使用原则
 
-- 先由人定义设计意图，再让 AI 辅助出草稿。
+- 先由人定义设计意图，再让 AI 生成参考图或最终素材。
 - 每次生成只解决一个对象，不同时生成角色、背景、特效和 UI。
 - 提示词必须包含画布尺寸、视角、透明背景、帧数或用途。
-- 不要求 AI 生成最终 spritesheet 时，必须明确“单张概念参考”。
+- 要求 AI 生成最终 spritesheet 时，必须明确帧数、单帧尺寸、排列方式和动画标签。
 - 不接受带文字、水印、伪 UI、复杂渐变背景的输出。
 
 ## 2. 通用变量
@@ -18,7 +18,7 @@ AI 生成图只能作为参考、草稿、灵感或占位，不直接代表最�
 
 ```text
 对象类型: 主角 / 小怪 / Boss / 道具 / 场景瓦片 / UI 图标
-用途: 概念参考 / 单帧立绘 / 动画关键帧 / spritesheet 草稿
+用途: 最终成品 / 概念参考 / 单帧立绘 / 动画关键帧 / spritesheet
 画布: 32x32 / 64x64 / 96x96 / 128x128 / 192x192
 视角: 2D side-view
 题材关键词: 赛博朋克 / 智械危机 / 机械 / 全息 / 能量装置
@@ -112,16 +112,15 @@ Output: isolated tile or small tile cluster preview, transparent background if p
 no text, no watermark, no logo, no fake game screenshot, no UI mockup, no background, no realistic rendering, no 3D render, no soft brush, no heavy blur, no noisy dithering, no over-detailed unreadable pixels, no inconsistent outline, no extra limbs, no cropped weapon, no isometric view, no top-down view
 ```
 
-## 10. 人工整理清单
+## 10. Final 接入清单
 
-AI 草稿进入项目之前必须人工处理：
+AI 素材进入项目之前必须检查：
 
-- 修正轮廓和比例。
-- 统一调色板。
-- 清理半透明脏边。
-- 对齐脚底和武器方向。
-- 拆分动画帧并补中间帧。
+- 轮廓和比例符合当前角色/敌人/道具定位。
+- 调色板与当前区域和角色优先级不冲突。
+- 透明背景和边缘干净，没有水印、文字或伪 UI。
+- 脚底、武器方向和动作重心对齐。
+- 动画帧数、单帧尺寸、排列方式和标签清楚。
 - 导出 PNG 到 `assets/pixel/`。
-- 源文件保存到 `art_src/`。
+- AI 源图、逐帧 PNG 或工程源文件保存到 `art_src/`。
 - 在 `docs/ASSET_MANIFEST.csv` 更新状态。
-
