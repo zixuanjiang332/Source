@@ -1,20 +1,93 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/main/Main.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/vfx/VfxSpawner.gd" id="2"]
-[ext_resource type="PackedScene" path="res://scenes/levels/DemoLevel.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://scenes/ui/Hud.tscn" id="4"]
+[ext_resource type="Texture2D" path="res://assets/ui/bg_start_menu_yuan_face_v2.png" id="2"]
 
 [node name="Main" type="Node"]
 process_mode = 3
 script = ExtResource("1")
 
-[node name="VfxSpawner" type="Node2D" parent="."]
-script = ExtResource("2")
+[node name="GameRoot" type="Node" parent="."]
 
-[node name="DemoLevel" parent="." instance=ExtResource("3")]
+[node name="TitleLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 30
 
-[node name="Hud" parent="." instance=ExtResource("4")]
+[node name="TitleArt" type="Sprite2D" parent="TitleLayer"]
+position = Vector2(240, 135)
+scale = Vector2(0.287, 0.287)
+texture = ExtResource("2")
+
+[node name="StartButton" type="Button" parent="TitleLayer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 296.0
+offset_top = 105.0
+offset_right = 444.0
+offset_bottom = 135.0
+mouse_default_cursor_shape = 2
+focus_mode = 0
+flat = true
+text = ""
+
+[node name="CombatButton" type="Button" parent="TitleLayer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 137.0
+offset_right = 444.0
+offset_bottom = 165.0
+mouse_default_cursor_shape = 2
+focus_mode = 0
+flat = true
+text = ""
+
+[node name="ArchiveButton" type="Button" parent="TitleLayer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 169.0
+offset_right = 444.0
+offset_bottom = 197.0
+mouse_default_cursor_shape = 2
+focus_mode = 0
+flat = true
+text = ""
+
+[node name="ChipButton" type="Button" parent="TitleLayer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 199.0
+offset_right = 444.0
+offset_bottom = 229.0
+mouse_default_cursor_shape = 2
+focus_mode = 0
+flat = true
+text = ""
+
+[node name="SettingsButton" type="Button" parent="TitleLayer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 230.0
+offset_right = 444.0
+offset_bottom = 258.0
+mouse_default_cursor_shape = 2
+focus_mode = 0
+flat = true
+text = ""
+
+[node name="MenuNotice" type="Label" parent="TitleLayer"]
+modulate = Color(0.45, 0.9, 1, 0)
+layout_mode = 0
+offset_left = 270.0
+offset_top = 250.0
+offset_right = 468.0
+offset_bottom = 268.0
+theme_override_font_sizes/font_size = 8
+text = "Demo 暂未开放"
+horizontal_alignment = 2
 
 [node name="PauseLayer" type="CanvasLayer" parent="."]
 process_mode = 3
@@ -39,4 +112,3 @@ offset_bottom = 148.0
 theme_override_font_sizes/font_size = 12
 text = "PAUSED"
 horizontal_alignment = 1
-
