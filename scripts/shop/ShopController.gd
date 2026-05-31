@@ -5,20 +5,19 @@ enum State { BROWSE, CONFIRM, MESSAGE }
 
 const CYAN := Color(0.16, 0.95, 1, 0.95)
 const MAGENTA := Color(1, 0.18, 0.68, 0.95)
-const PANEL_BG := Color(0.02, 0.03, 0.05, 0.92)
+const PANEL_BG := Color(0.02, 0.03, 0.05, 0.95)
 const SLOT_BG := Color(0.015, 0.02, 0.035, 0.9)
 const SLOT_SELECTED := Color(0.04, 0.08, 0.12, 0.95)
-const OVERLAY_COLOR := Color(0.01, 0.012, 0.02, 0.6)
+const OVERLAY_COLOR := Color(0.01, 0.012, 0.02, 0.85)
 
-const PANEL_W := 280.0
-const PANEL_H := 200.0
-const PANEL_X := 100.0
-const PANEL_Y := 35.0
-const SLOT_H := 36.0
-const SLOT_MARGIN := 3.0
-const SLOT_W := 268.0
-const VISIBLE_SLOTS := 4
-const HEADER_H := 22.0
+const PANEL_MARGIN := 4.0
+const PANEL_W := 480.0
+const PANEL_H := 270.0
+const SLOT_H := 28.0
+const SLOT_MARGIN := 2.0
+const SLOT_W := 468.0
+const VISIBLE_SLOTS := 7
+const HEADER_H := 20.0
 const FOOTER_H := 14.0
 
 @export var catalog: ShopCatalog
@@ -33,8 +32,8 @@ var _items: Array[ShopData] = []
 
 @onready var bg_overlay: ColorRect = $BgOverlay
 @onready var panel: Control = $Panel
-@onready var panel_back: ColorRect = $Panel/PanelBack
-@onready var panel_frame: Line2D = $Panel/PanelFrame
+@onready var inner_back: ColorRect = $Panel/InnerBack
+@onready var inner_frame: Line2D = $Panel/InnerFrame
 @onready var panel_accent: Line2D = $Panel/PanelAccent
 @onready var title_label: Label = $Panel/TitleLabel
 @onready var currency_label: Label = $Panel/CurrencyLabel
@@ -208,17 +207,19 @@ func _build_slot_content(slot: Control, display_index: int) -> void:
 	frame.name = "Frame"
 	frame.width = 1.0
 	frame.default_color = Color(CYAN.r, CYAN.g, CYAN.b, 0.3)
-	frame.points = PackedVector2Array(
-		Vector2(0, 0), Vector2(SLOT_W, 0),
-		Vector2(SLOT_W, SLOT_H), Vector2(0, SLOT_H),
-		Vector2(0, 0)
-	)
+	frame.points = PackedVector2Array([
+		Vector2(0, 0),
+		Vector2(SLOT_W, 0),
+		Vector2(SLOT_W, SLOT_H),
+		Vector2(0, SLOT_H),
+		Vector2(0, 0),
+	])
 	slot.add_child(frame)
 
 	var name_label := Label.new()
 	name_label.name = "ItemName"
-	name_label.position = Vector2(8, 4)
-	name_label.size = Vector2(180, 12)
+	name_label.position = Vector2(8, 3)
+	name_label.size = Vector2(280, 10)
 	name_label.add_theme_font_size_override("font_size", 7)
 	name_label.text = _items[display_index].item_data.display_name
 	name_label.modulate = Color(0.85, 0.92, 0.96, 1)
@@ -226,8 +227,8 @@ func _build_slot_content(slot: Control, display_index: int) -> void:
 
 	var desc_label := Label.new()
 	desc_label.name = "ItemDesc"
-	desc_label.position = Vector2(8, 18)
-	desc_label.size = Vector2(180, 10)
+	desc_label.position = Vector2(8, 14)
+	desc_label.size = Vector2(280, 10)
 	desc_label.add_theme_font_size_override("font_size", 6)
 	desc_label.text = _items[display_index].item_data.description
 	desc_label.modulate = Color(0.6, 0.7, 0.75, 0.9)
@@ -235,8 +236,8 @@ func _build_slot_content(slot: Control, display_index: int) -> void:
 
 	var price_label := Label.new()
 	price_label.name = "PriceLabel"
-	price_label.position = Vector2(190, 8)
-	price_label.size = Vector2(74, 12)
+	price_label.position = Vector2(370, 6)
+	price_label.size = Vector2(90, 10)
 	price_label.add_theme_font_size_override("font_size", 7)
 	price_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	var price_text := "%03d CR" % _items[display_index].price
@@ -255,7 +256,14 @@ func _build_slot_content(slot: Control, display_index: int) -> void:
 	var icon := Polygon2D.new()
 	icon.name = "Icon"
 	icon.position = Vector2(SLOT_W - 10, SLOT_H / 2.0)
-	icon.polygon = PackedVector2Array(Vector2(-3, -5), Vector2(3, -5), Vector2(5, 0), Vector2(3, 5), Vector2(-3, 5), Vector2(-5, 0))
+	icon.polygon = PackedVector2Array([
+		Vector2(-3, -5),
+		Vector2(3, -5),
+		Vector2(5, 0),
+		Vector2(3, 5),
+		Vector2(-3, 5),
+		Vector2(-5, 0),
+	])
 	icon.color = CYAN
 	icon.modulate.a = 0.7
 	slot.add_child(icon)

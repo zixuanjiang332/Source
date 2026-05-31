@@ -15,7 +15,16 @@
       "Bash('E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe')",
       "PowerShell(Start-Process -FilePath $godotExe -ArgumentList \"--path\", $projectPath -WindowStyle Normal)",
       "PowerShell($godotExe = \"D:\\\\steam\\\\steamapps\\\\common\\\\Godot Engine\\\\godot.windows.opt.tools.64.exe\")",
-      "PowerShell($projectPath = \"e:\\\\Project\\\\game\\\\Source\\\\project.godot\")"
+      "PowerShell($projectPath = \"e:\\\\Project\\\\game\\\\Source\\\\project.godot\")",
+      "PowerShell(Get-NetTCPConnection -LocalPort 6005 -ErrorAction SilentlyContinue)",
+      "PowerShell(Start-Process \"steam://rungameid/404090\")",
+      "Bash(Start-Process 'E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe' -ArgumentList '--path', 'e:\\\\Project\\\\game\\\\Source')",
+      "PowerShell(Start-Process 'E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe' -ArgumentList '--path', 'e:\\\\Project\\\\game\\\\Source')",
+      "Bash(Get-ChildItem \"E:\\\\Godot\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object Name)",
+      "PowerShell(Start-Process \"E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe\" -ArgumentList \"-e\", \"--path\", \"e:\\\\Project\\\\game\\\\Source\")",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ],
     "additionalDirectories": [
       "e:\\Project\\game\\Source",
