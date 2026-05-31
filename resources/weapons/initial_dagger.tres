@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="WeaponData" format=3 uid="uid://d3xen53jvyntx"]
+[gd_resource type="Resource" script_class="WeaponData" load_steps=14 format=3]
 
-[ext_resource type="Script" uid="uid://c7l1kelgwdwhr" path="res://scripts/resources/WeaponData.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/resources/WeaponData.gd" id="1"]
 [ext_resource type="Resource" path="res://resources/attacks/dagger_cut_1.tres" id="2"]
 [ext_resource type="Resource" path="res://resources/attacks/dagger_cut_2.tres" id="3"]
 [ext_resource type="Resource" path="res://resources/attacks/dagger_cut_3.tres" id="4"]
@@ -25,4 +25,6 @@ finisher_attack = ExtResource("4")
 skill_display_name = "Flash Step"
 skill_attack = ExtResource("5")
 ultimate_display_name = "Overdrive Sever"
+ultimate_energy_cost = 100
+ultimate_hold_time = 0.45
 ultimate_attacks = Array[Resource]([ExtResource("6"), ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), ExtResource("12"), ExtResource("13")])

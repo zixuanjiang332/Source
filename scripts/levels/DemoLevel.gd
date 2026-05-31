@@ -2,18 +2,13 @@ class_name DemoLevel
 extends Node2D
 
 const MINIMAL_VISUAL_MODE := true
-const BASE_VIEWPORT_HEIGHT := 540.0
-const BASE_VIEWPORT_WIDTH := 960.0
-const BACKDROP_CENTER_Y := 90.0
-const CAMERA_LIMIT_TOP := -180
-const CAMERA_LIMIT_BOTTOM := 360
+const BASE_VIEWPORT_HEIGHT := 270.0
+const BASE_VIEWPORT_WIDTH := 480.0
 const FLOOR_Y := 234.0
 const FLOOR_LINE_Y := 220.0
 const PLAYER_SPAWN_X := 72.0
 const PLAYER_SPAWN_Y := 220.0
 const STATION_Y := 186.0
-const ELEVATOR_Y := 154.0
-const ELEVATOR_RIGHT_MARGIN := 84.0
 const WALL_CENTER_OFFSET := 4.0
 
 @onready var route_label: Label = get_node_or_null("RouteLabel") as Label
@@ -24,7 +19,6 @@ const WALL_CENTER_OFFSET := 4.0
 @onready var right_wall_shape: CollisionShape2D = $Collision/RightWall/CollisionShape2D
 @onready var player: CharacterBody2D = $Actors/Player
 @onready var supply_station: Area2D = $Interactables/SupplyStationInteract
-@onready var elevator: Area2D = $Interactables/ElevatorInteract
 
 var _defeated_count := 0
 var _room_width := BASE_VIEWPORT_WIDTH
@@ -74,7 +68,7 @@ func _on_viewport_size_changed() -> void:
 
 func _apply_responsive_layout() -> void:
 	_room_width = _resolve_room_width()
-	var room_center := Vector2(_room_width * 0.5, BACKDROP_CENTER_Y)
+	var room_center := Vector2(_room_width * 0.5, BASE_VIEWPORT_HEIGHT * 0.5)
 
 	_layout_background(room_center)
 	_layout_collision()
@@ -128,8 +122,6 @@ func _layout_collision() -> void:
 func _layout_interactables(center_x: float) -> void:
 	if supply_station != null:
 		supply_station.position = Vector2(center_x, STATION_Y)
-	if elevator != null:
-		elevator.position = Vector2(maxf(_room_width - ELEVATOR_RIGHT_MARGIN, center_x + 64.0), ELEVATOR_Y)
 
 
 func _layout_player() -> void:
@@ -148,8 +140,7 @@ func _layout_camera() -> void:
 	if camera == null:
 		return
 
-	camera.zoom = Vector2(2.0, 2.0)
 	camera.limit_left = 0
-	camera.limit_top = CAMERA_LIMIT_TOP
+	camera.limit_top = 0
 	camera.limit_right = int(roundf(_room_width))
-	camera.limit_bottom = CAMERA_LIMIT_BOTTOM
+	camera.limit_bottom = int(BASE_VIEWPORT_HEIGHT)
