@@ -9,6 +9,8 @@ extends Area2D
 @export var completed_text := "already synchronized"
 @export var teleport_enabled := false
 @export var teleport_target := Vector2.ZERO
+@export var opens_shop := false
+@export var shop_id: StringName = &"main"
 
 @onready var prompt_label: Label = get_node_or_null("PromptLabel") as Label
 
@@ -54,6 +56,13 @@ func _on_body_exited(body: Node2D) -> void:
 func _interact() -> void:
 	if one_shot and _used:
 		GameEvents.request_toast(completed_text)
+		return
+
+	if opens_shop:
+		GameEvents.request_shop(shop_id)
+		if one_shot:
+			_used = true
+			_set_prompt_visible(false)
 		return
 
 	if not dialogue_lines.is_empty():

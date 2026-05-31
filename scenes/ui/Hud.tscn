@@ -68,6 +68,16 @@ offset_bottom = 36.0
 theme_override_font_sizes/font_size = 7
 text = "HP 000/000"
 
+[node name="CurrencyLabel" type="Label" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 36.0
+offset_right = 164.0
+offset_bottom = 46.0
+theme_override_font_sizes/font_size = 7
+text = "CR 0500"
+modulate = Color(0.16, 0.95, 1, 0.9)
+
 [node name="Objective" type="Label" parent="Root/Margin"]
 layout_mode = 0
 offset_left = 178.0

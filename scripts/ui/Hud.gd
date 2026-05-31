@@ -7,6 +7,7 @@ const HEALTH_FILL_WIDTH := 118.0
 @onready var health_label: Label = $Root/Margin/HealthLabel
 @onready var objective_label: Label = $Root/Margin/Objective
 @onready var toast_label: Label = $Root/Margin/Toast
+@onready var currency_label: Label = $Root/Margin/CurrencyLabel
 
 func _ready() -> void:
 	GameEvents.player_health_changed.connect(_on_player_health_changed)
@@ -14,6 +15,8 @@ func _ready() -> void:
 	GameEvents.item_collected.connect(_on_item_collected)
 	GameEvents.objective_changed.connect(_on_objective_changed)
 	GameEvents.toast_requested.connect(_show_toast)
+	GameEvents.currency_changed.connect(_on_currency_changed)
+	currency_label.text = "CR 0500"
 	objective_label.text = "WAKE // speak with Dr. Lin"
 	toast_label.text = "A/D move  Space jump  E interact"
 
@@ -36,6 +39,10 @@ func _on_item_collected(item_id: StringName) -> void:
 
 func _on_objective_changed(message: String) -> void:
 	objective_label.text = message
+
+
+func _on_currency_changed(amount: int) -> void:
+	currency_label.text = "CR %04d" % amount
 
 
 func _show_toast(message: String) -> void:

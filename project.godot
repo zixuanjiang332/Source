@@ -14,6 +14,7 @@ config/features=PackedStringArray("4.6")
 
 GameEvents="*res://scripts/core/GameEvents.gd"
 InputBootstrap="*res://scripts/core/InputBootstrap.gd"
+CurrencyManager="*res://scripts/shop/CurrencyManager.gd"
 
 [display]
 
