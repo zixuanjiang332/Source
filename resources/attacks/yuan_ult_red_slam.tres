@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"yuan_ult_red_slam"
+display_name = "Red Slam"
+animation_id = &"ultimate_slam"
+damage = 54
+knockback = Vector2(360, -180)
+lunge = 0.0
+active_time = 0.13
+cooldown = 0.42
+hit_stun = 0.34
+hit_stop = 0.08
+screen_shake = 1.35
+vfx_id = &"yuan_ult_red_impact"
+sfx_id = &"sfx_yuan_ult_red_impact_01"

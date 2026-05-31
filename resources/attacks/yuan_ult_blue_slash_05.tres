@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"yuan_ult_blue_slash_05"
+display_name = "Blue Rift 05"
+animation_id = &"ultimate_vanish"
+damage = 10
+knockback = Vector2(160, -46)
+lunge = 0.0
+active_time = 0.055
+cooldown = 0.08
+hit_stun = 0.1
+hit_stop = 0.022
+screen_shake = 0.42
+vfx_id = &"yuan_ult_blue_slash_05"
+sfx_id = &"sfx_yuan_ult_blue_slash_05"

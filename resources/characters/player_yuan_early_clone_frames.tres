@@ -1,6 +1,7 @@
-[gd_resource type="SpriteFrames" load_steps=68 format=3]
+[gd_resource type="SpriteFrames" load_steps=77 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/pixel/spr_player_yuan_early_clone.png" id="1_sheet"]
+[ext_resource type="Texture2D" path="res://assets/pixel/characters/player_yuan_early_clone/spr_player_yuan_ultimate_slam.png" id="2_ultimate_slam"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_idle_00"]
 atlas = ExtResource("1_sheet")
@@ -266,6 +267,38 @@ region = Rect2(576, 960, 96, 96)
 atlas = ExtResource("1_sheet")
 region = Rect2(672, 960, 96, 96)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_00"]
+atlas = ExtResource("2_ultimate_slam")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_01"]
+atlas = ExtResource("2_ultimate_slam")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_02"]
+atlas = ExtResource("2_ultimate_slam")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_03"]
+atlas = ExtResource("2_ultimate_slam")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_04"]
+atlas = ExtResource("2_ultimate_slam")
+region = Rect2(384, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_05"]
+atlas = ExtResource("2_ultimate_slam")
+region = Rect2(480, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_06"]
+atlas = ExtResource("2_ultimate_slam")
+region = Rect2(576, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_07"]
+atlas = ExtResource("2_ultimate_slam")
+region = Rect2(672, 0, 96, 96)
+
 [resource]
 animations = [{
 "frames": [{
@@ -477,6 +510,35 @@ animations = [{
 "loop": false,
 "name": &"skill",
 "speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ultimate_slam_00")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ultimate_slam_01")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ultimate_slam_02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ultimate_slam_03")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ultimate_slam_04")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ultimate_slam_05")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ultimate_slam_06")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ultimate_slam_07")
+}],
+"loop": false,
+"name": &"ultimate_slam",
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,

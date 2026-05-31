@@ -37,6 +37,7 @@ Avoid text, watermark, fake UI, soft painterly edges, photoreal rendering, extra
 | `atk_2` | 6 | 18 | no | Reverse cut; hit frames 3-4. |
 | `atk_3` | 8 | 16 | no | Heavy breaker cut; hit frames 4-5. |
 | `skill` | 10 | 14 | no | Energy cleave; hit frames 5-7. |
+| `ultimate_slam` | 8 | 16 | no | Red two-hand downward slam; only visible for final hit of Overdrive Sever. |
 | `hit` | 3 | 12 | no | Short recoil; preserve silhouette. |
 | `death` | 8 | 10 | no | Collapse/offline; hold final frame. |
 
@@ -60,4 +61,5 @@ These tags are reserved for a future handgun pass and are not wired to runtime g
 - `Player.tscn` references `resources/characters/player_yuan_early_clone_frames.tres`.
 - If the runtime spritesheet or an animation tag is missing, the existing Polygon2D graybox fallback remains visible.
 - `AttackData.animation_id` maps combat resources to animation tags without changing damage, knockback, cooldown, or Hitbox timing.
-- Current runtime wiring covers only melee chain and skill: `atk_1`, `atk_2`, `atk_3`, and `skill`.
+- Current runtime wiring covers melee chain, short skill, and Demo ultimate: `atk_1`, `atk_2`, `atk_3`, `skill`, and `ultimate_slam`.
+- During the first seven Overdrive Sever blue slashes, `PlayerController` hides `VisualRoot` and shows VFX afterimages instead of a character animation.

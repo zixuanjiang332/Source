@@ -7,14 +7,22 @@ $required = @(
   ".gitignore",
   "scenes/main/Main.tscn",
   "scenes/levels/DemoLevel.tscn",
+  "scenes/levels/RebirthLevel.tscn",
+  "scenes/levels/MainCityLevel.tscn",
   "scenes/player/Player.tscn",
   "scripts/core/GameEvents.gd",
   "scripts/combat/Hitbox.gd",
   "scripts/combat/Hurtbox.gd",
   "scripts/levels/AnimatedBackgroundProp.gd",
+  "scripts/levels/RebirthLevel.gd",
+  "scripts/levels/MainCityLevel.gd",
   "scripts/player/PlayerAnimationController.gd",
   "scripts/resources/WeaponData.gd",
+  "scripts/resources/VfxEntry.gd",
+  "scripts/resources/SfxEntry.gd",
+  "scripts/vfx/SpriteSheetVfx.gd",
   "assets/pixel/spr_player_yuan_early_clone.png",
+  "assets/pixel/characters/player_yuan_early_clone/spr_player_yuan_ultimate_slam.png",
   "assets/pixel/characters/player_yuan_early_clone/frames/idle_00.png",
   "assets/pixel/characters/yuan/spr_yuan_demo_idle.png",
   "assets/pixel/characters/yuan/chr_yuan_concept_01_early_clone.png",
@@ -24,10 +32,33 @@ $required = @(
   "assets/pixel/characters/yuan/chr_yuan_concept_03_machine_eye_heart.png",
   "assets/pixel/characters/yuan/chr_yuan_concept_03_machine_eye_heart_no_weapon.png",
   "assets/pixel/weapons/weapon_concept_sheet_01.png",
+  "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_afterimage.png",
+  "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_01.png",
+  "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_02.png",
+  "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_03.png",
+  "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_04.png",
+  "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_05.png",
+  "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_06.png",
+  "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_07.png",
+  "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_red_slam_arc.png",
+  "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_red_impact.png",
+  "assets/audio/sfx/sfx_yuan_ult_charge_01.wav",
+  "assets/audio/sfx/sfx_yuan_ult_afterimage_01.wav",
+  "assets/audio/sfx/sfx_yuan_ult_blue_slash_01.wav",
+  "assets/audio/sfx/sfx_yuan_ult_blue_slash_02.wav",
+  "assets/audio/sfx/sfx_yuan_ult_blue_slash_03.wav",
+  "assets/audio/sfx/sfx_yuan_ult_blue_slash_04.wav",
+  "assets/audio/sfx/sfx_yuan_ult_blue_slash_05.wav",
+  "assets/audio/sfx/sfx_yuan_ult_blue_slash_06.wav",
+  "assets/audio/sfx/sfx_yuan_ult_blue_slash_07.wav",
+  "assets/audio/sfx/sfx_yuan_ult_red_drop_01.wav",
+  "assets/audio/sfx/sfx_yuan_ult_red_impact_01.wav",
   "assets/ui/bg_start_menu_yuan_face_v2.png",
+  "assets/ui/bg_start_menu_yuan_face_clean_1920.png",
   "assets/ui/main_menu_concept_01.png",
   "assets/ui/portrait_yuan_stage_01.png",
   "assets/ui/icon_initial_dagger.png",
+  "assets/pixel/background/lab/bg_rebirth_lab_1920.png",
   "assets/pixel/background/lab/bg_lab_wall_tiles.png",
   "assets/pixel/background/lab/bg_lab_floor_tiles.png",
   "assets/pixel/background/lab/prop_lab_med_bed_glow.png",
@@ -38,6 +69,10 @@ $required = @(
   "assets/pixel/background/lab/prop_lab_elevator_pulse.png",
   "assets/pixel/background/lab/prop_lab_mech_arm_idle.png",
   "assets/pixel/background/lab/prop_lab_floor_light_strip.png",
+  "assets/pixel/background/city/bg_city_route_panel_01.png",
+  "assets/pixel/background/city/bg_city_route_panel_02.png",
+  "assets/pixel/background/city/bg_city_route_panel_03.png",
+  "assets/pixel/background/city/bg_city_route_panel_04.png",
   "resources/characters/player_stats.tres",
   "resources/characters/player_yuan_early_clone_frames.tres",
   "resources/weapons/initial_dagger.tres",
@@ -45,6 +80,14 @@ $required = @(
   "resources/attacks/dagger_cut_2.tres",
   "resources/attacks/dagger_cut_3.tres",
   "resources/attacks/dagger_flash_step.tres",
+  "resources/attacks/yuan_ult_blue_slash_01.tres",
+  "resources/attacks/yuan_ult_blue_slash_02.tres",
+  "resources/attacks/yuan_ult_blue_slash_03.tres",
+  "resources/attacks/yuan_ult_blue_slash_04.tres",
+  "resources/attacks/yuan_ult_blue_slash_05.tres",
+  "resources/attacks/yuan_ult_blue_slash_06.tres",
+  "resources/attacks/yuan_ult_blue_slash_07.tres",
+  "resources/attacks/yuan_ult_red_slam.tres",
   "resources/attacks/player_slash_1.tres",
   "resources/vfx/vfx_catalog.tres",
   "docs/GAME_FRAMEWORK.md",
@@ -107,5 +150,68 @@ if ($staticGameplayNodes.Count -gt 0) {
   $staticGameplayNodes | ForEach-Object { Write-Host "  $($_.Value)" -ForegroundColor Red }
   exit 1
 }
+
+$projectSettings = Get-Content -LiteralPath (Join-Path $root "project.godot") -Raw
+$requiredSettings = @(
+  'window/size/viewport_width=1920',
+  'window/size/viewport_height=1080',
+  'window/stretch/mode="canvas_items"'
+)
+foreach ($setting in $requiredSettings) {
+  if (-not $projectSettings.Contains($setting)) {
+    Write-Host "Missing required 1080p clarity setting: $setting" -ForegroundColor Red
+    exit 1
+  }
+}
+
+if ($mainScene.Contains("bg_start_menu_yuan_face_v2.png")) {
+  Write-Host "Main.tscn must use the clean componentized title background, not the baked-text menu art." -ForegroundColor Red
+  exit 1
+}
+
+if (-not $mainScene.Contains("MenuRoot")) {
+  Write-Host "Main.tscn must expose componentized menu controls under TitleLayer/MenuRoot." -ForegroundColor Red
+  exit 1
+}
+
+function Assert-PngSize {
+  param(
+    [string]$RelativePath,
+    [int]$ExpectedWidth,
+    [int]$ExpectedHeight
+  )
+
+  $fullPath = Join-Path $root $RelativePath
+  $bytes = [IO.File]::ReadAllBytes($fullPath)
+  if ($bytes.Length -lt 24) {
+    Write-Host "PNG is too small to read dimensions: $RelativePath" -ForegroundColor Red
+    exit 1
+  }
+
+  $width = ([int]$bytes[16] -shl 24) -bor ([int]$bytes[17] -shl 16) -bor ([int]$bytes[18] -shl 8) -bor [int]$bytes[19]
+  $height = ([int]$bytes[20] -shl 24) -bor ([int]$bytes[21] -shl 16) -bor ([int]$bytes[22] -shl 8) -bor [int]$bytes[23]
+  if ($width -ne $ExpectedWidth -or $height -ne $ExpectedHeight) {
+    Write-Host "Unexpected PNG size for $RelativePath`: ${width}x${height}, expected ${ExpectedWidth}x${ExpectedHeight}" -ForegroundColor Red
+    exit 1
+  }
+}
+
+Assert-PngSize "assets/ui/bg_start_menu_yuan_face_clean_1920.png" 1920 1080
+Assert-PngSize "assets/pixel/background/lab/bg_rebirth_lab_1920.png" 1920 1080
+Assert-PngSize "assets/pixel/background/city/bg_city_route_panel_01.png" 1920 1080
+Assert-PngSize "assets/pixel/background/city/bg_city_route_panel_02.png" 1920 1080
+Assert-PngSize "assets/pixel/background/city/bg_city_route_panel_03.png" 1920 1080
+Assert-PngSize "assets/pixel/background/city/bg_city_route_panel_04.png" 1920 1080
+Assert-PngSize "assets/pixel/characters/player_yuan_early_clone/spr_player_yuan_ultimate_slam.png" 768 96
+Assert-PngSize "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_afterimage.png" 672 96
+Assert-PngSize "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_01.png" 1536 128
+Assert-PngSize "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_02.png" 1536 128
+Assert-PngSize "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_03.png" 1536 128
+Assert-PngSize "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_04.png" 1536 128
+Assert-PngSize "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_05.png" 1536 128
+Assert-PngSize "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_06.png" 1536 128
+Assert-PngSize "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_07.png" 1536 128
+Assert-PngSize "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_red_slam_arc.png" 1536 128
+Assert-PngSize "assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_red_impact.png" 1536 128
 
 Write-Host "Project skeleton validation passed." -ForegroundColor Green

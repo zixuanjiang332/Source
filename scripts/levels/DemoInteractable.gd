@@ -1,8 +1,6 @@
 class_name DemoInteractable
 extends Area2D
 
-const MINIMAL_VISUAL_MODE := true
-
 @export var prompt_text := "E"
 @export var speaker := ""
 @export var dialogue_lines: PackedStringArray = PackedStringArray()
@@ -11,6 +9,7 @@ const MINIMAL_VISUAL_MODE := true
 @export var completed_text := "already synchronized"
 @export var teleport_enabled := false
 @export var teleport_target := Vector2.ZERO
+@export var level_change_id: StringName = &""
 @export var opens_shop := false
 @export var shop_id: StringName = &"main"
 
@@ -43,8 +42,7 @@ func _on_body_entered(body: Node2D) -> void:
 	set_process(true)
 	if not (one_shot and _used):
 		_set_prompt_visible(true)
-		if not MINIMAL_VISUAL_MODE:
-			GameEvents.request_toast("%s // interact" % prompt_text)
+		GameEvents.request_toast("%s // interact" % prompt_text)
 
 
 func _on_body_exited(body: Node2D) -> void:
@@ -58,15 +56,11 @@ func _on_body_exited(body: Node2D) -> void:
 
 func _interact() -> void:
 	if one_shot and _used:
-		if not MINIMAL_VISUAL_MODE:
-			GameEvents.request_toast(completed_text)
+		GameEvents.request_toast(completed_text)
 		return
 
 	if opens_shop:
-		if MINIMAL_VISUAL_MODE:
-			GameEvents.request_camera_impulse(0.16, 0.05)
-		else:
-			GameEvents.request_shop(shop_id)
+		GameEvents.request_shop(shop_id)
 		if one_shot:
 			_used = true
 			_set_prompt_visible(false)
@@ -74,14 +68,13 @@ func _interact() -> void:
 
 	if not dialogue_lines.is_empty():
 		var line := dialogue_lines[_line_index % dialogue_lines.size()]
-		if not MINIMAL_VISUAL_MODE:
-			if speaker.is_empty():
-				GameEvents.request_toast(line)
-			else:
-				GameEvents.request_toast("%s: %s" % [speaker, line])
+		if speaker.is_empty():
+			GameEvents.request_toast(line)
+		else:
+			GameEvents.request_toast("%s: %s" % [speaker, line])
 		_line_index += 1
 
-	if not MINIMAL_VISUAL_MODE and not objective_after.is_empty():
+	if not objective_after.is_empty():
 		GameEvents.request_objective(objective_after)
 
 	if teleport_enabled and _player != null:
@@ -90,6 +83,9 @@ func _interact() -> void:
 			character.velocity = Vector2.ZERO
 		_player.global_position = teleport_target
 		GameEvents.request_camera_impulse(0.28, 0.08)
+
+	if level_change_id != &"":
+		GameEvents.request_level_change(level_change_id)
 
 	if one_shot:
 		_used = true
@@ -102,4 +98,4 @@ func _is_player(body: Node2D) -> bool:
 
 func _set_prompt_visible(is_visible: bool) -> void:
 	if prompt_label != null:
-		prompt_label.visible = is_visible and not MINIMAL_VISUAL_MODE
+		prompt_label.visible = is_visible

@@ -24,11 +24,12 @@ CurrencyManager="*res://scripts/shop/CurrencyManager.gd"
 
 [display]
 
-window/size/viewport_width=480
-window/size/viewport_height=270
-window/size/mode=3
-window/stretch/mode="viewport"
-window/stretch/aspect="expand"
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/window_width_override=1920
+window/size/window_height_override=1080
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
 window/stretch/scale_mode="integer"
 
 [physics]
