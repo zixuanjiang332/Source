@@ -25,6 +25,7 @@
 - 建立 `main`、`develop`、`art/player-concept-pass` 分支。
 - 创建公开仓库 `zixuanjiang332/Source`。
 - 编写程序规范、GitHub 流程、素材交付、AI 辅助素材规则。
+- 产出主角“源”三阶段 AI 概念草图及无武器版本，并登记到素材清单。
 
 ### 当前阻塞
 
@@ -44,7 +45,7 @@
 | 项目骨架初始化 | Codex / 程序 | Done | 已推送远程仓库 |
 | GitHub 协作流程 | Codex / 团队 | Done | `main` 已保护 |
 | 文档治理规则 | Codex | Doing | 本分支补充 |
-| 主角视觉草案 | 美术/VFX | Todo | 从 `art/player-concept-pass` 开始 |
+| 主角视觉草案 | 美术/VFX | Review | AI 概念参考已入库，等待人工定稿与重绘 |
 | 武器视觉草案 | 策划 / 美术 | Todo | 先做第一把武器 |
 | 世界观文档整理 | 策划 | Todo | 建议新增 `WORLDVIEW.md` |
 
@@ -77,4 +78,3 @@
 |---|---|---|---|
 |  |  | Todo |  |
 ```
-

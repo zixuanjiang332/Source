@@ -10,5 +10,11 @@ placeholder,birth_lab_background,Codex built-in image_gen 2026-05-31,assets/pixe
 placeholder,robot_city_panorama,Codex built-in image_gen 2026-05-31,assets/pixel/placeholders/bg_city_panorama_wide.png,Codex,placeholder,AI placeholder for open-air neon robot city skyline
 placeholder,hologram_city_sheet,Codex built-in image_gen 2026-05-31,assets/pixel/placeholders/sheet_hologram_city.png,Codex,placeholder,AI placeholder sheet for hologram billboards and rings
 placeholder,lab_city_prop_sheet,Codex built-in image_gen 2026-05-31,assets/pixel/placeholders/sheet_lab_city_props.png,Codex,placeholder,AI placeholder sheet for flying traffic and lab/city props
+concept,player_yuan_early_clone,Codex built-in image_gen 2026-05-31,art_src/concepts/chr_yuan_concept_01_early_clone.png,Codex,concept,Reference sketch only; early cloned human execution body
+concept,player_yuan_machine_arms,Codex built-in image_gen 2026-05-31,art_src/concepts/chr_yuan_concept_02_machine_arms.png,Codex,concept,Reference sketch only; mid-game mechanical limb adaptation
+concept,player_yuan_machine_eye_heart,Codex built-in image_gen 2026-05-31,art_src/concepts/chr_yuan_concept_03_machine_eye_heart.png,Codex,concept,Reference sketch only; late-game mechanical eye and heart reveal
+concept,player_yuan_early_clone_no_weapon,Codex built-in image_gen edit 2026-05-31,art_src/concepts/chr_yuan_concept_01_early_clone_no_weapon.png,Codex,concept,Reference sketch only; weapon removed from early cloned human execution body
+concept,player_yuan_machine_arms_no_weapon,Codex built-in image_gen edit 2026-05-31,art_src/concepts/chr_yuan_concept_02_machine_arms_no_weapon.png,Codex,concept,Reference sketch only; weapon removed from mid-game mechanical limb adaptation
+concept,player_yuan_machine_eye_heart_no_weapon,Codex built-in image_gen edit 2026-05-31,art_src/concepts/chr_yuan_concept_03_machine_eye_heart_no_weapon.png,Codex,concept,Reference sketch only; weapon removed from late-game mechanical eye and heart reveal
 sfx,player_dash,art_src/audio/sfx_player_dash_01.wav,assets/audio/sfx_player_dash_01.wav,Programmer B,planned,temporary jsfxr ok
 sfx,hit_metal_light,art_src/audio/sfx_hit_metal_light_01.wav,assets/audio/sfx_hit_metal_light_01.wav,Programmer B,planned,temporary jsfxr ok
