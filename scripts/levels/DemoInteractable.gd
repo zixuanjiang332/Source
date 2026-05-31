@@ -9,6 +9,7 @@ extends Area2D
 @export var completed_text := "already synchronized"
 @export var teleport_enabled := false
 @export var teleport_target := Vector2.ZERO
+@export var level_change_id: StringName = &""
 
 @onready var prompt_label: Label = get_node_or_null("PromptLabel") as Label
 
@@ -73,6 +74,9 @@ func _interact() -> void:
 			character.velocity = Vector2.ZERO
 		_player.global_position = teleport_target
 		GameEvents.request_camera_impulse(0.28, 0.08)
+
+	if level_change_id != &"":
+		GameEvents.request_level_change(level_change_id)
 
 	if one_shot:
 		_used = true

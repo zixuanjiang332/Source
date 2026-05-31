@@ -1,8 +1,8 @@
 class_name Hud
 extends CanvasLayer
 
-const HEALTH_FILL_WIDTH := 118.0
-const ENERGY_FILL_WIDTH := 88.0
+const HEALTH_FILL_WIDTH := 476.0
+const ENERGY_FILL_WIDTH := 356.0
 
 @onready var health_fill: ColorRect = $Root/Margin/HealthBack/HealthFill
 @onready var health_label: Label = $Root/Margin/HealthLabel

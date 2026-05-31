@@ -37,12 +37,15 @@
 - 将当前主角、主菜单 UI、武器概念图全量导出到 `assets/`，并接入主菜单、玩家显示、HUD 头像和匕首图标。
 - 修复主菜单：切换到脸部主题图，点击开始前不加载关卡、HUD、VFX 或玩家。
 - 接入“源”早期克隆体 66 帧动作 spritesheet，补齐玩家动作状态、地图边界和大视距相机。
+- 将项目切换到 1920x1080 渲染基准，主菜单与 HUD 改为清晰的独立 UI 组件。
+- 生成并接入清洁版主菜单背景、重生实验室背景和 4 张连续城市主关卡背景。
+- 拆分重生实验室段和城市主战斗段，电梯改为播放转场后加载主关卡。
 
 ### 当前阻塞
 
 - 当前主角动作帧已接入，敌人帧动画和正式特效 spritesheet 尚待补齐。
 - 当前战斗切片仍需 Godot GUI 手动试玩确认手感。
-- 城市动态背景仍使用 placeholder sheet 驱动，正式 tiles/props spritesheet 待后续处理。
+- 城市动态背景主图已替换为连续大背景，局部动态 props 仍使用 placeholder sheet 驱动，正式 spritesheet 待后续处理。
 
 ### 下周计划
 
@@ -62,9 +65,10 @@
 | 主角视觉草案 | 美术/VFX | Review | 已导出到 `assets/` 并接入玩家/HUD/动作帧，待 GUI 检查观感 |
 | 武器视觉草案 | 策划 / 美术 | Review | 已导出到 `assets/` 并接入初始匕首 HUD 图标 |
 | 初始匕首玩法切片 | Codex / 程序 | Review | 已接入玩家动作帧、大视距相机和地图边界，待 GUI 手动试玩 |
-| 动态背景框架 | Codex / 程序 | Review | 通用动画节点已搭建，待 GUI 检查视觉节奏 |
-| 实验室背景 AI final 素材 | Codex | Review | 已接入 Godot，待 GUI 视觉验收 |
-| 城市背景 tiles/props 正式素材 | 美术/VFX | Todo | 依据 `ASSET_MANIFEST.csv` 的 city background 条目绘制 |
+| 动态背景框架 | Codex / 程序 | Review | 已改为 1920x1080 连续主背景，待 GUI 检查视觉节奏 |
+| 实验室背景 AI final 素材 | Codex | Review | 重生段已接入高清背景，待 GUI 视觉验收 |
+| 城市背景 tiles/props 正式素材 | 美术/VFX | Doing | 主关卡 4 张连续背景已接入，局部动态 props 待替换 |
+| 菜单与 HUD 清晰度修复 | Codex | Review | 菜单组件化和 1080p HUD 已实现，待 GUI 交互验收 |
 | 世界观文档整理 | 策划 | Todo | 建议新增 `WORLDVIEW.md` |
 
 ## 周报模板

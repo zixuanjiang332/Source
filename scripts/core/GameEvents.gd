@@ -12,6 +12,7 @@ signal item_collected(item_id: StringName)
 signal objective_changed(message: String)
 signal toast_requested(message: String)
 signal run_reset_requested
+signal level_change_requested(level_id: StringName)
 
 func report_player_health(current_health: int, max_health: int) -> void:
 	player_health_changed.emit(current_health, max_health)
@@ -59,3 +60,7 @@ func request_toast(message: String) -> void:
 
 func request_run_reset() -> void:
 	run_reset_requested.emit()
+
+
+func request_level_change(level_id: StringName) -> void:
+	level_change_requested.emit(level_id)

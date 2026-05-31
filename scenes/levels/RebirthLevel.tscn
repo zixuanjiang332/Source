@@ -1,0 +1,291 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/RebirthLevel.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/items/PickupRepairCell.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/items/PickupDashCore.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/items/PickupDamageAmp.tscn" id="5"]
+[ext_resource type="Script" path="res://scripts/levels/DemoInteractable.gd" id="6"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/bg_rebirth_lab_1920.png" id="7"]
+[ext_resource type="Script" path="res://scripts/levels/AnimatedBackgroundProp.gd" id="8"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/prop_lab_terminal_scan.png" id="9"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/prop_lab_warning_light.png" id="10"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/lab/prop_lab_elevator_pulse.png" id="11"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lab_ground"]
+size = Vector2(1040, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(32, 560)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horizontal_bound"]
+size = Vector2(1120, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interact_wide"]
+size = Vector2(96, 78)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interact_tall"]
+size = Vector2(72, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_elevator"]
+size = Vector2(110, 160)
+
+[node name="RebirthLevel" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Background" type="Node2D" parent="."]
+z_index = -100
+
+[node name="RebirthBackdrop" type="Sprite2D" parent="Background"]
+position = Vector2(480, 90)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7")
+
+[node name="LabGlowProps" type="Node2D" parent="Background"]
+z_index = 5
+
+[node name="TerminalScan" type="Sprite2D" parent="Background/LabGlowProps"]
+position = Vector2(424, 166)
+scale = Vector2(0.34, 0.34)
+modulate = Color(0.36, 1, 0.95, 0.78)
+texture = ExtResource("9")
+script = ExtResource("8")
+frame_size = Vector2i(64, 48)
+frame_count = 6
+fps = 10.0
+columns = 6
+
+[node name="WarningLight" type="Sprite2D" parent="Background/LabGlowProps"]
+position = Vector2(704, 126)
+scale = Vector2(0.46, 0.46)
+modulate = Color(1, 0.46, 0.08, 0.88)
+texture = ExtResource("10")
+script = ExtResource("8")
+frame_size = Vector2i(32, 32)
+frame_count = 6
+columns = 6
+
+[node name="ElevatorPulse" type="Sprite2D" parent="Background/LabGlowProps"]
+position = Vector2(840, 82)
+scale = Vector2(0.58, 0.58)
+modulate = Color(0.2, 0.95, 1, 0.34)
+texture = ExtResource("11")
+script = ExtResource("8")
+frame_size = Vector2i(96, 160)
+frame_count = 8
+columns = 8
+
+[node name="RouteLabel" type="Label" parent="."]
+position = Vector2(28, -154)
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.68, 0.94, 1, 0.72)
+text = "Awakening route"
+
+[node name="Lab" type="Node2D" parent="."]
+
+[node name="DrLin" type="Node2D" parent="Lab"]
+position = Vector2(250, 220)
+
+[node name="Coat" type="Polygon2D" parent="Lab/DrLin"]
+color = Color(0.72, 0.83, 0.94, 1)
+polygon = PackedVector2Array(-11, -50, 10, -50, 17, 0, -17, 0)
+
+[node name="Head" type="Polygon2D" parent="Lab/DrLin"]
+color = Color(0.95, 0.84, 0.76, 1)
+polygon = PackedVector2Array(-9, -68, 8, -68, 12, -56, 5, -48, -6, -48, -12, -56)
+
+[node name="Visor" type="Polygon2D" parent="Lab/DrLin"]
+color = Color(0.25, 1, 1, 0.9)
+polygon = PackedVector2Array(-8, -61, 10, -61, 8, -56, -10, -56)
+
+[node name="AwakeningBedInteract" type="Area2D" parent="Lab"]
+position = Vector2(112, 186)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6")
+prompt_text = "E BED"
+speaker = "SYSTEM"
+dialogue_lines = PackedStringArray("Vitals restored. neural lag falling inside acceptable range.")
+objective_after = "SYNC // talk to Dr. Lin"
+one_shot = true
+completed_text = "bed diagnostics already read"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lab/AwakeningBedInteract"]
+shape = SubResource("RectangleShape2D_interact_wide")
+
+[node name="PromptLabel" type="Label" parent="Lab/AwakeningBedInteract"]
+visible = false
+offset_left = -32.0
+offset_top = -70.0
+offset_right = 32.0
+offset_bottom = -46.0
+theme_override_font_sizes/font_size = 16
+text = "E"
+horizontal_alignment = 1
+
+[node name="DoctorInteract" type="Area2D" parent="Lab"]
+position = Vector2(250, 180)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6")
+prompt_text = "E DR"
+speaker = "Dr. Lin"
+dialogue_lines = PackedStringArray("You woke before the city found this lab.", "The surface is bright, prosperous, and empty of free people.", "Take the cores. The machines above will not negotiate.")
+objective_after = "SUPPLY // inspect terminal and take the cores"
+completed_text = "Dr. Lin is watching the elevator feed"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lab/DoctorInteract"]
+shape = SubResource("RectangleShape2D_interact_tall")
+
+[node name="PromptLabel" type="Label" parent="Lab/DoctorInteract"]
+visible = false
+offset_left = -24.0
+offset_top = -88.0
+offset_right = 24.0
+offset_bottom = -64.0
+theme_override_font_sizes/font_size = 16
+text = "E"
+horizontal_alignment = 1
+
+[node name="TerminalInteract" type="Area2D" parent="Lab"]
+position = Vector2(424, 186)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6")
+prompt_text = "E TERM"
+speaker = "TERMINAL"
+dialogue_lines = PackedStringArray("Surface census: zero free humans. labor signatures routed below machine towers.")
+objective_after = "SUPPLY // collect repair cell, dash core, and neon edge"
+one_shot = true
+completed_text = "terminal log cached"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lab/TerminalInteract"]
+shape = SubResource("RectangleShape2D_interact_wide")
+
+[node name="PromptLabel" type="Label" parent="Lab/TerminalInteract"]
+visible = false
+offset_left = -38.0
+offset_top = -70.0
+offset_right = 38.0
+offset_bottom = -46.0
+theme_override_font_sizes/font_size = 16
+text = "E"
+horizontal_alignment = 1
+
+[node name="SupplyStationInteract" type="Area2D" parent="Lab"]
+position = Vector2(604, 186)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6")
+prompt_text = "E SUPPLY"
+speaker = "STATION"
+dialogue_lines = PackedStringArray("Emergency kit unlocked. take every core before leaving.")
+objective_after = "ELEVATOR // reach the surface lift"
+one_shot = true
+completed_text = "supply station already unlocked"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lab/SupplyStationInteract"]
+shape = SubResource("RectangleShape2D_interact_wide")
+
+[node name="PromptLabel" type="Label" parent="Lab/SupplyStationInteract"]
+visible = false
+offset_left = -42.0
+offset_top = -70.0
+offset_right = 42.0
+offset_bottom = -46.0
+theme_override_font_sizes/font_size = 16
+text = "E"
+horizontal_alignment = 1
+
+[node name="ElevatorInteract" type="Area2D" parent="Lab"]
+position = Vector2(838, 154)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6")
+prompt_text = "E LIFT"
+speaker = "LIFT"
+dialogue_lines = PackedStringArray("Surface lock accepted. rising to the neon city.")
+objective_after = "SURFACE // cross the robot high road"
+one_shot = true
+completed_text = "surface lift already used"
+level_change_id = &"main_city"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lab/ElevatorInteract"]
+shape = SubResource("RectangleShape2D_elevator")
+
+[node name="PromptLabel" type="Label" parent="Lab/ElevatorInteract"]
+visible = false
+offset_left = -30.0
+offset_top = -104.0
+offset_right = 30.0
+offset_bottom = -80.0
+theme_override_font_sizes/font_size = 16
+text = "E"
+horizontal_alignment = 1
+
+[node name="Collision" type="Node2D" parent="."]
+
+[node name="Ground" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/Ground"]
+position = Vector2(480, 234)
+shape = SubResource("RectangleShape2D_lab_ground")
+
+[node name="Visual" type="Polygon2D" parent="Collision/Ground"]
+color = Color(0.055, 0.065, 0.085, 1)
+polygon = PackedVector2Array(-40, 220, 1000, 220, 1040, 270, -40, 270)
+
+[node name="GroundNeon" type="Line2D" parent="Collision/Ground"]
+points = PackedVector2Array(-20, 220, 980, 220)
+width = 2.0
+default_color = Color(0.12, 0.92, 1, 0.9)
+
+[node name="LeftWall" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/LeftWall"]
+position = Vector2(-56, 70)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="RightWall" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/RightWall"]
+position = Vector2(1016, 70)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="TopBoundary" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/TopBoundary"]
+position = Vector2(480, -196)
+shape = SubResource("RectangleShape2D_horizontal_bound")
+
+[node name="BottomBoundary" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/BottomBoundary"]
+position = Vector2(480, 336)
+shape = SubResource("RectangleShape2D_horizontal_bound")
+
+[node name="Actors" type="Node2D" parent="."]
+
+[node name="Player" parent="Actors" instance=ExtResource("2")]
+position = Vector2(92, 220)
+
+[node name="Pickups" type="Node2D" parent="."]
+
+[node name="RepairCell" parent="Pickups" instance=ExtResource("3")]
+position = Vector2(532, 190)
+
+[node name="DashCore" parent="Pickups" instance=ExtResource("4")]
+position = Vector2(606, 190)
+
+[node name="DamageAmp" parent="Pickups" instance=ExtResource("5")]
+position = Vector2(680, 190)

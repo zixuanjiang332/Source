@@ -1,0 +1,233 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/MainCityLevel.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/TrainingDrone.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/RiotFrame.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/FoundryWarden.tscn" id="5"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/city/bg_city_route_panel_01.png" id="6"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/city/bg_city_route_panel_02.png" id="7"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/city/bg_city_route_panel_03.png" id="8"]
+[ext_resource type="Texture2D" path="res://assets/pixel/background/city/bg_city_route_panel_04.png" id="9"]
+[ext_resource type="Script" path="res://scripts/levels/AnimatedBackgroundProp.gd" id="10"]
+[ext_resource type="Texture2D" path="res://assets/pixel/placeholders/sheet_hologram_city.png" id="11"]
+[ext_resource type="Texture2D" path="res://assets/pixel/placeholders/sheet_lab_city_props.png" id="12"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_city_ground"]
+size = Vector2(3920, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(32, 560)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horizontal_bound"]
+size = Vector2(4080, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_wide"]
+size = Vector2(220, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_mid"]
+size = Vector2(170, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_small"]
+size = Vector2(140, 16)
+
+[node name="MainCityLevel" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Background" type="Node2D" parent="."]
+z_index = -100
+
+[node name="CityPanels" type="Node2D" parent="Background"]
+z_index = -100
+
+[node name="Panel01" type="Sprite2D" parent="Background/CityPanels"]
+position = Vector2(480, 90)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6")
+
+[node name="Panel02" type="Sprite2D" parent="Background/CityPanels"]
+position = Vector2(1440, 90)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7")
+
+[node name="Panel03" type="Sprite2D" parent="Background/CityPanels"]
+position = Vector2(2400, 90)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8")
+
+[node name="Panel04" type="Sprite2D" parent="Background/CityPanels"]
+position = Vector2(3360, 90)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("9")
+
+[node name="CityAnimatedProps" type="Node2D" parent="Background"]
+z_index = -55
+
+[node name="TrafficA" type="Sprite2D" parent="Background/CityAnimatedProps"]
+position = Vector2(760, 78)
+scale = Vector2(0.56, 0.56)
+modulate = Color(0.78, 0.95, 1, 0.72)
+texture = ExtResource("12")
+script = ExtResource("10")
+frame_size = Vector2i(64, 32)
+frame_count = 8
+columns = 8
+scroll_velocity = Vector2(52, 0)
+wrap_min_x = 160.0
+wrap_max_x = 3720.0
+
+[node name="TrafficB" type="Sprite2D" parent="Background/CityAnimatedProps"]
+position = Vector2(1700, 112)
+scale = Vector2(0.48, 0.48)
+modulate = Color(1, 0.48, 0.86, 0.62)
+texture = ExtResource("12")
+script = ExtResource("10")
+frame_size = Vector2i(64, 32)
+frame_count = 8
+columns = 8
+scroll_velocity = Vector2(68, 0)
+wrap_min_x = 160.0
+wrap_max_x = 3720.0
+
+[node name="HoloRing" type="Sprite2D" parent="Background/CityAnimatedProps"]
+position = Vector2(2350, 34)
+scale = Vector2(0.42, 0.42)
+modulate = Color(0.28, 1, 0.95, 0.6)
+texture = ExtResource("11")
+script = ExtResource("10")
+frame_size = Vector2i(128, 128)
+frame_count = 12
+fps = 12.0
+columns = 7
+
+[node name="ExitGateLockPulse" type="Sprite2D" parent="Background/CityAnimatedProps"]
+position = Vector2(3520, 168)
+scale = Vector2(0.5, 0.5)
+modulate = Color(1, 0.56, 0.12, 0.68)
+texture = ExtResource("12")
+script = ExtResource("10")
+frame_size = Vector2i(128, 96)
+frame_count = 8
+columns = 7
+
+[node name="RouteLabel" type="Label" parent="."]
+position = Vector2(32, -154)
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.68, 0.94, 1, 0.72)
+text = "Combat route"
+
+[node name="Collision" type="Node2D" parent="."]
+
+[node name="CityGround" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/CityGround"]
+position = Vector2(1920, 234)
+shape = SubResource("RectangleShape2D_city_ground")
+
+[node name="Visual" type="Polygon2D" parent="Collision/CityGround"]
+color = Color(0.065, 0.07, 0.092, 1)
+polygon = PackedVector2Array(-40, 220, 3880, 220, 3920, 270, -40, 270)
+
+[node name="GroundNeon" type="Line2D" parent="Collision/CityGround"]
+points = PackedVector2Array(0, 220, 3840, 220)
+width = 2.0
+default_color = Color(0.18, 0.95, 1, 0.95)
+
+[node name="LeftWall" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/LeftWall"]
+position = Vector2(-56, 70)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="RightWall" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/RightWall"]
+position = Vector2(3896, 70)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="TopBoundary" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/TopBoundary"]
+position = Vector2(1920, -196)
+shape = SubResource("RectangleShape2D_horizontal_bound")
+
+[node name="BottomBoundary" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/BottomBoundary"]
+position = Vector2(1920, 336)
+shape = SubResource("RectangleShape2D_horizontal_bound")
+
+[node name="PlatformA" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/PlatformA"]
+position = Vector2(880, 178)
+shape = SubResource("RectangleShape2D_platform_wide")
+
+[node name="Visual" type="Polygon2D" parent="Collision/PlatformA"]
+color = Color(0.08, 0.095, 0.13, 1)
+polygon = PackedVector2Array(770, 170, 990, 170, 980, 188, 780, 188)
+
+[node name="TopNeon" type="Line2D" parent="Collision/PlatformA"]
+points = PackedVector2Array(770, 170, 990, 170)
+width = 2.0
+default_color = Color(0.14, 0.95, 1, 0.9)
+
+[node name="PlatformB" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/PlatformB"]
+position = Vector2(1540, 148)
+shape = SubResource("RectangleShape2D_platform_mid")
+
+[node name="Visual" type="Polygon2D" parent="Collision/PlatformB"]
+color = Color(0.08, 0.095, 0.13, 1)
+polygon = PackedVector2Array(1455, 140, 1625, 140, 1615, 158, 1465, 158)
+
+[node name="TopNeon" type="Line2D" parent="Collision/PlatformB"]
+points = PackedVector2Array(1455, 140, 1625, 140)
+width = 2.0
+default_color = Color(0.14, 0.95, 1, 0.9)
+
+[node name="PlatformC" type="StaticBody2D" parent="Collision"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/PlatformC"]
+position = Vector2(2480, 176)
+shape = SubResource("RectangleShape2D_platform_small")
+
+[node name="Visual" type="Polygon2D" parent="Collision/PlatformC"]
+color = Color(0.08, 0.095, 0.13, 1)
+polygon = PackedVector2Array(2410, 168, 2550, 168, 2540, 186, 2420, 186)
+
+[node name="TopNeon" type="Line2D" parent="Collision/PlatformC"]
+points = PackedVector2Array(2410, 168, 2550, 168)
+width = 2.0
+default_color = Color(0.14, 0.95, 1, 0.9)
+
+[node name="Actors" type="Node2D" parent="."]
+
+[node name="Player" parent="Actors" instance=ExtResource("2")]
+position = Vector2(120, 220)
+
+[node name="TrainingDrone" parent="Actors" instance=ExtResource("3")]
+position = Vector2(1080, 220)
+
+[node name="RiotFrame" parent="Actors" instance=ExtResource("4")]
+position = Vector2(1960, 220)
+
+[node name="FoundryWarden" parent="Actors" instance=ExtResource("5")]
+position = Vector2(3180, 220)

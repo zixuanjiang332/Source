@@ -82,13 +82,13 @@ shape = SubResource("RectangleShape2D_hurtbox")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(58, -54)
-zoom = Vector2(0.65, 0.65)
+zoom = Vector2(2, 2)
 enabled = true
-limit_left = -120
+limit_left = 0
 limit_top = -180
-limit_right = 2600
-limit_bottom = 320
-position_smoothing_enabled = true
+limit_right = 3840
+limit_bottom = 360
+position_smoothing_enabled = false
 position_smoothing_speed = 8.0
 script = ExtResource("5")
 
@@ -97,6 +97,6 @@ offset_left = -34.0
 offset_top = -91.0
 offset_right = 34.0
 offset_bottom = -75.0
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 14
 text = "READY"
 horizontal_alignment = 1

@@ -16,18 +16,35 @@
 - `Hitbox` / `Hurtbox`: 所有攻击命中都走这两个 Area2D。
 - `VfxCatalog`: 通过 `vfx_id` 查找特效场景，便于后续替换为正式帧动画或粒子效果。
 - `PlayerAnimationController`: 玩家动画桥接层，正式 spritesheet 缺失或动画标签缺失时回退到灰盒视觉。
+- `level_change_requested`: `GameEvents` 上的关卡切换事件，当前由重生段电梯触发，`Main.gd` 播放转场后加载主关卡。
 
 ## Current Scene Flow
 
-`Main.tscn` 启动时只显示标题菜单和空 `GameRoot`。标题菜单使用脸部主题 AI final 图，点击“开始游戏”后才动态创建 `VfxSpawner`、`Hud.tscn` 和 `DemoLevel.tscn`，进入实验室到城市的演示路线。这样标题页不会提前显示正式关卡、HUD、玩家或动态背景。
+`Main.tscn` 启动时只显示标题菜单和空 `GameRoot`。标题菜单使用 1920x1080 清洁版脸部主题 AI final 图，菜单选项由 Godot 蓝色中文按钮组件显示，支持鼠标悬停高亮放大。点击“开始游戏”后才动态创建 `VfxSpawner`、`Hud.tscn` 和 `RebirthLevel.tscn`，因此标题页不会提前显示正式关卡、HUD、玩家或动态背景。
+
+当前路线拆分为两个运行场景：
+
+- `RebirthLevel.tscn`: 重生实验室段，负责醒来、Dr. Lin、终端、补给和电梯交互。
+- `MainCityLevel.tscn`: 城市高架主战斗段，负责训练敌人、Riot Frame、Foundry Warden 和 30-60 秒战斗录屏路线。
+
+重生段电梯不再把玩家 teleport 到同一张长地图右侧，而是通过 `GameEvents.request_level_change(&"main_city")` 请求关卡切换。`Main.gd` 播放短暂蓝色扫描/淡出转场后卸载重生段并加载主关卡。
 
 当前“源”的概念图已全量导出到 `assets/pixel/characters/yuan/`。运行时玩家使用 `assets/pixel/spr_player_yuan_early_clone.png` 和 `resources/characters/player_yuan_early_clone_frames.tres` 播放 `idle/run/jump/fall/dash/atk_1/atk_2/atk_3/skill/hit/death`。HUD 使用 `portrait_yuan_stage_01.png`，初始匕首 HUD 图标使用 `icon_initial_dagger.png`。
 
-玩家视觉缩放为 70%，相机 `zoom` 为 `0.65`，用于大幅放宽录屏视距。Demo 关卡使用不可见边界限制玩家离开路线，并通过相机 `limit_*` 避免显示明显地图外空白。
+项目渲染基准为 1920x1080，Stretch 使用 `canvas_items`，避免菜单、HUD 和大背景被 480p 内部分辨率压缩后放大。玩家视觉缩放为 70%，相机默认 `zoom` 为 `2.0`，并关闭相机平滑以减少亚像素模糊；该设置在保持像素清晰的同时给出约 960x540 world units 的录屏视距。各关卡使用不可见边界限制玩家离开路线，并通过相机 `limit_*` 避免显示明显地图外空白。
 
 ## Dynamic Background
 
-背景使用全拆 tiles/props 的结构，不做全屏帧序列。`DemoLevel.tscn` 内的背景层固定为：
+背景分为高清静态主图和少量动态 props。当前正式背景主图全部按 1920x1080 输出，运行时在世界中按 `0.5` 显示，使相机 `zoom = 2.0` 时最终画面保持 1:1 清晰度。
+
+重生段使用 `assets/pixel/background/lab/bg_rebirth_lab_1920.png` 作为单屏实验室背景，并叠加终端、警示灯、电梯脉冲等局部动画。城市主关卡使用 4 张连续大背景拼接：
+
+- `bg_city_route_panel_01.png`
+- `bg_city_route_panel_02.png`
+- `bg_city_route_panel_03.png`
+- `bg_city_route_panel_04.png`
+
+旧的全拆 tiles/props 结构仍保留为后续美术替换方向。`DemoLevel.tscn` 内的背景层固定为：
 
 - `Background/LabStaticTiles`
 - `Background/LabAnimatedProps`
@@ -38,7 +55,7 @@
 
 所有循环背景动画挂 `AnimatedBackgroundProp`。该脚本只更新 Sprite2D 的 `region_rect`、位置循环和帧序，不参与碰撞、交互、战斗或关卡目标逻辑。正式美术导出后，替换节点 texture 并按素材规格填写 `frame_size`、`frame_count`、`fps` 和 `columns`。
 
-当前实验室段已切换到 `assets/pixel/background/lab/` 的 AI final 背景 tiles/props，用来验证动态背景管线和运行时接入。城市高架段仍保留 placeholder sheet，等待后续同流程替换。
+当前实验室段已切换到 `assets/pixel/background/lab/` 的 AI final 背景 tiles/props，用来验证动态背景管线和运行时接入。城市高架主图已切换到连续 1920x1080 final 背景，局部动态车流、全息环和出口锁等 props 暂时继续使用 placeholder sheet，等待后续同流程替换为正式 spritesheet。
 
 ## Current Combat Slice
 
