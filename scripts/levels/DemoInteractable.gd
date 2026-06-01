@@ -9,6 +9,9 @@ extends Area2D
 @export var completed_text := "already synchronized"
 @export var teleport_enabled := false
 @export var teleport_target := Vector2.ZERO
+@export var level_change_id: StringName = &""
+@export var opens_shop := false
+@export var shop_id: StringName = &"main"
 
 @onready var prompt_label: Label = get_node_or_null("PromptLabel") as Label
 
@@ -56,6 +59,13 @@ func _interact() -> void:
 		GameEvents.request_toast(completed_text)
 		return
 
+	if opens_shop:
+		GameEvents.request_shop(shop_id)
+		if one_shot:
+			_used = true
+			_set_prompt_visible(false)
+		return
+
 	if not dialogue_lines.is_empty():
 		var line := dialogue_lines[_line_index % dialogue_lines.size()]
 		if speaker.is_empty():
@@ -73,6 +83,9 @@ func _interact() -> void:
 			character.velocity = Vector2.ZERO
 		_player.global_position = teleport_target
 		GameEvents.request_camera_impulse(0.28, 0.08)
+
+	if level_change_id != &"":
+		GameEvents.request_level_change(level_change_id)
 
 	if one_shot:
 		_used = true

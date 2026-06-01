@@ -70,6 +70,7 @@
 - 数值统一放在 `.tres`，不要把正式数值硬编码在脚本里。
 - UI 只监听事件或读取公开状态，不直接驱动战斗逻辑。
 - 特效和音效通过 `GameEvents` 请求，不让攻击脚本直接实例化一堆特效。
+- 背景动画只通过 `AnimatedBackgroundProp` 或后续同职责脚本驱动，不写进关卡主流程逻辑。
 
 ## 6. Resource 数据约定
 
@@ -77,10 +78,13 @@
 
 - `CharacterStats`: 生命、速度、冲刺、重力、接触伤害。
 - `AttackData`: 伤害、击退、主动帧、冷却、命中停顿、VFX/SFX ID。
+- `WeaponData`: 武器 ID、显示名、三段普攻、Demo 技能攻击和 HUD 技能名。
 - `ItemData`: 道具 ID、描述、效果 ID、倍率。
 - `VfxCatalog`: VFX ID 到场景的映射。
 
 新增数据时优先扩展 Resource，而不是新增全局单例。只有跨系统事件才进入 `GameEvents`。
+
+当前 `WeaponData` 只服务初始匕首切片。不要在本阶段加入武器栏、快速切换、背包或完整装备系统；如果后续确实需要扩展，先更新 `GAME_FRAMEWORK.md` 和 `DECISION_LOG.md`。
 
 ## 7. 输入与手感
 
@@ -88,6 +92,7 @@
 - 所有手感参数先从 Resource 或 export 变量暴露。
 - 冲刺、攻击、受击、死亡这类状态必须互相排斥或明确优先级。
 - 命中停顿和屏幕震动要短，先保证操作可读。
+- 连段、能量和技能 UI 通过 `GameEvents` 广播，不允许 UI 直接调用玩家战斗方法。
 
 ## 8. 碰撞层约定
 
@@ -101,7 +106,15 @@
 
 新增层之前先更新本文档，避免多人各自占用。
 
-## 9. PR 前自检
+## 9. 动态背景约定
+
+- 动态背景素材采用横向 spritesheet，所有帧等宽等高。
+- `AnimatedBackgroundProp.frame_size` 必须等于单帧尺寸，`frame_count` 必须等于有效帧数。
+- 交通、光条、全息牌等视觉循环可以使用 `scroll_velocity` 和 `wrap_min_x` / `wrap_max_x`，但不能影响玩法节点。
+- 正式素材只放 `assets/pixel/background/`；源文件只放 `art_src/background/`。
+- 背景亮度必须压低，不能抢过玩家、敌人、命中特效和交互提示。
+
+## 10. PR 前自检
 
 提交 PR 前至少做：
 
@@ -118,7 +131,7 @@
 - 新增素材没有缺失引用。
 - 新增 `.png`、`.wav`、`.aseprite` 走 Git LFS。
 
-## 10. 禁止事项
+## 11. 禁止事项
 
 - 不在 Demo 阶段引入大型插件或复杂框架。
 - 不把临时测试逻辑散落在多个正式脚本里。

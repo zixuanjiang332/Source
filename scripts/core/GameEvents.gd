@@ -2,6 +2,9 @@ extends Node
 
 signal player_health_changed(current_health: int, max_health: int)
 signal player_energy_changed(current_energy: int, max_energy: int)
+signal player_weapon_changed(weapon_name: String, skill_name: String, skill_cost: int)
+signal player_ultimate_changed(ultimate_name: String, ultimate_cost: int, hold_time: float)
+signal player_combo_changed(combo_step: int, combo_size: int)
 signal enemy_defeated(enemy_id: StringName)
 signal camera_impulse_requested(strength: float, duration: float)
 signal vfx_requested(vfx_id: StringName, world_position: Vector2, facing: int)
@@ -10,6 +13,11 @@ signal item_collected(item_id: StringName)
 signal objective_changed(message: String)
 signal toast_requested(message: String)
 signal run_reset_requested
+signal level_change_requested(level_id: StringName)
+signal shop_requested(shop_id: StringName)
+signal shop_closed
+signal currency_changed(current_amount: int)
+signal item_purchased(shop_item_id: StringName, item_data: Resource)
 
 func report_player_health(current_health: int, max_health: int) -> void:
 	player_health_changed.emit(current_health, max_health)
@@ -17,6 +25,18 @@ func report_player_health(current_health: int, max_health: int) -> void:
 
 func report_player_energy(current_energy: int, max_energy: int) -> void:
 	player_energy_changed.emit(current_energy, max_energy)
+
+
+func report_player_weapon(weapon_name: String, skill_name: String, skill_cost: int) -> void:
+	player_weapon_changed.emit(weapon_name, skill_name, skill_cost)
+
+
+func report_player_ultimate(ultimate_name: String, ultimate_cost: int, hold_time: float) -> void:
+	player_ultimate_changed.emit(ultimate_name, ultimate_cost, hold_time)
+
+
+func report_player_combo(combo_step: int, combo_size: int) -> void:
+	player_combo_changed.emit(combo_step, combo_size)
 
 
 func report_enemy_defeated(enemy_id: StringName) -> void:
@@ -49,3 +69,23 @@ func request_toast(message: String) -> void:
 
 func request_run_reset() -> void:
 	run_reset_requested.emit()
+
+
+func request_level_change(level_id: StringName) -> void:
+	level_change_requested.emit(level_id)
+
+
+func request_shop(shop_id: StringName = &"main") -> void:
+	shop_requested.emit(shop_id)
+
+
+func report_shop_closed() -> void:
+	shop_closed.emit()
+
+
+func report_currency_changed(current_amount: int) -> void:
+	currency_changed.emit(current_amount)
+
+
+func report_item_purchased(shop_item_id: StringName, item_data: Resource) -> void:
+	item_purchased.emit(shop_item_id, item_data)

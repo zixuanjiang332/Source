@@ -5,6 +5,8 @@ extends Resource
 @export var hit_spark_scene: PackedScene
 @export var dash_burst_scene: PackedScene
 @export var item_pickup_scene: PackedScene
+@export var sheet_entries: Array[VfxEntry] = []
+@export var sfx_entries: Array[SfxEntry] = []
 
 func scene_for(vfx_id: StringName) -> PackedScene:
 	match vfx_id:
@@ -16,3 +18,17 @@ func scene_for(vfx_id: StringName) -> PackedScene:
 			return item_pickup_scene if item_pickup_scene != null else fallback_scene
 		_:
 			return fallback_scene
+
+
+func sheet_entry_for(vfx_id: StringName) -> VfxEntry:
+	for entry: VfxEntry in sheet_entries:
+		if entry != null and entry.vfx_id == vfx_id:
+			return entry
+	return null
+
+
+func sfx_entry_for(sfx_id: StringName) -> SfxEntry:
+	for entry: SfxEntry in sfx_entries:
+		if entry != null and entry.sfx_id == sfx_id:
+			return entry
+	return null

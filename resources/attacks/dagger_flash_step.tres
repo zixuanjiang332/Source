@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"dagger_flash_step"
+display_name = "Flash Step"
+animation_id = &"skill"
+damage = 36
+energy_cost = 32
+knockback = Vector2(300, -110)
+lunge = 138.0
+active_time = 0.16
+cooldown = 0.34
+hit_stun = 0.25
+hit_stop = 0.058
+screen_shake = 1.05
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_energy_cleave_01"

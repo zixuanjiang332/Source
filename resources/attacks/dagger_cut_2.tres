@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"dagger_cut_2"
+display_name = "Reverse Needle"
+animation_id = &"atk_2"
+damage = 16
+energy_cost = 0
+knockback = Vector2(155, -46)
+lunge = 44.0
+active_time = 0.085
+cooldown = 0.15
+hit_stun = 0.14
+hit_stop = 0.032
+screen_shake = 0.45
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_light_02"
