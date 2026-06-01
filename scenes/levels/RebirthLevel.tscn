@@ -180,7 +180,7 @@ script = ExtResource("6")
 prompt_text = "E SUPPLY"
 speaker = "STATION"
 dialogue_lines = PackedStringArray("Emergency kit unlocked. take every core before leaving.")
-objective_after = "ELEVATOR // reach the surface lift"
+objective_after = "ELEVATOR // reach the workshop lift"
 one_shot = true
 completed_text = "supply station already unlocked"
 
@@ -204,11 +204,11 @@ collision_mask = 2
 script = ExtResource("6")
 prompt_text = "E LIFT"
 speaker = "LIFT"
-dialogue_lines = PackedStringArray("Surface lock accepted. rising to the neon city.")
-objective_after = "SURFACE // cross the robot high road"
+dialogue_lines = PackedStringArray("Workshop access accepted. descending to the repair bay.")
+objective_after = "WORKSHOP // reach the repair bay"
 one_shot = true
-completed_text = "surface lift already used"
-level_change_id = &"main_city"
+completed_text = "workshop lift already used"
+level_change_id = &"workshop"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Lab/ElevatorInteract"]
 shape = SubResource("RectangleShape2D_elevator")

@@ -70,7 +70,7 @@
 | 初始匕首玩法切片 | Codex / 程序 | Review | 已接入玩家动作帧、大视距相机和地图边界，待 GUI 手动试玩 |
 | 动态背景框架 | Codex / 程序 | Review | 已改为 1920x1080 连续主背景，待 GUI 检查视觉节奏 |
 | 实验室背景 AI final 素材 | Codex | Review | 重生段已接入高清背景，待 GUI 视觉验收 |
-| 初始商店背景 AI final 素材 | Codex | Review | 已生成 1920x1080 单图，并随 develop 合入；出生点/商店流程仍待 UI 适配 |
+| 初始商店背景 AI final 素材 | Codex | Review | 已生成 1920x1080 单图，并接入重生点 -> 作坊 -> 主关卡流程；待试玩验收 |
 | 城市背景 tiles/props 正式素材 | 美术/VFX | Doing | 主关卡 4 张连续背景已接入，局部动态 props 待替换 |
 | 菜单与 HUD 清晰度修复 | Codex | Review | 菜单组件化和 1080p HUD 已实现，待 GUI 交互验收 |
 | 电子光刀终结技 | Codex / 美术/VFX | Review | VFX/SFX/角色重击帧和长按 K 逻辑已接入，待 GUI 手感验收 |
