@@ -8,8 +8,8 @@ const DEFAULT_KEYMAP := {
 	"interact": [KEY_E],
 	"jump": [KEY_SPACE],
 	"dash": [KEY_SHIFT],
-	"attack": [KEY_J],
-	"skill": [KEY_K],
+	"attack": [MOUSE_BUTTON_LEFT],
+	"skill": [MOUSE_BUTTON_RIGHT],
 	"restart": [KEY_R],
 	"pause": [KEY_ESCAPE],
 }
@@ -24,16 +24,31 @@ func _ensure_action(action: StringName, keys: Array) -> void:
 		InputMap.add_action(action, 0.2)
 
 	for keycode: int in keys:
-		if _has_key_event(action, keycode):
-			continue
-
-		var event := InputEventKey.new()
-		event.physical_keycode = keycode
-		InputMap.action_add_event(action, event)
+		# 处理鼠标事件（MOUSE_BUTTON_* 常量）
+		if keycode in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]:
+			if _has_mouse_event(action, keycode):
+				continue
+			var event := InputEventMouseButton.new()
+			event.button_index = keycode
+			InputMap.action_add_event(action, event)
+		# 处理键盘事件（KEY_* 常量）
+		else:
+			if _has_key_event(action, keycode):
+				continue
+			var event := InputEventKey.new()
+			event.physical_keycode = keycode
+			InputMap.action_add_event(action, event)
 
 
 func _has_key_event(action: StringName, keycode: int) -> bool:
 	for event: InputEvent in InputMap.action_get_events(action):
 		if event is InputEventKey and event.physical_keycode == keycode:
+			return true
+	return false
+
+
+func _has_mouse_event(action: StringName, button_index: int) -> bool:
+	for event: InputEvent in InputMap.action_get_events(action):
+		if event is InputEventMouseButton and event.button_index == button_index:
 			return true
 	return false

@@ -17,8 +17,8 @@ Godot 和 Aseprite 当前未在本机 PATH 中检测到；项目文件已经准�
 - Move: `A/D` 或方向键
 - Jump: `Space`
 - Dash: `Shift`
-- Attack: `J`
-- Skill: `K`
+- Attack: 鼠标左键
+- Skill: 鼠标右键
 - Restart: `R`
 - Pause: `Esc`
 
