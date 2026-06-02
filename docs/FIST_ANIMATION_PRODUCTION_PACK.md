@@ -114,7 +114,7 @@ art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv
 
 ## 4. 推荐出图顺序
 
-建议不要一次性把 52 张全量帧图全生出来，而是按下面顺序推进：
+建议不要一次性把 70 张全量帧图全生出来，而是按下面顺序推进：
 
 1. `combat_idle` 关键姿势
 2. `combat_run` 全套循环
@@ -163,7 +163,7 @@ art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv
 
 目标：这是“追击跑”而不是普通赶路跑，上身仍保持拳架和压迫感。
 
-- 帧数：`8`
+- 帧数：`10`
 - FPS：`12`
 - 循环：`yes`
 - 关键词：前压、追击、短步频、拳架稳定、头部不乱飘
@@ -187,7 +187,7 @@ art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv
 
 目标：前手刺拳。快、短、准，用来开连段。
 
-- 帧数：`8`
+- 帧数：`12`
 - FPS：`18`
 - 关键词：快启快收、短促穿透、前肩送拳
 
@@ -202,7 +202,8 @@ art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv
 | 5 | 穿透 | 保留半帧延伸感，不能立刻缩回。 |
 | 6 | 回收 | 前拳回拉，后手重新回护。 |
 | 7 | 收招 | 重心拉回可继续连第二拳的位置。 |
-| 8 | 结束 | 回到可衔接 `punch_2` 的拳架。 |
+| 8-10 | 回收 | 拳头收回，肩线回落，但身体仍保持前压。 |
+| 11-12 | 结束 | 回到可衔接 `punch_2` 的拳架。 |
 
 禁止项：
 
@@ -214,7 +215,7 @@ art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv
 
 目标：后手重直拳或短摆拳，明显比第一段更重。
 
-- 帧数：`8`
+- 帧数：`12`
 - FPS：`18`
 - 关键词：转髋、反拉、后手贯穿、躯干扭转
 
@@ -229,7 +230,8 @@ art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv
 | 5 | 延伸 | 保留冲透感，拳头方向清晰。 |
 | 6 | 制动 | 上身被惯性带前，随后开始刹住。 |
 | 7 | 回架 | 后手回护，准备接第三段。 |
-| 8 | 过渡 | 重心压到适合重拳收尾的位置。 |
+| 8-10 | 回收 | 肩髋继续回正，脚下仍有向第三拳压进的趋势。 |
+| 11-12 | 过渡 | 重心压到适合重拳收尾的位置。 |
 
 禁止项：
 
@@ -241,7 +243,7 @@ art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv
 
 目标：连段收尾重拳，最强重量感的一段。
 
-- 帧数：`10`
+- 帧数：`14`
 - FPS：`16`
 - 关键词：大前压、踏步、下砸或重勾、强收势
 
@@ -261,7 +263,8 @@ art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv
 | 6 | 主命中 | 这是全套里最重的一帧，轮廓、压迫感、前压都要最大。 |
 | 7 | 延迟 | 允许保留半拍压制感。 |
 | 8-9 | 收势 | 身体把惯性吃住，脚底稳。 |
-| 10 | 结束 | 回到可移动状态。 |
+| 10-12 | 落地 | 肩线和骨盆缓慢回正，保留重拳后的压地感。 |
+| 13-14 | 结束 | 回到可移动状态。 |
 
 禁止项：
 
@@ -273,7 +276,7 @@ art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv
 
 目标：拳系位移技。前半段给速度，后半段给砸实感。
 
-- 帧数：`10`
+- 帧数：`14`
 - FPS：`16`
 - 关键词：突进、压近、爆发、残影辅助、本体清晰
 
@@ -286,7 +289,8 @@ art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv
 | 5-6 | 接触 | 突进接拳、肘击或肩撞，读得出接触点。 |
 | 7 | 主命中 | 轮廓最大，打击结果最明确。 |
 | 8-9 | 制动 | 把速度收住，不能直接瞬停。 |
-| 10 | 回稳 | 回到可继续操作的姿态。 |
+| 10-12 | 回收 | 残影淡出，本体姿态重新变清楚。 |
+| 13-14 | 回稳 | 回到可继续操作的姿态。 |
 
 禁止项：
 
@@ -303,7 +307,7 @@ Create a 2D side-view pixel art playable character animation frame for a cyberpu
 Canvas target: 96x96.
 Character: Yuan early clone, agile close-range melee fighter, dark combat outfit, cyan energy accents, one mechanical forearm, no handheld weapon, fists raised in a combat stance.
 Animation tag: [combat_idle/combat_run/punch_1/punch_2/punch_3/punch_skill].
-Frame index: [01-10].
+Frame index: [01-14].
 Frame purpose: [startup/load/launch/contact/extension/recovery/loop].
 Motion direction: strong anticipation, powerful body-driven force from legs hips torso shoulders into the fist, stable planted feet, readable torso twist, premium action-game readability, smooth weight transfer, no floaty motion.
 Silhouette priority: clear fist direction, readable head torso pelvis rotation, clean contact pose, no duplicated limbs.

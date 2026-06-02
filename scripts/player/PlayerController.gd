@@ -10,7 +10,7 @@ const ATTACK_CHAIN = [
 	preload("res://resources/attacks/fist_breaker_3.tres"),
 ]
 const SKILL_ATTACK = preload("res://resources/attacks/fist_drive_step.tres")
-const VISUAL_SCALE := 0.90
+const VISUAL_SCALE := 1.03
 const ULTIMATE_STEP_INTERVAL := 0.085
 const ULTIMATE_BLUE_HITBOX_SIZE := Vector2(168.0, 62.0)
 const ULTIMATE_RED_HITBOX_SIZE := Vector2(188.0, 96.0)

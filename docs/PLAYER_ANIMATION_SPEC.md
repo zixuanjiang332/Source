@@ -60,11 +60,11 @@ Avoid text, watermark, fake UI, soft painterly edges, photoreal rendering, extra
 | Tag | Frames | FPS | Loop | Intent |
 |---|---:|---:|---|---|
 | `combat_idle` | 8 | 8 | yes | 空手战斗架势，肩膀前顶，双拳不对称，随时能压上去。 |
-| `combat_run` | 8 | 12 | yes | 保持上身前倾和拳架，不是普通跑步，要有追击感。 |
-| `punch_1` | 8 | 18 | no | 快速前手刺拳；1-2 帧预备，4 帧命中，6-8 帧回收。 |
-| `punch_2` | 8 | 18 | no | 后手直拳或摆拳；躯干旋转更大，命中时肩髋联动明显。 |
-| `punch_3` | 10 | 16 | no | 重拳收尾；允许更大前压和更长收招，命中帧要最有重量。 |
-| `punch_skill` | 10 | 16 | no | 位移接重击的拳系技能，可做冲步炮拳或肘膝爆发。 |
+| `combat_run` | 10 | 12 | yes | 保持上身前倾和拳架，不是普通跑步，要有追击感。 |
+| `punch_1` | 12 | 18 | no | 快速前手刺拳；1-3 帧预备，6 帧命中，9-12 帧回收。 |
+| `punch_2` | 12 | 18 | no | 后手直拳或摆拳；躯干旋转更大，命中时肩髋联动明显。 |
+| `punch_3` | 14 | 16 | no | 重拳收尾；允许更大前压和更长收招，命中帧要最有重量。 |
+| `punch_skill` | 14 | 16 | no | 位移接重击的拳系技能，可做冲步炮拳或肘膝爆发。 |
 
 ## Fist Pass Frame Rules
 
@@ -75,6 +75,7 @@ Avoid text, watermark, fake UI, soft painterly edges, photoreal rendering, extra
 - 每段攻击至少要有 1 帧明显的 stretch / extension，和 1 帧明显的 settle / recovery。
 - 命中帧不要糊成一团，拳头、前臂、头部朝向和胸腔扭转必须读得出来。
 - 如果加入残影，只能辅助速度感，不能替代角色本体动作本身。
+- 不要用简单复制帧来凑帧数；新增帧必须补出真实的重心、肩线、髋线或接触变化。
 
 ## Pistol Animation Reservations
 
