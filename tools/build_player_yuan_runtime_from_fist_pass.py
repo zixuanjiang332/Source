@@ -23,6 +23,7 @@ FOOT_BASELINE_Y = 92
 MAX_FRAME_WIDTH = 86
 MAX_FRAME_HEIGHT = 88
 MIN_COMPONENT_AREA = 18
+STABLE_IDLE_HEAD_BOX = (28, 2, 68, 47)
 
 LEGACY_ANIMATIONS = [
     ("idle", 6, 8, True),
@@ -180,6 +181,23 @@ def normalize_frame(source: Image.Image) -> Image.Image:
     return strip_tiny_fragments(polish_small_sprite(output))
 
 
+def stabilize_head_region(frames: list[Image.Image]) -> list[Image.Image]:
+    if not frames:
+        return frames
+
+    template = frames[0].convert("RGBA").crop(STABLE_IDLE_HEAD_BOX)
+    stabilized: list[Image.Image] = []
+    for frame in frames:
+        output = frame.convert("RGBA").copy()
+        output.paste(
+            (0, 0, 0, 0),
+            STABLE_IDLE_HEAD_BOX,
+        )
+        output.alpha_composite(template, STABLE_IDLE_HEAD_BOX[:2])
+        stabilized.append(output)
+    return stabilized
+
+
 def read_strip_frames(strip_dir: Path, name: str, frame_count: int) -> list[Image.Image]:
     strip_path = strip_dir / f"{name}.png"
     if not strip_path.exists():
@@ -216,7 +234,10 @@ def build_frames() -> dict[str, list[Path]]:
 
     for name, frame_count, _fps, _loop in FIST_ANIMATIONS:
         out_paths = []
-        for index, frame in enumerate(read_strip_frames(FIST_STRIP_DIR, name, frame_count)):
+        frames = read_strip_frames(FIST_STRIP_DIR, name, frame_count)
+        if name == "combat_idle":
+            frames = stabilize_head_region(frames)
+        for index, frame in enumerate(frames):
             out_path = OUTPUT_FRAME_DIR / f"{name}_{index:02d}.png"
             frame.save(out_path)
             out_paths.append(out_path)
