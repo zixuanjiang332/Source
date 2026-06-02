@@ -20,6 +20,7 @@ var _line_index := 0
 var _used := false
 
 func _ready() -> void:
+	monitoring = true
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	if prompt_label != null:
@@ -29,6 +30,11 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if _player == null:
+		_player = _resolve_player()
+		if _player != null and not (one_shot and _used):
+			_set_prompt_visible(true)
+
 	if _player == null:
 		return
 
@@ -50,13 +56,20 @@ func _on_body_exited(body: Node2D) -> void:
 	if body != _player:
 		return
 
-	_player = null
-	set_process(false)
-	_set_prompt_visible(false)
+	_player = _resolve_player()
+	if _player == null:
+		set_process(false)
+		_set_prompt_visible(false)
 
 
 func _interact() -> void:
+	if _player == null:
+		_player = _resolve_player()
+
 	if one_shot and _used:
+		return
+
+	if _player == null:
 		return
 
 	if opens_shop:
@@ -81,6 +94,7 @@ func _interact() -> void:
 
 	if level_change_id != &"":
 		GameEvents.request_level_change(level_change_id)
+		return
 
 	if one_shot:
 		_used = true
@@ -94,3 +108,11 @@ func _is_player(body: Node2D) -> bool:
 func _set_prompt_visible(is_visible: bool) -> void:
 	if prompt_label != null:
 		prompt_label.visible = is_visible
+
+
+func _resolve_player() -> Node2D:
+	for body in get_overlapping_bodies():
+		var node := body as Node2D
+		if node != null and _is_player(node):
+			return node
+	return null

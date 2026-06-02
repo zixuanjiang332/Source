@@ -222,6 +222,9 @@ func _load_level(level_id: StringName) -> void:
 		&"workshop":
 			_current_level = WORKSHOP_LEVEL_SCENE.instantiate()
 			_current_level.name = "WorkshopLevel"
+		&"outside":
+			_current_level = MAIN_CITY_LEVEL_SCENE.instantiate()
+			_current_level.name = "MainCityLevel"
 		&"main_city":
 			_current_level = MAIN_CITY_LEVEL_SCENE.instantiate()
 			_current_level.name = "MainCityLevel"

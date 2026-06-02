@@ -4,6 +4,7 @@ extends Resource
 @export var weapon_id: StringName = &"weapon"
 @export var display_name := "Weapon"
 @export_multiline var description := ""
+@export var icon_texture: Texture2D
 @export var light_attack: Resource
 @export var followup_attack: Resource
 @export var finisher_attack: Resource
