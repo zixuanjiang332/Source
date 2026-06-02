@@ -18,6 +18,8 @@ ULTIMATE_SLAM_PATH = ROOT / "assets" / "pixel" / "characters" / "player_yuan_ear
 CELL_SIZE = 96
 SHEET_COLUMNS = 10
 FOOT_BASELINE_Y = 92
+MAX_FRAME_WIDTH = 86
+MAX_FRAME_HEIGHT = 88
 
 LEGACY_ANIMATIONS = [
     ("idle", 6, 8, True),
@@ -62,7 +64,17 @@ def missing_strip_paths() -> list[Path]:
 def is_key_green(r: int, g: int, b: int, a: int) -> bool:
     if a <= 12:
         return True
+    if is_cyan_effect_pixel(r, g, b, a):
+        return False
     return g >= 120 and g > r * 1.3 and g > b * 1.08
+
+
+def is_skin_pixel(r: int, g: int, b: int, a: int) -> bool:
+    return a > 40 and r > 105 and g > 58 and b > 38 and r > g > b and (r - b) > 35
+
+
+def is_cyan_effect_pixel(r: int, g: int, b: int, a: int) -> bool:
+    return a > 25 and b > 110 and g > 80 and b > r * 1.35
 
 
 def remove_chroma_key(image: Image.Image) -> Image.Image:
@@ -78,6 +90,38 @@ def remove_chroma_key(image: Image.Image) -> Image.Image:
     return image
 
 
+def polish_small_sprite(frame: Image.Image) -> Image.Image:
+    frame = frame.convert("RGBA")
+    pixels = frame.load()
+    bbox = frame.getbbox()
+    if bbox is None:
+        return frame
+
+    skin_points: list[tuple[int, int]] = []
+    top_limit = min(CELL_SIZE, bbox[1] + 40)
+    for y in range(bbox[1], top_limit):
+        for x in range(bbox[0], bbox[2]):
+            if is_skin_pixel(*pixels[x, y]):
+                skin_points.append((x, y))
+
+    for x, y in skin_points:
+        r, g, b, a = pixels[x, y]
+        pixels[x, y] = (min(255, r + 24), min(220, g + 16), min(180, b + 8), max(a, 230))
+        for nx, ny in ((x + 1, y), (x, y + 1)):
+            if 0 <= nx < CELL_SIZE and 0 <= ny < CELL_SIZE:
+                nr, ng, nb, na = pixels[nx, ny]
+                if na == 0 or (nr + ng + nb) < 110:
+                    pixels[nx, ny] = (190, 122, 84, max(na, 165))
+
+    for y in range(CELL_SIZE):
+        for x in range(CELL_SIZE):
+            r, g, b, a = pixels[x, y]
+            if is_cyan_effect_pixel(r, g, b, a):
+                pixels[x, y] = (min(r, 55), min(255, g + 26), min(255, b + 34), max(a, 220))
+
+    return frame
+
+
 def normalize_frame(source: Image.Image) -> Image.Image:
     keyed = remove_chroma_key(source)
     bbox = keyed.getbbox()
@@ -86,9 +130,7 @@ def normalize_frame(source: Image.Image) -> Image.Image:
         return output
 
     cropped = keyed.crop(bbox)
-    max_width = 90
-    max_height = 90
-    scale = min(max_width / cropped.width, max_height / cropped.height, 1.0)
+    scale = min(MAX_FRAME_WIDTH / cropped.width, MAX_FRAME_HEIGHT / cropped.height, 1.0)
     next_size = (
         max(1, round(cropped.width * scale)),
         max(1, round(cropped.height * scale)),
@@ -97,7 +139,7 @@ def normalize_frame(source: Image.Image) -> Image.Image:
     x = (CELL_SIZE - resized.width) // 2
     y = max(0, FOOT_BASELINE_Y - resized.height)
     output.alpha_composite(resized, (x, y))
-    return output
+    return polish_small_sprite(output)
 
 
 def read_strip_frames(strip_dir: Path, name: str, frame_count: int) -> list[Image.Image]:
@@ -181,6 +223,7 @@ def build_sprite_frames_resource() -> None:
                         f'[sub_resource type="AtlasTexture" id="{sub_id}"]',
                         'atlas = ExtResource("1_sheet")',
                         f"region = Rect2({x}, {y}, {CELL_SIZE}, {CELL_SIZE})",
+                        "filter_clip = true",
                     ]
                 )
             )
@@ -212,6 +255,7 @@ def build_sprite_frames_resource() -> None:
                     f'[sub_resource type="AtlasTexture" id="{sub_id}"]',
                     'atlas = ExtResource("2_ultimate_slam")',
                     f"region = Rect2({x}, 0, {CELL_SIZE}, {CELL_SIZE})",
+                    "filter_clip = true",
                 ]
             )
         )
