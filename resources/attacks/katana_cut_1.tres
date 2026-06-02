@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"katana_cut_1"
+display_name = "Reverse Charge Cut"
+animation_id = &"atk_1"
+damage = 60
+energy_cost = 0
+knockback = Vector2(170, -48)
+lunge = 54.0
+active_time = 0.085
+cooldown = 0.26
+hit_stun = 0.16
+hit_stop = 0.038
+screen_shake = 0.56
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_light_01"
+energy_regen = 8

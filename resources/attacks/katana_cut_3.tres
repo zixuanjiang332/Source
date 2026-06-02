@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"katana_cut_3"
+display_name = "Charged Breaker"
+animation_id = &"atk_3"
+damage = 78
+energy_cost = 0
+knockback = Vector2(280, -98)
+lunge = 72.0
+active_time = 0.11
+cooldown = 0.38
+hit_stun = 0.24
+hit_stop = 0.056
+screen_shake = 0.9
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_heavy_01"
+energy_regen = 10

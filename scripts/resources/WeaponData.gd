@@ -4,6 +4,22 @@ extends Resource
 @export var weapon_id: StringName = &"weapon"
 @export var display_name := "Weapon"
 @export_multiline var description := ""
+@export var weapon_type: StringName = &"melee"
+@export var element_type: StringName = &"none"
+@export var world_texture: Texture2D
+@export var hud_icon: Texture2D
+@export var base_damage_rating := 10
+@export var attack_speed_rating := 10
+@export var passive_summary := ""
+@export var equip_move_speed_scale := 1.0
+@export var equip_max_health_scale := 1.0
+@export var attack_damage_scale := 1.0
+@export var attack_speed_scale := 1.0
+@export var passive_effect_id: StringName = &"none"
+@export var passive_threshold := 0
+@export var passive_execute_health_ratio := 0.0
+@export var passive_boss_damage_scale := 1.0
+@export var skill_charge_time := 0.0
 @export var light_attack: Resource
 @export var followup_attack: Resource
 @export var finisher_attack: Resource

@@ -133,19 +133,39 @@ stretch_mode = 5
 [node name="WeaponLabel" type="Label" parent="Root/Margin"]
 layout_mode = 0
 offset_left = 160.0
-offset_top = 206.0
+offset_top = 198.0
 offset_right = 720.0
-offset_bottom = 248.0
+offset_bottom = 240.0
 theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.92)
 theme_override_font_sizes/font_size = 28
 text = "WEAPON // --"
 
+[node name="WeaponStatLabel" type="Label" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 242.0
+offset_right = 960.0
+offset_bottom = 282.0
+theme_override_colors/font_color = Color(0.78, 0.92, 1, 0.78)
+theme_override_font_sizes/font_size = 22
+text = "MELEE // DMG 020 // SPD 050 // ELEM NONE"
+
+[node name="PassiveLabel" type="Label" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 284.0
+offset_right = 960.0
+offset_bottom = 324.0
+theme_override_colors/font_color = Color(0.72, 0.88, 1, 0.72)
+theme_override_font_sizes/font_size = 22
+text = "PASSIVE // --"
+
 [node name="SkillLabel" type="Label" parent="Root/Margin"]
 layout_mode = 0
 offset_left = 160.0
-offset_top = 258.0
+offset_top = 332.0
 offset_right = 820.0
-offset_bottom = 304.0
+offset_bottom = 378.0
 theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.86)
 theme_override_font_sizes/font_size = 26
 text = "K Skill // --"
@@ -153,9 +173,9 @@ text = "K Skill // --"
 [node name="UltimateLabel" type="Label" parent="Root/Margin"]
 layout_mode = 0
 offset_left = 160.0
-offset_top = 310.0
+offset_top = 382.0
 offset_right = 860.0
-offset_bottom = 356.0
+offset_bottom = 428.0
 theme_override_colors/font_color = Color(1, 0.34, 0.38, 0.9)
 theme_override_font_sizes/font_size = 26
 text = "HOLD K // CHARGING"
