@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"next_gen_shot"
+display_name = "Next Gen Shot"
+animation_id = &"atk_1"
+damage = 30
+energy_cost = 0
+knockback = Vector2(118, -24)
+lunge = 0.0
+active_time = 0.02
+cooldown = 0.08
+hit_stun = 0.06
+hit_stop = 0.012
+screen_shake = 0.14
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_light_01"
+energy_regen = 3

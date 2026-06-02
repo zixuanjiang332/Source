@@ -4,6 +4,7 @@ extends CharacterBody2D
 const DEFAULT_STATS = preload("res://resources/characters/player_stats.tres")
 const DEFAULT_WEAPON = preload("res://resources/weapons/initial_dagger.tres")
 const WEAPON_PICKUP_SCENE = preload("res://scenes/items/WeaponPickup.tscn")
+const RANGED_HIT_MASK := 4
 const MINIMAL_VISUAL_MODE := true
 const ATTACK_CHAIN = [
 	preload("res://resources/attacks/dagger_cut_1.tres"),
@@ -71,6 +72,14 @@ var _previous_equipped_index := -1
 var _weapon_charge_timer := 0.0
 var _weapon_skill_ready := false
 var _last_attack_hit_targets: Array[Node] = []
+var _weapon_skill_buff_timer := 0.0
+var _weapon_skill_attack_speed_bonus := 1.0
+var _bleed_targets := {}
+var _ranged_shot_counter := 0
+var _next_shot_empowered := false
+var _weapon_skill_cooldown_timer := 0.0
+var _weapon_pierce_timer := 0.0
+var _enemy_kill_count := 0
 var inventory: Array[WeaponData] = []
 var equipped_index: int = 0
 
@@ -90,6 +99,7 @@ func _ready() -> void:
 	_report_weapon()
 	GameEvents.report_player_combo(0, _attack_chain().size())
 	hitbox.hit_landed.connect(_on_hit_landed)
+	GameEvents.enemy_defeated.connect(_on_enemy_defeated)
 	_update_facing_visual()
 	_update_movement_animation()
 
@@ -285,12 +295,22 @@ func _tick_timers(delta: float) -> void:
 	_invulnerable_timer = max(0.0, _invulnerable_timer - delta)
 	_combo_reset_timer = max(0.0, _combo_reset_timer - delta)
 	_tick_weapon_charge(delta)
+	_tick_weapon_skill_buff(delta)
+	_tick_bleed_effects(delta)
+	_tick_weapon_skill_cooldown(delta)
+	_tick_weapon_pierce(delta)
 	if _combo_reset_timer <= 0.0 and _last_reported_combo != 0:
 		_combo_index = 0
 		_report_combo(0)
 
 
 func _update_skill_input(delta: float) -> void:
+	if weapon_data != null and weapon_data.skill_attack == null and weapon_data.skill_effect_id == &"none":
+		_skill_hold_active = false
+		_skill_hold_consumed = false
+		_skill_hold_timer = 0.0
+		return
+
 	if Input.is_action_just_pressed("skill") and not _attack_locked:
 		if _weapon_skill_uses_charge():
 			_try_weapon_charge_skill()
@@ -329,6 +349,10 @@ func _try_attack() -> void:
 	if _attack_locked or _skill_hold_active:
 		return
 
+	if _weapon_is_ranged():
+		_try_ranged_attack()
+		return
+
 	var chain := _attack_chain()
 	if chain.is_empty():
 		return
@@ -342,8 +366,19 @@ func _try_attack() -> void:
 
 
 func _try_skill() -> void:
+	if weapon_data != null and weapon_data.skill_effect_id == &"stiletto_overclock":
+		_try_stiletto_overclock()
+		return
+	if weapon_data != null and weapon_data.skill_effect_id == &"next_gen_energy_burst":
+		_try_next_gen_energy_burst()
+		return
+	if weapon_data != null and weapon_data.skill_effect_id == &"surge_armor_pierce":
+		_try_surge_armor_pierce()
+		return
+
 	var skill_attack: Resource = _skill_attack()
 	if skill_attack == null:
+		GameEvents.request_toast("%s // offline" % _skill_name())
 		return
 
 	if _attack_locked or _ultimate_active:
@@ -459,6 +494,10 @@ func _on_hit_landed(_target: Node, attack_data) -> void:
 	_apply_hit_stop(attack_data.hit_stop)
 
 
+func _on_enemy_defeated(_enemy_id: StringName) -> void:
+	_enemy_kill_count += 1
+
+
 func _apply_hit_stop(duration: float) -> void:
 	if duration <= 0.0:
 		return
@@ -561,7 +600,10 @@ func _can_start_ultimate() -> bool:
 
 func _report_weapon() -> void:
 	GameEvents.report_player_weapon(weapon_data)
-	GameEvents.report_player_ultimate(_ultimate_name(), _ultimate_cost(), _ultimate_hold_time())
+	if _weapon_has_ultimate():
+		GameEvents.report_player_ultimate(_ultimate_name(), _ultimate_cost(), _ultimate_hold_time())
+	else:
+		GameEvents.report_player_ultimate("--", 0, 0.0)
 
 
 func _report_combo(combo_step: int) -> void:
@@ -655,6 +697,12 @@ func _apply_equipped_weapon_modifiers() -> void:
 	_runtime_stats.max_health = stats.max_health
 	_weapon_charge_timer = 0.0
 	_weapon_skill_ready = false
+	_weapon_skill_buff_timer = 0.0
+	_weapon_skill_attack_speed_bonus = 1.0
+	_ranged_shot_counter = 0
+	_next_shot_empowered = false
+	_weapon_skill_cooldown_timer = 0.0
+	_weapon_pierce_timer = 0.0
 	_last_attack_hit_targets.clear()
 	if weapon_data == null:
 		_health = min(_health, _runtime_stats.max_health)
@@ -675,7 +723,15 @@ func _weapon_damage_scale() -> float:
 func _weapon_attack_speed_scale() -> float:
 	if weapon_data == null:
 		return 1.0
-	return maxf(0.1, weapon_data.attack_speed_scale)
+	return maxf(0.1, weapon_data.attack_speed_scale * _weapon_skill_attack_speed_bonus)
+
+
+func _weapon_is_ranged() -> bool:
+	return weapon_data != null and weapon_data.attack_mode == &"hitscan"
+
+
+func _weapon_has_ultimate() -> bool:
+	return weapon_data != null and weapon_data.has_method("has_ultimate") and weapon_data.has_ultimate()
 
 
 func _nearest_weapon_pickup() -> WeaponPickup:
@@ -729,6 +785,95 @@ func _weapon_skill_uses_charge() -> bool:
 	)
 
 
+func _try_ranged_attack() -> void:
+	var template: Resource = _attack_chain().front()
+	if template == null:
+		return
+	_attack_locked = true
+	_last_attack_hit_targets.clear()
+	var attack = template.duplicate(true)
+	attack.damage = max(1, roundi(float(attack.damage) * _damage_multiplier * _weapon_damage_scale()))
+	attack.cooldown = max(0.04, attack.cooldown / _weapon_attack_speed_scale())
+	animation_controller.play_action(_resolve_attack_animation(attack))
+	_fire_hitscan_attack(attack, _consume_empowered_shot())
+
+	await get_tree().create_timer(attack.cooldown).timeout
+	_attack_locked = false
+	animation_controller.clear_action()
+	_update_movement_animation()
+
+
+func _fire_hitscan_attack(attack_data: AttackData, empowered: bool = false) -> void:
+	var start := global_position + Vector2(_facing * 20.0, -34.0)
+	var end := start + Vector2(_facing * _weapon_ranged_range(), 0.0)
+	GameEvents.request_vfx(&"dash_burst", start + Vector2(_facing * 16.0, -2.0), _facing)
+	GameEvents.request_sfx(attack_data.sfx_id, start)
+	if empowered:
+		GameEvents.request_toast("%s // shock round" % weapon_data.display_name)
+	var hits := _collect_hitscan_targets(start, end, _weapon_current_pierce_count())
+	if hits.is_empty():
+		GameEvents.request_camera_impulse(0.12, 0.02)
+		return
+
+	if empowered:
+		var first_hit: Dictionary = hits.front()
+		_apply_next_gen_empowered_hit(first_hit.get("target"), attack_data, first_hit.get("position", end))
+		return
+
+	var last_position: Vector2 = end
+	var hit_any := false
+	for hit in hits:
+		var area := hit.get("area") as Area2D
+		var target: Node = hit.get("target")
+		var position: Vector2 = hit.get("position", end)
+		if area == null or target == null:
+			continue
+		last_position = position
+		area.call("receive_hit", attack_data, self, position, _facing)
+		if not _last_attack_hit_targets.has(target):
+			_last_attack_hit_targets.append(target)
+		_apply_weapon_passive_on_hit(target, attack_data)
+		hit_any = true
+
+	if attack_data.energy_regen > 0 and hit_any:
+		_energy = min(_runtime_stats.max_energy, _energy + int(attack_data.energy_regen))
+		GameEvents.report_player_energy(_energy, _runtime_stats.max_energy)
+	if hit_any:
+		GameEvents.request_vfx(attack_data.vfx_id, last_position, _facing)
+		GameEvents.request_camera_impulse(attack_data.screen_shake, 0.04)
+		_apply_hit_stop(attack_data.hit_stop)
+	else:
+		GameEvents.request_camera_impulse(0.12, 0.02)
+
+
+func _weapon_ranged_range() -> float:
+	if weapon_data == null:
+		return 520.0
+	return maxf(120.0, weapon_data.ranged_range)
+
+
+func _weapon_current_pierce_count() -> int:
+	if weapon_data == null:
+		return 1
+	if _weapon_pierce_timer > 0.0:
+		return maxi(1, weapon_data.ranged_pierce_count)
+	return 1
+
+
+func _consume_empowered_shot() -> bool:
+	if weapon_data == null:
+		return false
+	var empowered := _next_shot_empowered
+	_ranged_shot_counter += 1
+	if weapon_data.passive_effect_id == &"next_gen_shock_round" and not empowered and _ranged_shot_counter >= weapon_data.passive_threshold:
+		_ranged_shot_counter = 0
+		_next_shot_empowered = true
+		GameEvents.request_toast("%s // shock round loaded" % weapon_data.display_name)
+	if empowered:
+		_next_shot_empowered = false
+	return empowered
+
+
 func _try_weapon_charge_skill() -> void:
 	if not _weapon_skill_ready:
 		var remain := maxf(0.0, weapon_data.skill_charge_time - _weapon_charge_timer)
@@ -745,24 +890,331 @@ func _apply_weapon_passive_on_hit(target: Node, attack_data) -> void:
 	match weapon_data.passive_effect_id:
 		&"katana_execute":
 			_apply_katana_execute_passive(target, attack_data)
+		&"stiletto_bleed":
+			_apply_stiletto_bleed(target, attack_data)
+		&"surge_health_wave":
+			_apply_surge_health_wave(target, attack_data)
 
 
 func _apply_katana_execute_passive(target: Node, attack_data) -> void:
 	if weapon_data == null:
 		return
-	if _last_attack_hit_targets.size() < weapon_data.passive_threshold:
-		return
 	if not target.has_method("apply_hit"):
 		return
-	var is_boss := target.has_method("is_boss_enemy") and target.is_boss_enemy()
+	var is_boss: bool = target.has_method("is_boss_enemy") and bool(target.is_boss_enemy())
 	if is_boss:
 		var bonus_attack = attack_data.duplicate(true)
 		bonus_attack.damage = max(1, roundi(float(attack_data.damage) * weapon_data.passive_boss_damage_scale))
 		target.apply_hit(bonus_attack, self, global_position, _facing)
 		GameEvents.request_toast("%s // boss break" % weapon_data.display_name)
 		return
+	if _last_attack_hit_targets.size() <= weapon_data.passive_threshold:
+		return
 	if target.has_method("health_ratio") and target.health_ratio() <= weapon_data.passive_execute_health_ratio:
 		var execute_attack = attack_data.duplicate(true)
 		execute_attack.damage = 999999
 		target.apply_hit(execute_attack, self, global_position, _facing)
 		GameEvents.request_toast("%s // execute" % weapon_data.display_name)
+
+
+func _apply_stiletto_bleed(target: Node, attack_data) -> void:
+	if weapon_data == null or target == null:
+		return
+	var key := target.get_instance_id()
+	var base_damage: int = int(attack_data.damage)
+	if _bleed_targets.has(key):
+		var existing: Dictionary = _bleed_targets[key]
+		existing["target"] = target
+		existing["stacks"] = int(existing.get("stacks", 0)) + 1
+		existing["time_left"] = weapon_data.passive_bleed_duration
+		existing["tick_timer"] = 1.0
+		existing["base_damage"] = maxi(int(existing.get("base_damage", 0)), base_damage)
+		_bleed_targets[key] = existing
+	else:
+		_bleed_targets[key] = {
+			"target": target,
+			"stacks": 1,
+			"time_left": weapon_data.passive_bleed_duration,
+			"tick_timer": 1.0,
+			"base_damage": base_damage,
+		}
+
+
+func _tick_weapon_skill_buff(delta: float) -> void:
+	if _weapon_skill_buff_timer <= 0.0:
+		return
+	_weapon_skill_buff_timer = maxf(0.0, _weapon_skill_buff_timer - delta)
+	if _weapon_skill_buff_timer <= 0.0:
+		_weapon_skill_attack_speed_bonus = 1.0
+		GameEvents.request_toast("%s // offline" % _skill_name())
+
+
+func _try_stiletto_overclock() -> void:
+	if weapon_data == null:
+		return
+	if _weapon_skill_buff_timer > 0.0:
+		GameEvents.request_toast("%s // active" % _skill_name())
+		return
+	_weapon_skill_attack_speed_bonus = maxf(1.0, weapon_data.skill_attack_speed_multiplier)
+	_weapon_skill_buff_timer = maxf(0.0, weapon_data.skill_duration)
+	GameEvents.request_toast("%s // online" % _skill_name())
+
+
+func _tick_weapon_skill_cooldown(delta: float) -> void:
+	if _weapon_skill_cooldown_timer <= 0.0:
+		return
+	_weapon_skill_cooldown_timer = maxf(0.0, _weapon_skill_cooldown_timer - delta)
+
+
+func _tick_weapon_pierce(delta: float) -> void:
+	if _weapon_pierce_timer <= 0.0:
+		return
+	_weapon_pierce_timer = maxf(0.0, _weapon_pierce_timer - delta)
+	if _weapon_pierce_timer <= 0.0:
+		GameEvents.request_toast("%s // offline" % _skill_name())
+
+
+func _try_next_gen_energy_burst() -> void:
+	if weapon_data == null:
+		return
+	if _weapon_skill_cooldown_timer > 0.0:
+		GameEvents.request_toast("%s charging // %.1fs" % [_skill_name(), _weapon_skill_cooldown_timer])
+		return
+	_weapon_skill_cooldown_timer = maxf(0.0, weapon_data.skill_cooldown)
+	var center := global_position + Vector2(_facing * _next_gen_skill_range(), -26.0)
+	var targets := _collect_targets_in_radius(center, _next_gen_skill_radius())
+	if targets.is_empty():
+		GameEvents.request_vfx(&"dash_burst", center, _facing)
+		GameEvents.request_toast("%s // clear" % _skill_name())
+		return
+
+	var base_damage := weapon_data.base_damage_rating + (_enemy_kill_count * weapon_data.skill_damage_bonus_per_kill)
+	var hit_count := 0
+	for target in targets:
+		if target == null or not is_instance_valid(target) or not target.has_method("apply_hit"):
+			continue
+		var burst_attack := AttackData.new()
+		burst_attack.damage = max(1, base_damage)
+		if target.has_method("is_boss_enemy") and bool(target.is_boss_enemy()):
+			burst_attack.damage = max(1, roundi(float(burst_attack.damage) * weapon_data.skill_boss_damage_scale))
+		burst_attack.knockback = Vector2(180.0, -80.0)
+		burst_attack.hit_stun = 0.12
+		burst_attack.hit_stop = 0.02
+		burst_attack.screen_shake = 0.18
+		burst_attack.vfx_id = &"hit_spark_metal"
+		burst_attack.sfx_id = &"sfx_hit_metal_light_01"
+		target.apply_hit(burst_attack, self, center, _facing)
+		hit_count += 1
+
+	GameEvents.request_vfx(&"dash_burst", center, _facing)
+	GameEvents.request_camera_impulse(0.22, 0.04)
+	GameEvents.request_toast("%s // burst x%d" % [_skill_name(), hit_count])
+
+
+func _try_surge_armor_pierce() -> void:
+	if weapon_data == null:
+		return
+	if _weapon_pierce_timer > 0.0:
+		GameEvents.request_toast("%s // active" % _skill_name())
+		return
+	_weapon_pierce_timer = maxf(0.0, weapon_data.skill_duration)
+	GameEvents.request_toast("%s // online" % _skill_name())
+
+
+func _apply_next_gen_empowered_hit(target: Node, attack_data: AttackData, hit_position: Vector2) -> void:
+	if weapon_data == null or target == null or not target.has_method("apply_hit"):
+		return
+	var empowered_attack = attack_data.duplicate(true)
+	var is_boss := target.has_method("is_boss_enemy") and bool(target.is_boss_enemy())
+	if is_boss:
+		empowered_attack.damage = max(1, roundi(float(weapon_data.base_damage_rating) * weapon_data.passive_boss_damage_scale))
+		target.apply_hit(empowered_attack, self, hit_position, _facing)
+	else:
+		target.apply_hit(empowered_attack, self, hit_position, _facing)
+		_apply_pull_to_point(hit_position, _next_gen_pull_radius(), _next_gen_pull_duration())
+
+	if not _last_attack_hit_targets.has(target):
+		_last_attack_hit_targets.append(target)
+	_apply_weapon_passive_on_hit(target, empowered_attack)
+	if empowered_attack.energy_regen > 0:
+		_energy = min(_runtime_stats.max_energy, _energy + int(empowered_attack.energy_regen))
+		GameEvents.report_player_energy(_energy, _runtime_stats.max_energy)
+	GameEvents.request_vfx(empowered_attack.vfx_id, hit_position, _facing)
+	GameEvents.request_camera_impulse(maxf(0.18, empowered_attack.screen_shake), 0.05)
+	_apply_hit_stop(empowered_attack.hit_stop)
+
+
+func _apply_pull_to_point(center: Vector2, radius: float, duration: float) -> void:
+	for target in _collect_targets_in_radius(center, radius):
+		if target == null or not is_instance_valid(target):
+			continue
+		if target.has_method("is_boss_enemy") and bool(target.is_boss_enemy()):
+			continue
+		if not (target is CharacterBody2D):
+			continue
+		var body_target := target as CharacterBody2D
+		var direction := center - body_target.global_position
+		if direction.length_squared() <= 1.0:
+			continue
+		body_target.velocity = direction.normalized() * 220.0
+		_release_pull_velocity(body_target, duration)
+
+
+func _release_pull_velocity(target: CharacterBody2D, duration: float) -> void:
+	if target == null or not is_instance_valid(target):
+		return
+	await get_tree().create_timer(duration).timeout
+	if target == null or not is_instance_valid(target):
+		return
+	target.velocity.x = move_toward(target.velocity.x, 0.0, 220.0)
+
+
+func _collect_targets_in_radius(center: Vector2, radius: float) -> Array[Node]:
+	var results: Array[Node] = []
+	var seen := {}
+	for area in get_tree().get_nodes_in_group("hurtboxes"):
+		var hurtbox := area as Area2D
+		if hurtbox == null or not is_instance_valid(hurtbox):
+			continue
+		if hurtbox.global_position.distance_to(center) > radius:
+			continue
+		if not hurtbox.has_method("get_receiver"):
+			continue
+		var target: Node = hurtbox.get_receiver()
+		if target == null:
+			continue
+		var key := target.get_instance_id()
+		if seen.has(key):
+			continue
+		seen[key] = true
+		results.append(target)
+	return results
+
+
+func _collect_hitscan_targets(start: Vector2, end: Vector2, max_hits: int) -> Array[Dictionary]:
+	var remaining := maxi(1, max_hits)
+	var exclude: Array[RID] = []
+	var results: Array[Dictionary] = []
+	var seen := {}
+	var current_start := start
+	var direction := (end - start).normalized()
+	if direction == Vector2.ZERO:
+		direction = Vector2(_facing, 0.0)
+
+	while remaining > 0:
+		var query := PhysicsRayQueryParameters2D.create(current_start, end, RANGED_HIT_MASK)
+		query.collide_with_areas = true
+		query.collide_with_bodies = false
+		query.exclude = exclude
+		var hit := get_world_2d().direct_space_state.intersect_ray(query)
+		if hit.is_empty():
+			break
+
+		var area := hit.get("collider") as Area2D
+		if area == null or not area.has_method("receive_hit") or not area.has_method("get_receiver"):
+			break
+		var target: Node = area.call("get_receiver")
+		if target == null or target == self:
+			break
+
+		var key := target.get_instance_id()
+		if not seen.has(key):
+			results.append({
+				"area": area,
+				"target": target,
+				"position": hit.get("position", end),
+			})
+			seen[key] = true
+			remaining -= 1
+		exclude.append(area.get_rid())
+		current_start = Vector2(hit.get("position", current_start)) + direction * 4.0
+
+	return results
+
+
+func _next_gen_pull_radius() -> float:
+	if weapon_data == null:
+		return 56.0
+	return maxf(24.0, weapon_data.passive_radius)
+
+
+func _next_gen_pull_duration() -> float:
+	if weapon_data == null:
+		return 0.5
+	return maxf(0.1, weapon_data.passive_duration)
+
+
+func _next_gen_skill_range() -> float:
+	if weapon_data == null:
+		return 120.0
+	return maxf(48.0, weapon_data.skill_range)
+
+
+func _next_gen_skill_radius() -> float:
+	if weapon_data == null:
+		return 84.0
+	return maxf(24.0, weapon_data.skill_radius)
+
+
+func _apply_surge_health_wave(target: Node, _attack_data) -> void:
+	if weapon_data == null or target == null or not target.has_method("apply_hit"):
+		return
+	var max_health := _resolve_target_max_health(target)
+	if max_health <= 0:
+		return
+	var bonus_damage := max(1, roundi(float(weapon_data.base_damage_rating) * max_health * 0.015))
+	var wave_attack := AttackData.new()
+	wave_attack.damage = bonus_damage
+	wave_attack.knockback = Vector2.ZERO
+	wave_attack.hit_stun = 0.0
+	wave_attack.hit_stop = 0.0
+	wave_attack.screen_shake = 0.0
+	wave_attack.vfx_id = &"hit_spark_metal"
+	wave_attack.sfx_id = &""
+	target.apply_hit(wave_attack, self, target.global_position, _facing)
+
+
+func _resolve_target_max_health(target: Node) -> int:
+	if target == null:
+		return 0
+	if target.has_method("max_health_value"):
+		return int(target.max_health_value())
+	return 0
+
+
+func _tick_bleed_effects(delta: float) -> void:
+	if _bleed_targets.is_empty():
+		return
+
+	var expired_keys: Array = []
+	for key in _bleed_targets.keys():
+		var entry: Dictionary = _bleed_targets[key]
+		var target: Node = entry.get("target")
+		if target == null or not is_instance_valid(target) or not target.is_inside_tree():
+			expired_keys.append(key)
+			continue
+
+		entry["time_left"] = maxf(0.0, float(entry.get("time_left", 0.0)) - delta)
+		entry["tick_timer"] = maxf(0.0, float(entry.get("tick_timer", 0.0)) - delta)
+		if float(entry["tick_timer"]) <= 0.0:
+			var bleed_damage: int = maxi(
+				1,
+				roundi(int(entry.get("base_damage", 1)) * weapon_data.passive_bleed_damage_scale)
+			) * maxi(1, int(entry.get("stacks", 1)))
+			var bleed_attack := AttackData.new()
+			bleed_attack.damage = bleed_damage
+			bleed_attack.knockback = Vector2.ZERO
+			bleed_attack.hit_stun = 0.0
+			bleed_attack.hit_stop = 0.0
+			bleed_attack.screen_shake = 0.0
+			bleed_attack.vfx_id = &"hit_spark_metal"
+			bleed_attack.sfx_id = &""
+			target.apply_hit(bleed_attack, self, global_position, _facing)
+			entry["tick_timer"] = 1.0
+		if float(entry["time_left"]) <= 0.0:
+			expired_keys.append(key)
+		else:
+			_bleed_targets[key] = entry
+
+	for key in expired_keys:
+		_bleed_targets.erase(key)

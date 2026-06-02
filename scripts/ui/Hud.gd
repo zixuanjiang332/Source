@@ -68,11 +68,11 @@ func _on_player_energy_changed(current_energy: int, max_energy: int) -> void:
 
 func _on_player_weapon_changed(weapon_data: WeaponData) -> void:
 	var skill_attack: Resource = null
-	_skill_name = "Skill"
+	_skill_name = "--"
 	_skill_cost = 0
 	_apply_weapon_panel(weapon_data)
 	if weapon_data != null:
-		_skill_name = weapon_data.skill_display_name if weapon_data.skill_display_name != "" else "Skill"
+		_skill_name = weapon_data.skill_display_name if weapon_data.skill_display_name != "" else "--"
 		skill_attack = weapon_data.skill_attack
 	if skill_attack != null:
 		_skill_cost = skill_attack.energy_cost
@@ -154,5 +154,7 @@ func _update_skill_label() -> void:
 	var ultimate_state := "READY" if _current_energy >= _ultimate_cost else "CHARGING"
 	if _ultimate_cost <= 0:
 		ultimate_state = "--"
+	if _ultimate_name == "":
+		_ultimate_name = "--"
 	ultimate_label.text = "HOLD K %s // %s %d EN" % [_ultimate_name, ultimate_state, _ultimate_cost]
 	ultimate_label.modulate = Color(1.0, 1.0, 1.0, 0.92) if ultimate_state == "READY" else Color(1.0, 1.0, 1.0, 0.48)

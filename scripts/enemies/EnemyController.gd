@@ -77,6 +77,12 @@ func health_ratio() -> float:
 	return clampf(float(_health) / float(_runtime_stats.max_health), 0.0, 1.0)
 
 
+func max_health_value() -> int:
+	if _runtime_stats == null:
+		return 0
+	return int(_runtime_stats.max_health)
+
+
 func is_boss_enemy() -> bool:
 	return elite_tier == &"boss"
 

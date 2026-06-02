@@ -15,11 +15,27 @@ extends Resource
 @export var equip_max_health_scale := 1.0
 @export var attack_damage_scale := 1.0
 @export var attack_speed_scale := 1.0
+@export var ammo_capacity := 0
+@export var attack_mode: StringName = &"melee"
+@export var ranged_range := 520.0
+@export var ranged_pierce_count := 1
 @export var passive_effect_id: StringName = &"none"
 @export var passive_threshold := 0
+@export var passive_radius := 0.0
+@export var passive_duration := 0.0
 @export var passive_execute_health_ratio := 0.0
 @export var passive_boss_damage_scale := 1.0
+@export var passive_bleed_duration := 0.0
+@export var passive_bleed_damage_scale := 0.0
 @export var skill_charge_time := 0.0
+@export var skill_effect_id: StringName = &"none"
+@export var skill_cooldown := 0.0
+@export var skill_duration := 0.0
+@export var skill_range := 0.0
+@export var skill_radius := 0.0
+@export var skill_boss_damage_scale := 1.0
+@export var skill_damage_bonus_per_kill := 0
+@export var skill_attack_speed_multiplier := 1.0
 @export var light_attack: Resource
 @export var followup_attack: Resource
 @export var finisher_attack: Resource
@@ -50,3 +66,7 @@ func ultimate_attack_chain() -> Array:
 		if attack != null:
 			chain.append(attack)
 	return chain
+
+
+func has_ultimate() -> bool:
+	return not ultimate_attack_chain().is_empty()
