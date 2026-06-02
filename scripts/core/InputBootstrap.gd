@@ -12,6 +12,10 @@ const DEFAULT_KEYMAP := {
 	"skill": [MOUSE_BUTTON_RIGHT],
 	"restart": [KEY_R],
 	"pause": [KEY_ESCAPE],
+	"weapon_slot_1": [KEY_1],
+	"weapon_slot_2": [KEY_2],
+	"weapon_slot_3": [KEY_3],
+	"drop_weapon": [KEY_G],
 }
 
 func _ready() -> void:
