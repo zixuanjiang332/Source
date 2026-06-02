@@ -10,7 +10,7 @@ const ATTACK_CHAIN = [
 	preload("res://resources/attacks/dagger_cut_3.tres"),
 ]
 const SKILL_ATTACK = preload("res://resources/attacks/dagger_flash_step.tres")
-const VISUAL_SCALE := 0.70
+const VISUAL_SCALE := 0.90
 const ULTIMATE_STEP_INTERVAL := 0.085
 const ULTIMATE_BLUE_HITBOX_SIZE := Vector2(168.0, 62.0)
 const ULTIMATE_RED_HITBOX_SIZE := Vector2(188.0, 96.0)
@@ -337,9 +337,9 @@ func _finish_ultimate() -> void:
 
 
 func _on_hit_landed(_target: Node, attack_data) -> void:
-	var energy_gain := 9
-	if attack_data.attack_id == &"dagger_flash_step":
-		energy_gain = 3
+	var energy_gain: int = 0
+	if attack_data.energy_regen > 0:
+		energy_gain = int(attack_data.energy_regen)
 	_energy = min(_runtime_stats.max_energy, _energy + energy_gain)
 	GameEvents.report_player_energy(_energy, _runtime_stats.max_energy)
 	_apply_hit_stop(attack_data.hit_stop)

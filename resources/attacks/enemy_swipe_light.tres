@@ -4,17 +4,18 @@
 
 [resource]
 script = ExtResource("1")
-attack_id = &"enemy_metal_swipe"
-display_name = "Metal Swipe"
-damage = 20
+attack_id = &"enemy_swipe_light"
+display_name = "Mite Bite"
+damage = 10
 energy_cost = 0
-knockback = Vector2(150, -60)
-lunge = 34.0
-active_time = 0.1
-cooldown = 0.24
-hit_stun = 0.2
-hit_stop = 0.02
-screen_shake = 0.45
+knockback = Vector2(120, -50)
+lunge = 28.0
+active_time = 0.08
+cooldown = 0.2
+hit_stun = 0.15
+hit_stop = 0.015
+screen_shake = 0.3
 vfx_id = &"hit_spark_metal"
 sfx_id = &"sfx_enemy_swipe_01"
+energy_regen = 0
 

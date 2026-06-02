@@ -15,6 +15,7 @@ extends Resource
 @export var screen_shake := 0.55
 @export var vfx_id: StringName = &"hit_spark_metal"
 @export var sfx_id: StringName = &"sfx_hit_metal_light_01"
+@export var energy_regen := 0
 
 func resolved_animation_id() -> StringName:
 	if animation_id != &"":

@@ -24,7 +24,9 @@
       "Bash(Select-Object Name)",
       "PowerShell(Start-Process \"E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe\" -ArgumentList \"-e\", \"--path\", \"e:\\\\Project\\\\game\\\\Source\")",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(.\\\\tools\\\\validate_project.ps1)",
+      "PowerShell(.\\\\tools\\\\validate_project.ps1)"
     ],
     "additionalDirectories": [
       "e:\\Project\\game\\Source",

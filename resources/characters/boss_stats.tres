@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 display_name = "Foundry Warden"
-max_health = 180
+max_health = 1800
 max_energy = 0
 move_speed = 34.0
 acceleration = 800.0

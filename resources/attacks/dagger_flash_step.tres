@@ -18,3 +18,4 @@ hit_stop = 0.058
 screen_shake = 1.05
 vfx_id = &"hit_spark_metal"
 sfx_id = &"sfx_energy_cleave_01"
+energy_regen = 3

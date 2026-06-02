@@ -4,17 +4,18 @@
 
 [resource]
 script = ExtResource("1")
-attack_id = &"enemy_heavy_press"
-display_name = "Hydraulic Press"
-damage = 75
+attack_id = &"enemy_swipe_heavy"
+display_name = "Lancer Thrust"
+damage = 70
 energy_cost = 0
-knockback = Vector2(230, -105)
-lunge = 22.0
-active_time = 0.16
-cooldown = 0.48
-hit_stun = 0.28
+knockback = Vector2(200, -80)
+lunge = 42.0
+active_time = 0.14
+cooldown = 0.36
+hit_stun = 0.3
 hit_stop = 0.04
-screen_shake = 0.9
+screen_shake = 0.85
 vfx_id = &"hit_spark_metal"
 sfx_id = &"sfx_enemy_heavy_01"
+energy_regen = 0
 
