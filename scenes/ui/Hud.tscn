@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/Hud.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/ui/portrait_yuan_stage_01.png" id="2"]
-[ext_resource type="Texture2D" path="res://assets/ui/icon_initial_dagger.png" id="3"]
 
 [node name="Hud" type="CanvasLayer"]
 layer = 10
@@ -127,7 +126,6 @@ offset_left = 34.0
 offset_top = 166.0
 offset_right = 120.0
 offset_bottom = 252.0
-texture = ExtResource("3")
 stretch_mode = 5
 
 [node name="WeaponLabel" type="Label" parent="Root/Margin"]

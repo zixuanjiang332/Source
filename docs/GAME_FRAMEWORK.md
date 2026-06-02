@@ -25,12 +25,12 @@
 当前路线拆分为三个运行场景：
 
 - `RebirthLevel.tscn`: 重生实验室段，负责醒来、Dr. Lin、终端、补给和通往作坊的电梯交互。
-- `DemoLevel.tscn`: 作坊/维修间段，负责商店界面和通往主关卡的电梯交互。
+- `DemoLevel.tscn`: 作坊/维修间段，负责商店界面和通往外界主关卡入口的电梯交互。
 - `MainCityLevel.tscn`: 城市高架主战斗段，负责训练敌人、Riot Frame、Foundry Warden 和 30-60 秒战斗录屏路线。
 
-重生段电梯通过 `GameEvents.request_level_change(&"workshop")` 进入作坊段。作坊段电梯再通过 `GameEvents.request_level_change(&"main_city")` 进入主关卡。`Main.gd` 播放短暂蓝色扫描/淡出转场后卸载当前场景并加载对应关卡。
+重生段电梯通过 `GameEvents.request_level_change(&"workshop")` 进入作坊段。作坊段电梯再通过 `GameEvents.request_level_change(&"outside")` 进入外界主关卡；`Main.gd` 仍兼容旧的 `main_city` ID。切换时会播放短暂蓝色扫描/淡出转场，然后卸载当前场景并加载目标关卡。
 
-当前“源”的概念图已全量导出到 `assets/pixel/characters/yuan/`。运行时玩家使用 `assets/pixel/spr_player_yuan_early_clone.png` 和 `resources/characters/player_yuan_early_clone_frames.tres` 播放 `idle/run/jump/fall/dash/atk_1/atk_2/atk_3/skill/hit/death`。HUD 使用 `portrait_yuan_stage_01.png`，初始匕首 HUD 图标使用 `icon_initial_dagger.png`。
+当前“源”的概念图已全量导出到 `assets/pixel/characters/yuan/`。运行时玩家现已切到 `assets/pixel/spr_player_yuan_runtime.png` 和 `resources/characters/player_yuan_runtime_frames.tres`。这套 runtime 资源保留原有移动/受击/死亡条带，同时接入新的 `combat_idle`、`combat_run`、`punch_1`、`punch_2`、`punch_3`、`punch_skill`。当前拳头动作属于“过渡实装版”：由旧早期克隆体战斗帧去刀光、重排和拼条后生成，用于先把拳头开局的手感、时序和资源接线跑通；后续再用更高质量手工或 AI 重绘帧替换。HUD 使用 `portrait_yuan_stage_01.png`，武器图标暂时仍复用 `icon_initial_dagger.png` 作为占位，等待拳头版 HUD 图标。
 
 项目渲染基准为 1920x1080，Stretch 使用 `canvas_items`，避免菜单、HUD 和大背景被 480p 内部分辨率压缩后放大。玩家视觉缩放为 70%，相机默认 `zoom` 为 `2.0`，并关闭相机平滑以减少亚像素模糊；该设置在保持像素清晰的同时给出约 960x540 world units 的录屏视距。各关卡使用不可见边界限制玩家离开路线，并通过相机 `limit_*` 避免显示明显地图外空白。
 
@@ -53,19 +53,19 @@
 
 ## Current Combat Slice
 
-当前玩法只精修第一把近战武器“匕首”。`resources/weapons/initial_dagger.tres` 绑定三段普攻和一个 Demo 能量技：
+当前玩法主线已切到第一套空手近战“拳头原型”。`resources/weapons/initial_fists.tres` 绑定三段普攻和一个 Demo 能量技：
 
-- `dagger_cut_1`: 快速起手，用来接近和确认命中。
-- `dagger_cut_2`: 反手追击，延续短硬直。
-- `dagger_cut_3`: 连段收尾，击退和停顿更明显。
-- `dagger_flash_step`: Demo 用能量突进斩，用于展示位移收尾和 HUD 技能状态。
+- `fist_jab_1`: 快速起手刺拳，用来确认节奏和命中。
+- `fist_cross_2`: 第二段追击，增加转髋和身体前压。
+- `fist_breaker_3`: 连段收尾重拳，击退和停顿更明显。
+- `fist_drive_step`: Demo 用冲步重拳技能，用于展示位移接近和爆发命中。
 - `Overdrive Sever`: 满能量长按 `K` 触发的 Demo 终结技。前 7 段为蓝色全息高速斩击，玩家本体隐藏，只留下残影和刀痕；第 8 段播放 `ultimate_slam`，角色双手持红色光刀下坠重击。
 
 玩家 HUD 通过 `GameEvents.player_weapon_changed`、`player_energy_changed` 和 `player_combo_changed` 显示武器名、能量、技能状态和连段。UI 只监听事件，不驱动战斗逻辑。
 
 终结技 HUD 通过 `GameEvents.player_ultimate_changed` 获取显示名、能量消耗和长按时间，并在能量满时显示 `HOLD K ... READY`。终结技仍复用当前玩家 Hitbox，但每一段会临时放大 hitbox 并在段落结束后恢复默认普攻尺寸。
 
-本阶段不做 1/2/3 武器槽、`Q` 切换、远程武器或正式多武器主技能框架。等初始匕首路线稳定并接入正式动画后，再抽象完整武器系统。
+本阶段不做 1/2/3 武器槽、`Q` 切换、远程武器或正式多武器主技能框架。等初始拳头路线稳定并接入正式动画后，再抽象完整武器系统。
 
 ## What Not To Build Yet
 

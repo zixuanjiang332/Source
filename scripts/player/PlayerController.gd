@@ -2,15 +2,15 @@ class_name PlayerController
 extends CharacterBody2D
 
 const DEFAULT_STATS = preload("res://resources/characters/player_stats.tres")
-const DEFAULT_WEAPON = preload("res://resources/weapons/initial_dagger.tres")
+const DEFAULT_WEAPON = preload("res://resources/weapons/initial_fists.tres")
 const MINIMAL_VISUAL_MODE := true
 const ATTACK_CHAIN = [
-	preload("res://resources/attacks/dagger_cut_1.tres"),
-	preload("res://resources/attacks/dagger_cut_2.tres"),
-	preload("res://resources/attacks/dagger_cut_3.tres"),
+	preload("res://resources/attacks/fist_jab_1.tres"),
+	preload("res://resources/attacks/fist_cross_2.tres"),
+	preload("res://resources/attacks/fist_breaker_3.tres"),
 ]
-const SKILL_ATTACK = preload("res://resources/attacks/dagger_flash_step.tres")
-const VISUAL_SCALE := 0.90
+const SKILL_ATTACK = preload("res://resources/attacks/fist_drive_step.tres")
+const VISUAL_SCALE := 1.03
 const ULTIMATE_STEP_INTERVAL := 0.085
 const ULTIMATE_BLUE_HITBOX_SIZE := Vector2(168.0, 62.0)
 const ULTIMATE_RED_HITBOX_SIZE := Vector2(188.0, 96.0)
@@ -66,6 +66,9 @@ var _skill_hold_consumed := false
 var _ultimate_active := false
 var _default_hitbox_position := Vector2.ZERO
 var _default_hitbox_size := Vector2.ZERO
+var _attack_lunge_timer := 0.0
+var _attack_lunge_duration := 0.0
+var _attack_lunge_speed := 0.0
 var inventory: Array[WeaponData] = []
 var equipped_index: int = 0
 
@@ -110,6 +113,10 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		animation_controller.play_state(&"dash")
 		_update_debug_label()
+		return
+
+	if _attack_locked:
+		_process_locked_attack_motion(delta)
 		return
 
 	var axis := Input.get_axis("move_left", "move_right")
@@ -278,6 +285,7 @@ func is_alive() -> bool:
 func _tick_timers(delta: float) -> void:
 	_dash_timer = max(0.0, _dash_timer - delta)
 	_dash_cooldown_timer = max(0.0, _dash_cooldown_timer - delta)
+	_attack_lunge_timer = max(0.0, _attack_lunge_timer - delta)
 	_invulnerable_timer = max(0.0, _invulnerable_timer - delta)
 	_combo_reset_timer = max(0.0, _combo_reset_timer - delta)
 	if _combo_reset_timer <= 0.0 and _last_reported_combo != 0:
@@ -312,7 +320,7 @@ func _start_dash() -> void:
 	_dash_timer = _runtime_stats.dash_duration
 	_dash_cooldown_timer = _runtime_stats.dash_cooldown
 	_invulnerable_timer = max(_invulnerable_timer, _runtime_stats.dash_duration)
-	animation_controller.play_state(&"dash")
+	animation_controller.play_state(&"combat_dash")
 	GameEvents.request_vfx(&"dash_burst", global_position + Vector2(0.0, -28.0), _facing)
 	GameEvents.request_camera_impulse(0.35, 0.04)
 
@@ -358,16 +366,52 @@ func _start_attack(template: Resource) -> void:
 	_attack_locked = true
 	var attack = template.duplicate(true)
 	attack.damage = max(1, roundi(float(attack.damage) * _damage_multiplier))
-	velocity.x += _facing * attack.lunge
 	_update_facing_visual()
-	animation_controller.play_action(_resolve_attack_animation(attack))
+	var action_id := _resolve_attack_animation(attack)
+	animation_controller.play_action(action_id)
 	_restore_hitbox()
 	hitbox.activate(attack, self, _facing)
 
-	await get_tree().create_timer(attack.cooldown).timeout
+	var lock_duration := _attack_lock_duration(attack, action_id)
+	_start_attack_lunge(attack, lock_duration)
+	await get_tree().create_timer(lock_duration).timeout
 	_attack_locked = false
+	_stop_attack_lunge()
 	animation_controller.clear_action()
 	_update_movement_animation()
+
+
+func _process_locked_attack_motion(delta: float) -> void:
+	if _attack_lunge_timer > 0.0:
+		velocity.x = _facing * _attack_lunge_speed
+	else:
+		velocity.x = 0.0
+	if not is_on_floor():
+		velocity.y += _gravity() * delta
+	move_and_slide()
+	_update_facing_visual()
+	_update_debug_label()
+
+
+func _start_attack_lunge(attack, lock_duration: float) -> void:
+	var lunge_distance := 0.0
+	if attack != null and attack.get("lunge") != null:
+		lunge_distance = max(0.0, float(attack.lunge))
+
+	if lunge_distance <= 0.0 or lock_duration <= 0.0:
+		_stop_attack_lunge()
+		return
+
+	_attack_lunge_duration = clamp(lock_duration * 0.32, 0.07, 0.14)
+	_attack_lunge_timer = _attack_lunge_duration
+	_attack_lunge_speed = lunge_distance / _attack_lunge_duration
+
+
+func _stop_attack_lunge() -> void:
+	_attack_lunge_timer = 0.0
+	_attack_lunge_duration = 0.0
+	_attack_lunge_speed = 0.0
+	velocity.x = 0.0
 
 
 func _start_ultimate() -> void:
@@ -466,16 +510,16 @@ func _update_movement_animation() -> void:
 		return
 
 	if _dash_timer > 0.0:
-		animation_controller.play_state(&"dash")
+		animation_controller.play_state(&"combat_dash")
 	elif not is_on_floor():
 		if velocity.y < 0.0:
-			animation_controller.play_state(&"jump")
+			animation_controller.play_state(&"combat_jump")
 		else:
-			animation_controller.play_state(&"fall")
+			animation_controller.play_state(&"combat_fall")
 	elif absf(velocity.x) > 4.0:
-		animation_controller.play_state(&"run")
+		animation_controller.play_state(&"combat_run")
 	else:
-		animation_controller.play_state(&"idle")
+		animation_controller.play_state(&"combat_idle")
 
 
 func _update_debug_label() -> void:
@@ -547,7 +591,7 @@ func _can_start_ultimate() -> bool:
 
 
 func _report_weapon() -> void:
-	var weapon_name := "Dagger"
+	var weapon_name := "Fists"
 	var skill_name := _skill_name()
 	var skill_attack: Resource = _skill_attack()
 	var skill_cost := 0
@@ -620,7 +664,20 @@ func _resolve_attack_animation(attack) -> StringName:
 		return attack.resolved_animation_id()
 	if attack != null:
 		return attack.attack_id
-	return &"atk_1"
+	return &"punch_1"
+
+
+func _attack_lock_duration(attack, action_id: StringName) -> float:
+	var cooldown := 0.0
+	if attack != null and attack.get("cooldown") != null:
+		cooldown = float(attack.cooldown)
+
+	if animation_controller != null and animation_controller.has_method("animation_duration_for"):
+		var animation_duration := float(animation_controller.animation_duration_for(action_id))
+		if animation_duration > 0.0:
+			return max(cooldown, animation_duration)
+
+	return cooldown
 
 
 func _gravity() -> float:
