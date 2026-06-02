@@ -6,7 +6,7 @@
 script = ExtResource("1")
 attack_id = &"enemy_metal_swipe"
 display_name = "Metal Swipe"
-damage = 10
+damage = 20
 energy_cost = 0
 knockback = Vector2(150, -60)
 lunge = 34.0

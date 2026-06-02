@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($ProgressPreference = 'SilentlyContinue'; try { $r = Invoke-WebRequest -Uri \"https://github.com/godotengine/godot/releases/latest\" -UseBasicParsing -MaximumRedirection 0 -ErrorAction Stop 2>&1; $r.Headers.Location } catch { $_.Exception.Response.Headers.Location })",
+      "PowerShell(cmd /c \"E:\\\\Aseprite\\\\build_aseprite.bat\" 2>&1)",
+      "PowerShell(New-Item -ItemType Directory -Path \"E:\\\\Aseprite\\\\aseprite\\\\build\" -Force)",
+      "PowerShell(git lfs install 2>&1)",
+      "PowerShell(code --install-extension geequlim.godot-tools --force 2>&1)",
+      "PowerShell(code --install-extension vscjava.vscode-java-pack --force 2>&1)",
+      "PowerShell(.\\\\tools\\\\validate_project.ps1 2>&1)",
+      "Read(//d/steam/steamapps/common/Godot Engine/**)",
+      "Bash('E:\\\\Godot\\\\Godot_v4.6.3-stable_win64_console.exe' --headless --export-release \"Windows Demo\" \"builds/windows/NeonMachineDemo.exe\")",
+      "Bash(ls 'C:/Users/Lenzo/AppData/Roaming/Godot/export_templates/' 2>/dev/null; ls 'C:/Users/Lenovo/AppData/Roaming/Godot/export_templates/' 2>/dev/null || echo \"模板目录不存在\")",
+      "Read(//c/Users/Lenzo/AppData/Roaming/Godot/**)",
+      "Bash('E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe')",
+      "PowerShell(Start-Process -FilePath $godotExe -ArgumentList \"--path\", $projectPath -WindowStyle Normal)",
+      "PowerShell($godotExe = \"D:\\\\steam\\\\steamapps\\\\common\\\\Godot Engine\\\\godot.windows.opt.tools.64.exe\")",
+      "PowerShell($projectPath = \"e:\\\\Project\\\\game\\\\Source\\\\project.godot\")",
+      "PowerShell(Get-NetTCPConnection -LocalPort 6005 -ErrorAction SilentlyContinue)",
+      "PowerShell(Start-Process \"steam://rungameid/404090\")",
+      "Bash(Start-Process 'E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe' -ArgumentList '--path', 'e:\\\\Project\\\\game\\\\Source')",
+      "PowerShell(Start-Process 'E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe' -ArgumentList '--path', 'e:\\\\Project\\\\game\\\\Source')",
+      "Bash(Get-ChildItem \"E:\\\\Godot\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object Name)",
+      "PowerShell(Start-Process \"E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe\" -ArgumentList \"-e\", \"--path\", \"e:\\\\Project\\\\game\\\\Source\")",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(.\\\\tools\\\\validate_project.ps1)",
+      "PowerShell(.\\\\tools\\\\validate_project.ps1)",
+      "Bash(git push *)",
+      "Bash(New-Item -ItemType Directory -Force -Path \"e:\\\\Project\\\\game\\\\Source\\\\resources\\\\weapons\")",
+      "Bash(New-Item -ItemType Directory -Force -Path \"e:/Project/game/Source/scenes/items\")"
+    ],
+    "additionalDirectories": [
+      "e:\\Project\\game\\Source",
+      "C:\\Users\\Lenovo\\AppData\\Roaming\\Godot"
+    ]
+  }
+}

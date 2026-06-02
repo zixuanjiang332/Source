@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 display_name = "Riot Frame"
-max_health = 84
+max_health = 800
 max_energy = 0
 move_speed = 46.0
 acceleration = 900.0

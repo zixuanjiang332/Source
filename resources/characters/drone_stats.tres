@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 display_name = "Scout Drone"
-max_health = 36
+max_health = 120
 max_energy = 0
 move_speed = 62.0
 acceleration = 1200.0

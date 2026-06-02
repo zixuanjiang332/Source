@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"enemy_cerberus_bite"
+display_name = "Cerberus Bite"
+damage = 70
+energy_cost = 0
+knockback = Vector2(180, -70)
+lunge = 48.0
+active_time = 0.1
+cooldown = 0.28
+hit_stun = 0.22
+hit_stop = 0.025
+screen_shake = 0.6
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_enemy_swipe_01"
+energy_regen = 0
+

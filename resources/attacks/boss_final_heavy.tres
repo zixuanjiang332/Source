@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"boss_final_heavy"
+display_name = "Final Impact"
+damage = 125
+energy_cost = 0
+knockback = Vector2(380, -170)
+lunge = 32.0
+active_time = 0.25
+cooldown = 0.7
+hit_stun = 0.5
+hit_stop = 0.075
+screen_shake = 1.8
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_enemy_heavy_01"
+energy_regen = 0
+

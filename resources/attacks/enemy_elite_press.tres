@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"enemy_elite_press"
+display_name = "Pulse Crush"
+damage = 150
+energy_cost = 0
+knockback = Vector2(280, -120)
+lunge = 30.0
+active_time = 0.18
+cooldown = 0.52
+hit_stun = 0.38
+hit_stop = 0.055
+screen_shake = 1.2
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_enemy_heavy_01"
+energy_regen = 0
+

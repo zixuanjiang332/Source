@@ -1,8 +1,8 @@
 # 特效生成规范提示词
 
-本文档只规定特效草稿的提示词结构和交付标准。具体特效形状、节奏、颜色、爆点由团队成员人工设计。
+本文档规定特效提示词结构和交付标准。具体特效形状、节奏、颜色、爆点由团队成员决定。
 
-AI 生成特效只能作为视觉参考或占位帧。正式特效必须由美术/VFX 负责人手工重绘、拆帧、控制节奏，并在 Godot 中调试命中可读性。
+AI 生成特效图、动作帧和 spritesheet 可以直接作为最终特效素材。负责人需要在 Godot 中调试播放速度、遮挡、首帧冲击和命中可读性；后续要改为人工重绘时再单独提出。
 
 ## 1. 特效设计优先级
 
@@ -17,7 +17,7 @@ AI 生成特效只能作为视觉参考或占位帧。正式特效必须由美�
 
 ```text
 特效类型: 命中火花 / 刀光 / 冲刺残影 / 电弧 / 爆炸 / 全息闪烁 / 道具拾取
-用途: 概念参考 / 单帧 / spritesheet 草稿
+用途: 最终成品 / 概念参考 / 单帧 / spritesheet
 画布: 64x64 / 96x96 / 128x128
 帧数: 4 / 6 / 8 / 12
 方向: left-to-right / right-to-left / radial / upward
@@ -131,7 +131,7 @@ No readable text, no logo, no UI mockup, no full scene.
 - 所有帧同尺寸。
 - 原点和命中点一致。
 - 文件名：`vfx_<name>_<size>_<frames>f.png`。
-- 源文件：`art_src/vfx_<name>.aseprite`。
+- 源文件：`art_src/vfx_<name>.aseprite`，或 `art_src/generated_frames/vfx/<name>/` 中的 AI 源图和逐帧 PNG。
 - Godot 导入后测试：播放速度、遮挡、首帧冲击、结束残留。
 
 ## 11. Godot 接入清单
@@ -142,3 +142,13 @@ No readable text, no logo, no UI mockup, no full scene.
 - 环境类特效放关卡场景。
 - 强特效必须测试低配 60 FPS。
 
+## 12. 终结技特效包实例
+
+当前 `Overdrive Sever` 使用以下规格作为 Demo 终结技基准：
+
+- 蓝色多段斩：`vfx_yuan_ult_blue_slash_01` 到 `07`，`256x128`，`6f`，电子蓝主色，少量 magenta glitch。
+- 残影：`vfx_yuan_ult_afterimage`，`96x96`，`7f`，角色本体隐藏时用于提示位移轨迹。
+- 红色重击：`vfx_yuan_ult_red_slam_arc` 与 `vfx_yuan_ult_red_impact`，`256x128`，`6f`，用于最后坠落斩和落点爆发。
+- 角色动作：`spr_player_yuan_ultimate_slam`，`96x96`，`8f`，只在最终红色重击阶段显示。
+
+提示词方向：前 7 段强调“蓝色全息横向/斜向刀痕、角色消失、空间切割”；最后一段强调“红色下坠重击、双手持刀、落点爆发”。运行时必须保证前 7 段不长时间遮挡敌人轮廓，最后红色爆点允许短暂遮挡以制造高潮。

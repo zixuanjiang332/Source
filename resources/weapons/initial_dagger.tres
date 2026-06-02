@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/WeaponData.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/attacks/dagger_cut_1.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/attacks/dagger_cut_2.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/attacks/dagger_cut_3.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+weapon_id = &"initial_dagger"
+display_name = "匕首 // Dagger"
+description = "初始近战武器。中伤害中攻速，三段连击。"
+light_attack = ExtResource("2")
+followup_attack = ExtResource("3")
+finisher_attack = ExtResource("4")
+skill_display_name = ""
+skill_attack = null

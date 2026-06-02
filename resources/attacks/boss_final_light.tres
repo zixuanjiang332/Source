@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"boss_final_light"
+display_name = "Final Swipe"
+damage = 75
+energy_cost = 0
+knockback = Vector2(250, -100)
+lunge = 40.0
+active_time = 0.16
+cooldown = 0.48
+hit_stun = 0.36
+hit_stop = 0.05
+screen_shake = 1.1
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_enemy_heavy_01"
+energy_regen = 0
+

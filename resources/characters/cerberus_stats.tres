@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CharacterStats" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/CharacterStats.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+display_name = "Furnace Cerberus"
+max_health = 1080
+max_energy = 0
+move_speed = 85.0
+acceleration = 1500.0
+friction = 2000.0
+jump_velocity = -380.0
+dash_speed = 0.0
+dash_duration = 0.0
+dash_cooldown = 1.0
+gravity_scale = 1.15
+contact_damage = 35
+

@@ -20,10 +20,12 @@ Neon Machine Demo — 赛博朋克智械危机题材的 2D 像素动作垂直切
 
 - `GameEvents`（全局事件总线）：所有跨系统通信走这里——生命/能量变化、VFX/SFX 请求、镜头震动、敌人死亡、重开。不直接实例化特效或驱动战斗逻辑。
 - `InputBootstrap`：启动时注册默认 InputMap，避免空项目缺输入。
+- `CurrencyManager`：商店货币管理，处理货币增减和持久化。
+- `AnimatedBackgroundProp`：Sprite2D 背景动画脚本，只负责帧循环、横向滚动和包裹，不参与玩法逻辑。
 
 ### 核心数据流
 
-```
+```text
 AttackData (.tres) → Hitbox.activate() → area_entered → Hurtbox.receive_hit() → receiver.apply_hit()
 ```
 
@@ -36,12 +38,32 @@ AttackData (.tres) → Hitbox.activate() → area_entered → Hurtbox.receive_hi
 
 - `CharacterStats`：生命、速度、冲刺、重力、接触伤害。运行时通过 `runtime_copy()` 复制，避免修改原始资源。
 - `AttackData`：伤害、击退、主动帧、冷却、命中停顿、屏幕震动、VFX/SFX ID。
+- `WeaponData`：当前武器 ID、显示名、三段普攻、Demo 技能攻击和 HUD 技能名。当前只服务初始匕首切片。
 - `ItemData`：道具 ID、效果 ID（`damage_multiplier`/`heal`/`dash_cooldown`/`max_health`）、倍率。
 - `VfxCatalog`：`vfx_id` → PackedScene 映射，`VfxSpawner` 查表实例化。
+- `ShopData`：商店数据资源，定义可购买道具和价格。
+- `ShopCatalog`：商店目录管理，处理商品列表和购买逻辑。
 
 ### 场景结构
 
 `Main.tscn` 加载 `DemoLevel.tscn` + `Hud.tscn` + `VfxSpawner`。`Main.gd` 处理暂停和重开（`PROCESS_MODE_ALWAYS`）。
+
+场景流程：`RebirthLevel`（重生场景）→ `DemoLevel`（主关卡）→ `MainCityLevel`（主城场景），通过关卡切换事件驱动。
+
+### 数值设计
+
+数值设计文档见 [`numerical_values.md`](numerical_values.md)，包含：
+
+- TTK（击杀时间）设计：普通怪 2-4 次轻攻击，精英 6-8 次，Boss 12-15 次
+- 角色属性：玩家生命 100、能量 100、移动速度 135 px/s
+- 敌人梯度：普通怪（70-200 血）→ 精英怪（600-1080 血）→ Boss（更高）
+- 能量循环：轻攻击回能，技能耗能
+
+### 商店系统
+
+- `CurrencyManager` 管理货币
+- `ShopData`/`ShopCatalog` 定义商品
+- 道具效果 ID：`damage_multiplier`、`heal`、`dash_cooldown`、`max_health`
 
 ### 碰撞层
 
@@ -70,6 +92,8 @@ class_name → extends → signal → enum → const → @export var → 成员�
 - 数值放 `.tres` 或 `@export`，不硬编码在 `_physics_process()` 里
 - UI 只监听事件/读状态，不驱动战斗逻辑
 - 特效/音效通过 `GameEvents` 请求，不直接实例化
+- 当前玩法分支只实现初始匕首切片，不加入多武器槽、数字键切换或 `Q` 切换
+- 背景动态素材使用拆分 tiles/props 和横向 spritesheet，不做全屏背景帧序列
 - 脚本超 250 行需在 PR 说明原因
 - 代码不引用 `art_src/`，运行时只引用 `assets/`、`resources/`、`scenes/`、`scripts/`
 
@@ -89,7 +113,15 @@ class_name → extends → signal → enum → const → @export var → 成员�
 
 ## Rendering
 
-- 内部分辨率 480×270，整数缩放到 1920×1080
+- 内部分辨率 1920×1080，canvas_items 拉伸模式，整数缩放
 - 渲染器：gl_compatibility
 - 像素完美：canvas texture filter=0，snap 2D transforms/vertices to pixel
 - 默认清屏色：`Color(0.018, 0.021, 0.033, 1)`（深蓝黑）
+- 物理重力：`2d/default_gravity=1800.0`
+
+## 重要文档
+
+- [`numerical_values.md`](numerical_values.md) — 数值设计（TTK、属性、敌人梯度）
+- [`docs/PROGRAMMING_STANDARDS.md`](docs/PROGRAMMING_STANDARDS.md) — 程序开发规范
+- [`docs/SETUP.md`](docs/SETUP.md) — 环境设置和新成员阅读顺序
+- [`docs/BUILD.md`](docs/BUILD.md) — 导出构建指南

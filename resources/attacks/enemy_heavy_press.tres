@@ -6,7 +6,7 @@
 script = ExtResource("1")
 attack_id = &"enemy_heavy_press"
 display_name = "Hydraulic Press"
-damage = 18
+damage = 75
 energy_cost = 0
 knockback = Vector2(230, -105)
 lunge = 22.0

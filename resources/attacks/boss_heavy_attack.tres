@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"boss_heavy_attack"
+display_name = "Warden Slam"
+damage = 90
+energy_cost = 0
+knockback = Vector2(320, -150)
+lunge = 28.0
+active_time = 0.22
+cooldown = 0.6
+hit_stun = 0.45
+hit_stop = 0.065
+screen_shake = 1.5
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_enemy_heavy_01"
+energy_regen = 0
+
