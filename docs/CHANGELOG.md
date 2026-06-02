@@ -27,6 +27,7 @@
 - 新增“源”电子光刀终结技：满能量长按 `K` 触发 7 段蓝色全息斩击和 1 段红色坠落重击。
 - 新增终结技 VFX spritesheet、96x96 角色重击动作帧、电子锋利风格 WAV 音效和生成脚本。
 - 新增 `VfxEntry`、`SfxEntry` 与 `SpriteSheetVfx`，支持通过资源表登记 spritesheet VFX 和 SFX。
+- 将武器概念 sheet 拆分为 6 张独立透明武器 PNG，便于后续 UI、商店和拾取展示复用。
 
 ### Changed
 

@@ -35,12 +35,17 @@ func _ready() -> void:
 	GameEvents.objective_changed.connect(_on_objective_changed)
 	GameEvents.toast_requested.connect(_show_toast)
 	GameEvents.currency_changed.connect(_on_currency_changed)
+	weapon_label.visible = false
+	skill_label.visible = false
+	ultimate_label.visible = false
+	objective_label.visible = false
+	toast_label.visible = false
 	currency_label.text = "CR 0500"
-	objective_label.text = "WAKE // speak with Dr. Lin"
-	toast_label.text = "A/D move  Space jump  J cut  K skill  E interact"
-	weapon_label.text = "WEAPON // initializing"
-	skill_label.text = "SKILL // --"
-	ultimate_label.text = "HOLD K // CHARGING"
+	objective_label.text = ""
+	toast_label.text = ""
+	weapon_label.text = ""
+	skill_label.text = ""
+	ultimate_label.text = ""
 	combo_label.text = ""
 
 
