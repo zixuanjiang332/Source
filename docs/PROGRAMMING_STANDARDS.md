@@ -7,7 +7,7 @@
 - 引擎：Godot 4.6.x stable。
 - 脚本：GDScript。
 - 平台：Windows 可执行包优先。
-- 分辨率：内部 480x270，整数缩放到 1920x1080。
+- 分辨率：当前项目基准为 1920x1080，`canvas_items` 拉伸，像素素材保持 nearest。
 - Git：所有二进制素材通过 Git LFS。
 
 项目当前已经有可运行骨架和基础目录。后续不要随意新增顶层目录，除非团队先在 PR 或群里确认。
@@ -84,7 +84,7 @@
 
 新增数据时优先扩展 Resource，而不是新增全局单例。只有跨系统事件才进入 `GameEvents`。
 
-当前 `WeaponData` 只服务初始匕首切片。不要在本阶段加入武器栏、快速切换、背包或完整装备系统；如果后续确实需要扩展，先更新 `GAME_FRAMEWORK.md` 和 `DECISION_LOG.md`。
+当前 `WeaponData` 先服务初始拳头切片。不要在本阶段加入武器栏、快速切换、背包或完整装备系统；如果后续确实需要扩展，先更新 `GAME_FRAMEWORK.md` 和 `DECISION_LOG.md`。
 
 ## 7. 输入与手感
 
