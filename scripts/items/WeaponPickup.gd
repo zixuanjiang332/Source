@@ -5,7 +5,7 @@ extends Area2D
 
 @onready var body: Sprite2D = $Body
 
-var _base_y := 0.0
+var _base_y: float = 0.0
 var _player_nearby: Node2D = null
 
 func _ready() -> void:

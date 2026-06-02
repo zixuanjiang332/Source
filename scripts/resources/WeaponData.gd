@@ -2,17 +2,17 @@ class_name WeaponData
 extends Resource
 
 @export var weapon_id: StringName = &"weapon"
-@export var display_name := "Weapon"
-@export_multiline var description := ""
+@export var display_name: String = "Weapon"
+@export_multiline var description: String = ""
 @export var icon_texture: Texture2D
 @export var light_attack: Resource
 @export var followup_attack: Resource
 @export var finisher_attack: Resource
-@export var skill_display_name := "Skill"
+@export var skill_display_name: String = "Skill"
 @export var skill_attack: Resource
-@export var ultimate_display_name := "Ultimate"
-@export var ultimate_energy_cost := 100
-@export var ultimate_hold_time := 0.45
+@export var ultimate_display_name: String = "Ultimate"
+@export var ultimate_energy_cost: int = 100
+@export var ultimate_hold_time: float = 0.45
 @export var ultimate_attacks: Array[Resource] = []
 
 func attack_chain() -> Array:

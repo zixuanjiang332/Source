@@ -10,7 +10,7 @@ const DEATH_STATE: StringName = &"death"
 @onready var fallback_root: CanvasItem = get_node_or_null(fallback_root_path)
 
 var _current_animation: StringName = &""
-var _action_locked := false
+var _action_locked: bool = false
 
 func _ready() -> void:
 	if animated_sprite != null:
@@ -43,6 +43,13 @@ func clear_action() -> void:
 	_action_locked = false
 
 
+func reset_action() -> void:
+	_action_locked = false
+	_current_animation = &""
+	if animated_sprite != null:
+		animated_sprite.stop()
+
+
 func resolved_animation_id(animation_id: StringName) -> StringName:
 	if _has_animation(animation_id):
 		return animation_id
@@ -50,19 +57,19 @@ func resolved_animation_id(animation_id: StringName) -> StringName:
 
 
 func animation_duration_for(animation_id: StringName) -> float:
-	var resolved := resolved_animation_id(animation_id)
+	var resolved: StringName = resolved_animation_id(animation_id)
 	if not _has_animation(resolved):
 		return 0.0
 
-	var frame_count := animated_sprite.sprite_frames.get_frame_count(resolved)
-	var speed := animated_sprite.sprite_frames.get_animation_speed(resolved)
+	var frame_count: int = animated_sprite.sprite_frames.get_frame_count(resolved)
+	var speed: float = animated_sprite.sprite_frames.get_animation_speed(resolved)
 	if frame_count <= 0 or speed <= 0.0:
 		return 0.0
 	return float(frame_count) / speed
 
 
 func _play_animation(animation_id: StringName) -> bool:
-	var resolved_animation := animation_id
+	var resolved_animation: StringName = animation_id
 	if not _has_animation(resolved_animation):
 		resolved_animation = _resolved_fallback_animation_id(animation_id)
 	if not _has_animation(resolved_animation):
@@ -126,7 +133,7 @@ func _set_fallback_visible(next_visible: bool) -> void:
 
 func _on_animation_finished() -> void:
 	if _current_animation == DEATH_STATE:
-		var last_frame := animated_sprite.sprite_frames.get_frame_count(DEATH_STATE) - 1
+		var last_frame: int = animated_sprite.sprite_frames.get_frame_count(DEATH_STATE) - 1
 		animated_sprite.frame = max(0, last_frame)
 		animated_sprite.stop()
 		return

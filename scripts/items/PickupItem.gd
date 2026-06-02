@@ -1,12 +1,12 @@
 class_name PickupItem
 extends Area2D
 
-@export var item_data = preload("res://resources/items/damage_amp.tres")
+@export var item_data: ItemData = preload("res://resources/items/damage_amp.tres")
 
 @onready var body: Polygon2D = $Body
 @onready var label: Label = $Label
 
-var _base_y := 0.0
+var _base_y: float = 0.0
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
@@ -20,6 +20,8 @@ func _process(delta: float) -> void:
 
 func _on_body_entered(body_node: Node2D) -> void:
 	if body_node.has_method("apply_item"):
-		body_node.apply_item(item_data)
+		var applied: bool = body_node.apply_item(item_data)
+		if applied == false:
+			return
 		GameEvents.request_vfx(&"item_pickup", global_position, 1)
 		queue_free()

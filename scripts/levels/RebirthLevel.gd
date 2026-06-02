@@ -14,7 +14,7 @@ func _announce_start() -> void:
 
 
 func _configure_player_camera() -> void:
-	var camera := get_node_or_null("Actors/Player/Camera2D") as Camera2D
+	var camera: Camera2D = get_node_or_null("Actors/Player/Camera2D") as Camera2D
 	if camera == null:
 		return
 
