@@ -128,5 +128,3 @@ func _on_animation_finished() -> void:
 		animated_sprite.frame = max(0, last_frame)
 		animated_sprite.stop()
 		return
-
-	_action_locked = false

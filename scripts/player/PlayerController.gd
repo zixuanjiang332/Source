@@ -66,6 +66,9 @@ var _skill_hold_consumed := false
 var _ultimate_active := false
 var _default_hitbox_position := Vector2.ZERO
 var _default_hitbox_size := Vector2.ZERO
+var _attack_lunge_timer := 0.0
+var _attack_lunge_duration := 0.0
+var _attack_lunge_speed := 0.0
 var inventory: Array[WeaponData] = []
 var equipped_index: int = 0
 
@@ -110,6 +113,10 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		animation_controller.play_state(&"dash")
 		_update_debug_label()
+		return
+
+	if _attack_locked:
+		_process_locked_attack_motion(delta)
 		return
 
 	var axis := Input.get_axis("move_left", "move_right")
@@ -278,6 +285,7 @@ func is_alive() -> bool:
 func _tick_timers(delta: float) -> void:
 	_dash_timer = max(0.0, _dash_timer - delta)
 	_dash_cooldown_timer = max(0.0, _dash_cooldown_timer - delta)
+	_attack_lunge_timer = max(0.0, _attack_lunge_timer - delta)
 	_invulnerable_timer = max(0.0, _invulnerable_timer - delta)
 	_combo_reset_timer = max(0.0, _combo_reset_timer - delta)
 	if _combo_reset_timer <= 0.0 and _last_reported_combo != 0:
@@ -358,7 +366,6 @@ func _start_attack(template: Resource) -> void:
 	_attack_locked = true
 	var attack = template.duplicate(true)
 	attack.damage = max(1, roundi(float(attack.damage) * _damage_multiplier))
-	velocity.x += _facing * attack.lunge
 	_update_facing_visual()
 	var action_id := _resolve_attack_animation(attack)
 	animation_controller.play_action(action_id)
@@ -366,10 +373,45 @@ func _start_attack(template: Resource) -> void:
 	hitbox.activate(attack, self, _facing)
 
 	var lock_duration := _attack_lock_duration(attack, action_id)
+	_start_attack_lunge(attack, lock_duration)
 	await get_tree().create_timer(lock_duration).timeout
 	_attack_locked = false
+	_stop_attack_lunge()
 	animation_controller.clear_action()
 	_update_movement_animation()
+
+
+func _process_locked_attack_motion(delta: float) -> void:
+	if _attack_lunge_timer > 0.0:
+		velocity.x = _facing * _attack_lunge_speed
+	else:
+		velocity.x = 0.0
+	if not is_on_floor():
+		velocity.y += _gravity() * delta
+	move_and_slide()
+	_update_facing_visual()
+	_update_debug_label()
+
+
+func _start_attack_lunge(attack, lock_duration: float) -> void:
+	var lunge_distance := 0.0
+	if attack != null and attack.get("lunge") != null:
+		lunge_distance = max(0.0, float(attack.lunge))
+
+	if lunge_distance <= 0.0 or lock_duration <= 0.0:
+		_stop_attack_lunge()
+		return
+
+	_attack_lunge_duration = clamp(lock_duration * 0.32, 0.07, 0.14)
+	_attack_lunge_timer = _attack_lunge_duration
+	_attack_lunge_speed = lunge_distance / _attack_lunge_duration
+
+
+func _stop_attack_lunge() -> void:
+	_attack_lunge_timer = 0.0
+	_attack_lunge_duration = 0.0
+	_attack_lunge_speed = 0.0
+	velocity.x = 0.0
 
 
 func _start_ultimate() -> void:
