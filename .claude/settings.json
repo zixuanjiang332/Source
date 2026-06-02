@@ -24,7 +24,12 @@
       "Bash(Select-Object Name)",
       "PowerShell(Start-Process \"E:\\\\Godot\\\\Godot_v4.6.3-stable_win64.exe\" -ArgumentList \"-e\", \"--path\", \"e:\\\\Project\\\\game\\\\Source\")",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(.\\\\tools\\\\validate_project.ps1)",
+      "PowerShell(.\\\\tools\\\\validate_project.ps1)",
+      "Bash(git push *)",
+      "Bash(New-Item -ItemType Directory -Force -Path \"e:\\\\Project\\\\game\\\\Source\\\\resources\\\\weapons\")",
+      "Bash(New-Item -ItemType Directory -Force -Path \"e:/Project/game/Source/scenes/items\")"
     ],
     "additionalDirectories": [
       "e:\\Project\\game\\Source",

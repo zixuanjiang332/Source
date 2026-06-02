@@ -4,17 +4,18 @@
 
 [resource]
 script = ExtResource("1")
-attack_id = &"enemy_heavy_press"
-display_name = "Hydraulic Press"
-damage = 75
+attack_id = &"boss_final_heavy"
+display_name = "Final Impact"
+damage = 125
 energy_cost = 0
-knockback = Vector2(230, -105)
-lunge = 22.0
-active_time = 0.16
-cooldown = 0.48
-hit_stun = 0.28
-hit_stop = 0.04
-screen_shake = 0.9
+knockback = Vector2(380, -170)
+lunge = 32.0
+active_time = 0.25
+cooldown = 0.7
+hit_stun = 0.5
+hit_stop = 0.075
+screen_shake = 1.8
 vfx_id = &"hit_spark_metal"
 sfx_id = &"sfx_enemy_heavy_01"
+energy_regen = 0
 

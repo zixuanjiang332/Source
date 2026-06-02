@@ -10,7 +10,7 @@ const ATTACK_CHAIN = [
 	preload("res://resources/attacks/dagger_cut_3.tres"),
 ]
 const SKILL_ATTACK = preload("res://resources/attacks/dagger_flash_step.tres")
-const VISUAL_SCALE := 0.70
+const VISUAL_SCALE := 0.90
 const ULTIMATE_STEP_INTERVAL := 0.085
 const ULTIMATE_BLUE_HITBOX_SIZE := Vector2(168.0, 62.0)
 const ULTIMATE_RED_HITBOX_SIZE := Vector2(188.0, 96.0)
@@ -66,6 +66,8 @@ var _skill_hold_consumed := false
 var _ultimate_active := false
 var _default_hitbox_position := Vector2.ZERO
 var _default_hitbox_size := Vector2.ZERO
+var inventory: Array[WeaponData] = []
+var equipped_index: int = 0
 
 func _ready() -> void:
 	if MINIMAL_VISUAL_MODE and debug_label != null:
@@ -77,6 +79,9 @@ func _ready() -> void:
 	_energy = _runtime_stats.max_energy
 	GameEvents.report_player_health(_health, _runtime_stats.max_health)
 	GameEvents.report_player_energy(_energy, _runtime_stats.max_energy)
+	# Initialize inventory with default weapon
+	inventory.append(weapon_data)
+	equipped_index = 0
 	_report_weapon()
 	GameEvents.report_player_combo(0, _attack_chain().size())
 	hitbox.hit_landed.connect(_on_hit_landed)
@@ -125,6 +130,19 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("attack"):
 		_try_attack()
 
+	if Input.is_action_just_pressed("drop_weapon"):
+		drop_weapon()
+
+	if Input.is_action_just_pressed("interact"):
+		pickup_weapon()
+
+	if Input.is_action_just_pressed("weapon_slot_1"):
+		try_equip_slot(0)
+	if Input.is_action_just_pressed("weapon_slot_2"):
+		try_equip_slot(1)
+	if Input.is_action_just_pressed("weapon_slot_3"):
+		try_equip_slot(2)
+
 	_update_skill_input(delta)
 
 	_update_facing_visual()
@@ -168,6 +186,89 @@ func apply_item(item_data) -> void:
 
 	GameEvents.report_player_health(_health, _runtime_stats.max_health)
 	GameEvents.report_item_collected(item_data.item_id)
+
+
+func apply_weapon_pickup(wd: WeaponData) -> void:
+	if wd == null:
+		return
+
+	if inventory.size() >= 3:
+		# Inventory full - replace current equipped weapon
+		var replaced = inventory[equipped_index]
+		inventory[equipped_index] = wd
+		weapon_data = wd
+		_damage_multiplier = 1.0
+		_report_weapon()
+		GameEvents.request_toast("Replaced %s with %s" % [replaced.display_name, wd.display_name])
+	else:
+		# Inventory not full - add to first empty slot
+		inventory.append(wd)
+		equipped_index = inventory.size() - 1
+		weapon_data = wd
+		_damage_multiplier = 1.0
+		_report_weapon()
+		GameEvents.request_toast("Equipped: %s" % wd.display_name)
+
+
+func pickup_weapon() -> void:
+	# E key: pick up weapon from nearby pickup (handled by WeaponPickup collision)
+	# If player is near a WeaponPickup, it will auto-trigger apply_weapon_pickup
+	GameEvents.request_toast("Press E near weapon to pick up")
+
+
+func equip_weapon(index: int) -> void:
+	if index < 0 or index >= inventory.size():
+		return
+	if equipped_index == index:
+		return
+
+	equipped_index = index
+	weapon_data = inventory[equipped_index]
+	# Reset damage multiplier to base when switching weapons
+	_damage_multiplier = 1.0
+	_report_weapon()
+	GameEvents.request_toast("Switched to: %s" % weapon_data.display_name)
+
+
+func try_equip_slot(slot: int) -> void:
+	# If the slot has a weapon, equip it
+	if slot < inventory.size():
+		equip_weapon(slot)
+	else:
+		# Slot is empty - try to equip next available weapon
+		var next_index := (slot + 1) % 3
+		var attempts := 0
+		while attempts < 3:
+			if next_index < inventory.size() and next_index != equipped_index:
+				equip_weapon(next_index)
+				return
+			next_index = (next_index + 1) % 3
+			attempts += 1
+		# No other weapon available
+		GameEvents.request_toast("Slot %d empty" % (slot + 1))
+
+
+func drop_weapon() -> void:
+	if inventory.is_empty():
+		return
+
+	var dropped: WeaponData = inventory.pop_at(equipped_index)
+
+	# Auto-equip next available weapon
+	if inventory.is_empty():
+		# Player dropped their last weapon - can't drop
+		GameEvents.request_toast("Cannot drop last weapon!")
+		inventory.append(dropped)
+		return
+	else:
+		equipped_index = min(equipped_index, inventory.size() - 1)
+		weapon_data = inventory[equipped_index]
+		_damage_multiplier = 1.0
+		_report_weapon()
+
+	GameEvents.request_toast("Dropped: %s" % dropped.display_name)
+
+	# TODO: Spawn a WeaponPickup scene at player position with dropped weapon_data
 
 
 func is_alive() -> bool:
@@ -337,9 +438,9 @@ func _finish_ultimate() -> void:
 
 
 func _on_hit_landed(_target: Node, attack_data) -> void:
-	var energy_gain := 9
-	if attack_data.attack_id == &"dagger_flash_step":
-		energy_gain = 3
+	var energy_gain: int = 0
+	if attack_data.energy_regen > 0:
+		energy_gain = int(attack_data.energy_regen)
 	_energy = min(_runtime_stats.max_energy, _energy + energy_gain)
 	GameEvents.report_player_energy(_energy, _runtime_stats.max_energy)
 	_apply_hit_stop(attack_data.hit_stop)
