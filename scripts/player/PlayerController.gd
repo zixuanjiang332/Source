@@ -33,44 +33,45 @@ const ULTIMATE_BLUE_HITBOX_POSITIONS := [
 	Vector2(86.0, -48.0),
 ]
 
-@export var stats = DEFAULT_STATS
-@export var weapon_data = DEFAULT_WEAPON
+@export var stats: CharacterStats = DEFAULT_STATS
+@export var weapon_data: WeaponData = DEFAULT_WEAPON
 
 @onready var visual_root: Node2D = $VisualRoot
 @onready var animated_sprite: AnimatedSprite2D = $VisualRoot/AnimatedSprite
 @onready var body: Polygon2D = $VisualRoot/FallbackRoot/Body
 @onready var visor: Polygon2D = $VisualRoot/FallbackRoot/Visor
-@onready var hitbox = $FacingPivot/Hitbox
+@onready var hitbox: Hitbox = $FacingPivot/Hitbox
 @onready var hitbox_collision_shape: CollisionShape2D = $FacingPivot/Hitbox/CollisionShape2D
 @onready var hurtbox = $Hurtbox
 @onready var facing_pivot: Node2D = $FacingPivot
 @onready var debug_label: Label = $DebugLabel
 @onready var animation_controller: Node = $AnimationController
 
-var _runtime_stats
-var _health := 1
-var _energy := 1
-var _facing := 1
-var _dash_timer := 0.0
-var _dash_cooldown_timer := 0.0
-var _attack_locked := false
-var _combo_index := 0
-var _combo_reset_timer := 0.0
-var _invulnerable_timer := 0.0
-var _damage_multiplier := 1.0
-var _dead := false
-var _last_reported_combo := -1
-var _skill_hold_timer := 0.0
-var _skill_hold_active := false
-var _skill_hold_consumed := false
-var _ultimate_active := false
-var _default_hitbox_position := Vector2.ZERO
-var _default_hitbox_size := Vector2.ZERO
-var _attack_lunge_timer := 0.0
-var _attack_lunge_duration := 0.0
-var _attack_lunge_speed := 0.0
+var _runtime_stats: CharacterStats
+var _health: int = 1
+var _energy: int = 1
+var _facing: int = 1
+var _dash_timer: float = 0.0
+var _dash_cooldown_timer: float = 0.0
+var _attack_locked: bool = false
+var _combo_index: int = 0
+var _combo_reset_timer: float = 0.0
+var _invulnerable_timer: float = 0.0
+var _damage_multiplier: float = 1.0
+var _dead: bool = false
+var _last_reported_combo: int = -1
+var _skill_hold_timer: float = 0.0
+var _skill_hold_active: bool = false
+var _skill_hold_consumed: bool = false
+var _ultimate_active: bool = false
+var _default_hitbox_position: Vector2 = Vector2.ZERO
+var _default_hitbox_size: Vector2 = Vector2.ZERO
+var _attack_lunge_timer: float = 0.0
+var _attack_lunge_duration: float = 0.0
+var _attack_lunge_speed: float = 0.0
 var inventory: Array[WeaponData] = []
 var equipped_index: int = 0
+var accessory_inventory: Array[ItemData] = []
 
 func _ready() -> void:
 	if MINIMAL_VISUAL_MODE and debug_label != null:
@@ -119,7 +120,7 @@ func _physics_process(delta: float) -> void:
 		_process_locked_attack_motion(delta)
 		return
 
-	var axis := Input.get_axis("move_left", "move_right")
+	var axis: float = Input.get_axis("move_left", "move_right")
 	if not is_zero_approx(axis):
 		_facing = 1 if axis > 0.0 else -1
 		velocity.x = move_toward(velocity.x, axis * _runtime_stats.move_speed, _runtime_stats.acceleration * delta)
@@ -162,16 +163,28 @@ func apply_hit(attack_data, source: Node2D, _hit_position: Vector2, facing: int)
 	if _dead or _invulnerable_timer > 0.0:
 		return
 
-	_health = max(0, _health - attack_data.damage)
-	GameEvents.report_player_health(_health, _runtime_stats.max_health)
+	var next_health: int = max(0, _health - int(attack_data.damage))
 	_invulnerable_timer = max(attack_data.hit_stun, 0.12)
 
-	var knock_direction := facing
+	var knock_direction: int = facing
 	if source != null:
 		knock_direction = 1 if global_position.x >= source.global_position.x else -1
 	velocity.x = attack_data.knockback.x * knock_direction
 	velocity.y = attack_data.knockback.y
 	_flash(Color(1.0, 0.18, 0.22, 1.0))
+
+	if next_health <= 0:
+		var revive_item: ItemData = _consume_best_revive_accessory()
+		_health = 0
+		GameEvents.report_player_health(_health, _runtime_stats.max_health)
+		if revive_item != null:
+			_revive_in_place(revive_item)
+			return
+		_revive_in_place(null)
+		return
+
+	_health = next_health
+	GameEvents.report_player_health(_health, _runtime_stats.max_health)
 
 	if _health <= 0:
 		_die()
@@ -179,7 +192,16 @@ func apply_hit(attack_data, source: Node2D, _hit_position: Vector2, facing: int)
 		animation_controller.play_action(&"hit")
 
 
-func apply_item(item_data) -> void:
+func apply_item(item_data) -> bool:
+	if item_data == null:
+		return false
+
+	if item_data.effect_id == &"revive_accessory":
+		accessory_inventory.append(item_data)
+		GameEvents.report_item_collected(item_data.item_id)
+		GameEvents.request_toast("Accessory equipped: %s" % item_data.display_name)
+		return true
+
 	match item_data.effect_id:
 		&"damage_multiplier":
 			_damage_multiplier += item_data.magnitude
@@ -193,6 +215,7 @@ func apply_item(item_data) -> void:
 
 	GameEvents.report_player_health(_health, _runtime_stats.max_health)
 	GameEvents.report_item_collected(item_data.item_id)
+	return true
 
 
 func apply_weapon_pickup(wd: WeaponData) -> void:
@@ -201,7 +224,7 @@ func apply_weapon_pickup(wd: WeaponData) -> void:
 
 	if inventory.size() >= 3:
 		# Inventory full - replace current equipped weapon
-		var replaced = inventory[equipped_index]
+		var replaced: WeaponData = inventory[equipped_index]
 		inventory[equipped_index] = wd
 		weapon_data = wd
 		_damage_multiplier = 1.0
@@ -243,8 +266,8 @@ func try_equip_slot(slot: int) -> void:
 		equip_weapon(slot)
 	else:
 		# Slot is empty - try to equip next available weapon
-		var next_index := (slot + 1) % 3
-		var attempts := 0
+		var next_index: int = (slot + 1) % 3
+		var attempts: int = 0
 		while attempts < 3:
 			if next_index < inventory.size() and next_index != equipped_index:
 				equip_weapon(next_index)
@@ -329,11 +352,11 @@ func _try_attack() -> void:
 	if _attack_locked or _skill_hold_active:
 		return
 
-	var chain := _attack_chain()
+	var chain: Array = _attack_chain()
 	if chain.is_empty():
 		return
 
-	var combo_step := _combo_index + 1
+	var combo_step: int = _combo_index + 1
 	var template: Resource = chain[_combo_index]
 	_combo_index = (_combo_index + 1) % chain.size()
 	_combo_reset_timer = 0.72
@@ -364,15 +387,15 @@ func _try_skill() -> void:
 
 func _start_attack(template: Resource) -> void:
 	_attack_locked = true
-	var attack = template.duplicate(true)
+	var attack: Resource = template.duplicate(true)
 	attack.damage = max(1, roundi(float(attack.damage) * _damage_multiplier))
 	_update_facing_visual()
-	var action_id := _resolve_attack_animation(attack)
+	var action_id: StringName = _resolve_attack_animation(attack)
 	animation_controller.play_action(action_id)
 	_restore_hitbox()
 	hitbox.activate(attack, self, _facing)
 
-	var lock_duration := _attack_lock_duration(attack, action_id)
+	var lock_duration: float = _attack_lock_duration(attack, action_id)
 	_start_attack_lunge(attack, lock_duration)
 	await get_tree().create_timer(lock_duration).timeout
 	_attack_locked = false
@@ -415,7 +438,7 @@ func _stop_attack_lunge() -> void:
 
 
 func _start_ultimate() -> void:
-	var attacks := _ultimate_attacks()
+	var attacks: Array = _ultimate_attacks()
 	if attacks.size() < 8:
 		GameEvents.request_toast("ultimate data missing")
 		return
@@ -494,7 +517,7 @@ func _apply_hit_stop(duration: float) -> void:
 	if duration <= 0.0:
 		return
 
-	var previous_scale := Engine.time_scale
+	var previous_scale: float = Engine.time_scale
 	Engine.time_scale = min(previous_scale, 0.18)
 	await get_tree().create_timer(duration, true, false, true).timeout
 	Engine.time_scale = previous_scale
@@ -525,7 +548,7 @@ func _update_movement_animation() -> void:
 func _update_debug_label() -> void:
 	if debug_label == null or not debug_label.visible:
 		return
-	var state := "AIR"
+	var state: String = "AIR"
 	if is_on_floor():
 		state = "READY"
 	if _dash_timer > 0.0:
@@ -591,10 +614,10 @@ func _can_start_ultimate() -> bool:
 
 
 func _report_weapon() -> void:
-	var weapon_name := "Fists"
-	var skill_name := _skill_name()
+	var weapon_name: String = "Fists"
+	var skill_name: String = _skill_name()
 	var skill_attack: Resource = _skill_attack()
-	var skill_cost := 0
+	var skill_cost: int = 0
 	if skill_attack != null:
 		skill_cost = skill_attack.energy_cost
 	if weapon_data != null and weapon_data.get("display_name") != null:
@@ -612,7 +635,7 @@ func _report_combo(combo_step: int) -> void:
 
 func _prepare_hitbox_shape() -> void:
 	_default_hitbox_position = hitbox.position
-	var rect := hitbox_collision_shape.shape as RectangleShape2D
+	var rect: RectangleShape2D = hitbox_collision_shape.shape as RectangleShape2D
 	if rect == null:
 		return
 
@@ -623,14 +646,14 @@ func _prepare_hitbox_shape() -> void:
 
 func _configure_hitbox(local_position: Vector2, size: Vector2) -> void:
 	hitbox.position = local_position
-	var rect := hitbox_collision_shape.shape as RectangleShape2D
+	var rect: RectangleShape2D = hitbox_collision_shape.shape as RectangleShape2D
 	if rect != null:
 		rect.size = size
 
 
 func _restore_hitbox() -> void:
 	hitbox.position = _default_hitbox_position
-	var rect := hitbox_collision_shape.shape as RectangleShape2D
+	var rect: RectangleShape2D = hitbox_collision_shape.shape as RectangleShape2D
 	if rect != null and _default_hitbox_size != Vector2.ZERO:
 		rect.size = _default_hitbox_size
 
@@ -643,7 +666,7 @@ func _flash(color: Color) -> void:
 	animated_sprite.modulate = color
 	body.modulate = color
 	visor.modulate = Color.WHITE
-	var tween := create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(animated_sprite, "modulate", Color.WHITE, 0.1)
 	tween.tween_property(body, "modulate", Color.WHITE, 0.1)
 	tween.parallel().tween_property(visor, "modulate", Color(0.35, 1.0, 1.0, 1.0), 0.1)
@@ -659,6 +682,44 @@ func _die() -> void:
 	GameEvents.request_camera_impulse(1.2, 0.18)
 
 
+func _consume_best_revive_accessory() -> ItemData:
+	var selected_index: int = -1
+	var selected_priority: int = -999999
+	for index in range(accessory_inventory.size()):
+		var item: ItemData = accessory_inventory[index]
+		if item == null or item.effect_id != &"revive_accessory":
+			continue
+		if selected_index < 0 or item.revive_priority > selected_priority:
+			selected_index = index
+			selected_priority = item.revive_priority
+	if selected_index < 0:
+		return null
+
+	var selected_item: ItemData = accessory_inventory[selected_index]
+	accessory_inventory.remove_at(selected_index)
+	return selected_item
+
+
+func _revive_in_place(item_data: ItemData) -> void:
+	_dead = true
+	hitbox.deactivate()
+	body.modulate = Color(0.22, 0.22, 0.28, 1.0)
+	animation_controller.play_action(&"death")
+	if debug_label != null and debug_label.visible:
+		debug_label.text = "OFFLINE"
+	GameEvents.request_camera_impulse(1.2, 0.18)
+	call_deferred("_finish_revive_in_place", item_data)
+
+
+func _finish_revive_in_place(item_data: ItemData) -> void:
+	var revive_delay: float = 0.9
+	if item_data != null:
+		revive_delay = maxf(revive_delay, item_data.revive_delay)
+	await get_tree().create_timer(revive_delay, true, false, true).timeout
+	if is_inside_tree():
+		GameEvents.request_run_reset()
+
+
 func _resolve_attack_animation(attack) -> StringName:
 	if attack != null and attack.has_method("resolved_animation_id"):
 		return attack.resolved_animation_id()
@@ -668,12 +729,12 @@ func _resolve_attack_animation(attack) -> StringName:
 
 
 func _attack_lock_duration(attack, action_id: StringName) -> float:
-	var cooldown := 0.0
+	var cooldown: float = 0.0
 	if attack != null and attack.get("cooldown") != null:
 		cooldown = float(attack.cooldown)
 
 	if animation_controller != null and animation_controller.has_method("animation_duration_for"):
-		var animation_duration := float(animation_controller.animation_duration_for(action_id))
+		var animation_duration: float = float(animation_controller.animation_duration_for(action_id))
 		if animation_duration > 0.0:
 			return max(cooldown, animation_duration)
 

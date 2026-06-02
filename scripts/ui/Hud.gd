@@ -17,12 +17,12 @@ const ENERGY_FILL_WIDTH := 356.0
 @onready var toast_label: Label = $Root/Margin/Toast
 @onready var currency_label: Label = $Root/Margin/CurrencyLabel
 
-var _current_energy := 0
-var _skill_cost := 0
-var _skill_name := "Skill"
-var _ultimate_cost := 100
-var _ultimate_name := "Ultimate"
-var _ultimate_hold_time := 0.45
+var _current_energy: int = 0
+var _skill_cost: int = 0
+var _skill_name: String = "Skill"
+var _ultimate_cost: int = 100
+var _ultimate_name: String = "Ultimate"
+var _ultimate_hold_time: float = 0.45
 
 func _ready() -> void:
 	GameEvents.player_health_changed.connect(_on_player_health_changed)
@@ -51,7 +51,7 @@ func _ready() -> void:
 
 func _on_player_health_changed(current_health: int, max_health: int) -> void:
 	health_label.text = "HP %03d/%03d" % [current_health, max_health]
-	var ratio := 0.0
+	var ratio: float = 0.0
 	if max_health > 0:
 		ratio = clampf(float(current_health) / float(max_health), 0.0, 1.0)
 	health_fill.size = Vector2(roundf(HEALTH_FILL_WIDTH * ratio), health_fill.size.y)
@@ -60,7 +60,7 @@ func _on_player_health_changed(current_health: int, max_health: int) -> void:
 func _on_player_energy_changed(current_energy: int, max_energy: int) -> void:
 	_current_energy = current_energy
 	energy_label.text = "EN %03d/%03d" % [current_energy, max_energy]
-	var ratio := 0.0
+	var ratio: float = 0.0
 	if max_energy > 0:
 		ratio = clampf(float(current_energy) / float(max_energy), 0.0, 1.0)
 	energy_fill.size = Vector2(roundf(ENERGY_FILL_WIDTH * ratio), energy_fill.size.y)
@@ -106,19 +106,19 @@ func _on_currency_changed(amount: int) -> void:
 
 func _show_toast(message: String) -> void:
 	toast_label.text = message
-	var tween := create_tween()
+	var tween: Tween = create_tween()
 	toast_label.modulate.a = 1.0
 	tween.tween_interval(1.2)
 	tween.tween_property(toast_label, "modulate:a", 0.35, 0.35)
 
 
 func _update_skill_label() -> void:
-	var state := "READY" if _current_energy >= _skill_cost else "CHARGING"
+	var state: String = "READY" if _current_energy >= _skill_cost else "CHARGING"
 	if _skill_cost <= 0:
 		state = "--"
 	weapon_icon.modulate = Color.WHITE if state == "READY" else Color(0.45, 0.65, 0.72, 0.72)
 	skill_label.text = "K %s // %s %d EN" % [_skill_name, state, _skill_cost]
-	var ultimate_state := "READY" if _current_energy >= _ultimate_cost else "CHARGING"
+	var ultimate_state: String = "READY" if _current_energy >= _ultimate_cost else "CHARGING"
 	if _ultimate_cost <= 0:
 		ultimate_state = "--"
 	ultimate_label.text = "HOLD K %s // %s %d EN" % [_ultimate_name, ultimate_state, _ultimate_cost]
