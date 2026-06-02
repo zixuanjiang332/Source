@@ -16,6 +16,8 @@ OUTPUT_RESOURCE_PATH = ROOT / "resources" / "characters" / "player_yuan_runtime_
 ULTIMATE_SLAM_PATH = ROOT / "assets" / "pixel" / "characters" / "player_yuan_early_clone" / "spr_player_yuan_ultimate_slam.png"
 
 CELL_SIZE = 96
+ATLAS_GUTTER = 2
+ATLAS_STRIDE = CELL_SIZE + ATLAS_GUTTER * 2
 SHEET_COLUMNS = 10
 FOOT_BASELINE_Y = 92
 MAX_FRAME_WIDTH = 86
@@ -228,14 +230,16 @@ def build_sheet(frames_by_animation: dict[str, list[Path]]) -> None:
     rows_without_ultimate = len(ALL_ANIMATIONS) - 1
     sheet = Image.new(
         "RGBA",
-        (CELL_SIZE * SHEET_COLUMNS, CELL_SIZE * rows_without_ultimate),
+        (ATLAS_STRIDE * SHEET_COLUMNS, ATLAS_STRIDE * rows_without_ultimate),
         (0, 0, 0, 0),
     )
 
     for row, (name, _frame_count, _fps, _loop) in enumerate(LEGACY_ANIMATIONS + FIST_ANIMATIONS):
         for column, frame_path in enumerate(frames_by_animation[name]):
             frame = Image.open(frame_path).convert("RGBA")
-            sheet.alpha_composite(frame, (column * CELL_SIZE, row * CELL_SIZE))
+            x = column * ATLAS_STRIDE + ATLAS_GUTTER
+            y = row * ATLAS_STRIDE + ATLAS_GUTTER
+            sheet.alpha_composite(frame, (x, y))
 
     sheet.save(OUTPUT_SHEET_PATH)
 
@@ -251,8 +255,8 @@ def build_sprite_frames_resource() -> None:
         frame_entries: list[str] = []
         for column in range(frame_count):
             sub_id = f"AtlasTexture_{name}_{column:02d}"
-            x = column * CELL_SIZE
-            y = row * CELL_SIZE
+            x = column * ATLAS_STRIDE + ATLAS_GUTTER
+            y = row * ATLAS_STRIDE + ATLAS_GUTTER
             subresources.append(
                 "\n".join(
                     [

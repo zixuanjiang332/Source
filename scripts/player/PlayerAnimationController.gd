@@ -17,7 +17,7 @@ func _ready() -> void:
 		animated_sprite.visible = false
 		animated_sprite.animation_finished.connect(_on_animation_finished)
 
-	_set_fallback_visible(true)
+	_set_fallback_visible(false)
 
 
 func play_state(state_id: StringName) -> void:
@@ -70,6 +70,8 @@ func _play_animation(animation_id: StringName) -> bool:
 		return false
 
 	if _current_animation == resolved_animation and animated_sprite.is_playing():
+		animated_sprite.visible = true
+		_set_fallback_visible(false)
 		return true
 
 	_current_animation = resolved_animation
