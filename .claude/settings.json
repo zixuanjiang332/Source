@@ -26,7 +26,12 @@
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(.\\\\tools\\\\validate_project.ps1)",
-      "PowerShell(.\\\\tools\\\\validate_project.ps1)"
+      "PowerShell(.\\\\tools\\\\validate_project.ps1)",
+      "Bash(git push *)",
+      "Bash(New-Item -ItemType Directory -Force -Path \"e:\\\\Project\\\\game\\\\Source\\\\resources\\\\weapons\")",
+      "Bash(New-Item -ItemType Directory -Force -Path \"e:/Project/game/Source/scenes/items\")",
+      "Bash(git cherry-pick *)",
+      "Bash(git lfs *)"
     ],
     "additionalDirectories": [
       "e:\\Project\\game\\Source",

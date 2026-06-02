@@ -25,10 +25,10 @@
 当前路线拆分为三个运行场景：
 
 - `RebirthLevel.tscn`: 重生实验室段，负责醒来、Dr. Lin、终端、补给和通往作坊的电梯交互。
-- `DemoLevel.tscn`: 作坊/维修间段，负责商店界面和通往主关卡的电梯交互。
+- `DemoLevel.tscn`: 作坊/维修间段，负责商店界面和通往外界主关卡入口的电梯交互。
 - `MainCityLevel.tscn`: 城市高架主战斗段，负责训练敌人、Riot Frame、Foundry Warden 和 30-60 秒战斗录屏路线。
 
-重生段电梯通过 `GameEvents.request_level_change(&"workshop")` 进入作坊段。作坊段电梯再通过 `GameEvents.request_level_change(&"main_city")` 进入主关卡。`Main.gd` 播放短暂蓝色扫描/淡出转场后卸载当前场景并加载对应关卡。
+重生段电梯通过 `GameEvents.request_level_change(&"workshop")` 进入作坊段。作坊段电梯再通过 `GameEvents.request_level_change(&"outside")` 进入外界主关卡；`Main.gd` 仍兼容旧的 `main_city` ID。切换时会播放短暂蓝色扫描/淡出转场，然后卸载当前场景并加载目标关卡。
 
 当前“源”的概念图已全量导出到 `assets/pixel/characters/yuan/`。运行时玩家现已切到 `assets/pixel/spr_player_yuan_runtime.png` 和 `resources/characters/player_yuan_runtime_frames.tres`。这套 runtime 资源保留原有移动/受击/死亡条带，同时接入新的 `combat_idle`、`combat_run`、`punch_1`、`punch_2`、`punch_3`、`punch_skill`。当前拳头动作属于“过渡实装版”：由旧早期克隆体战斗帧去刀光、重排和拼条后生成，用于先把拳头开局的手感、时序和资源接线跑通；后续再用更高质量手工或 AI 重绘帧替换。HUD 使用 `portrait_yuan_stage_01.png`，武器图标暂时仍复用 `icon_initial_dagger.png` 作为占位，等待拳头版 HUD 图标。
 

@@ -20,13 +20,21 @@ var _line_index := 0
 var _used := false
 
 func _ready() -> void:
+	monitoring = true
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	if prompt_label != null:
+		prompt_label.text = prompt_text
 	_set_prompt_visible(false)
 	set_process(false)
 
 
 func _process(_delta: float) -> void:
+	if _player == null:
+		_player = _resolve_player()
+		if _player != null and not (one_shot and _used):
+			_set_prompt_visible(true)
+
 	if _player == null:
 		return
 
@@ -42,21 +50,26 @@ func _on_body_entered(body: Node2D) -> void:
 	set_process(true)
 	if not (one_shot and _used):
 		_set_prompt_visible(true)
-		GameEvents.request_toast("%s // interact" % prompt_text)
 
 
 func _on_body_exited(body: Node2D) -> void:
 	if body != _player:
 		return
 
-	_player = null
-	set_process(false)
-	_set_prompt_visible(false)
+	_player = _resolve_player()
+	if _player == null:
+		set_process(false)
+		_set_prompt_visible(false)
 
 
 func _interact() -> void:
+	if _player == null:
+		_player = _resolve_player()
+
 	if one_shot and _used:
-		GameEvents.request_toast(completed_text)
+		return
+
+	if _player == null:
 		return
 
 	if opens_shop:
@@ -67,11 +80,6 @@ func _interact() -> void:
 		return
 
 	if not dialogue_lines.is_empty():
-		var line := dialogue_lines[_line_index % dialogue_lines.size()]
-		if speaker.is_empty():
-			GameEvents.request_toast(line)
-		else:
-			GameEvents.request_toast("%s: %s" % [speaker, line])
 		_line_index += 1
 
 	if not objective_after.is_empty():
@@ -86,6 +94,7 @@ func _interact() -> void:
 
 	if level_change_id != &"":
 		GameEvents.request_level_change(level_change_id)
+		return
 
 	if one_shot:
 		_used = true
@@ -99,3 +108,11 @@ func _is_player(body: Node2D) -> bool:
 func _set_prompt_visible(is_visible: bool) -> void:
 	if prompt_label != null:
 		prompt_label.visible = is_visible
+
+
+func _resolve_player() -> Node2D:
+	for body in get_overlapping_bodies():
+		var node := body as Node2D
+		if node != null and _is_player(node):
+			return node
+	return null
