@@ -30,7 +30,8 @@
       "Bash(git push *)",
       "Bash(New-Item -ItemType Directory -Force -Path \"e:\\\\Project\\\\game\\\\Source\\\\resources\\\\weapons\")",
       "Bash(New-Item -ItemType Directory -Force -Path \"e:/Project/game/Source/scenes/items\")",
-      "Bash(git cherry-pick *)"
+      "Bash(git cherry-pick *)",
+      "Bash(git lfs *)"
     ],
     "additionalDirectories": [
       "e:\\Project\\game\\Source",
