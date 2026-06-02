@@ -16,7 +16,6 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	position.y = _base_y + sin(Time.get_ticks_msec() * 0.006) * 3.0
-	rotation += delta * 0.9
 
 
 func _on_body_entered(body_node: Node2D) -> void:

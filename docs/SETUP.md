@@ -32,6 +32,7 @@ Then open this folder in Godot and run `scenes/main/Main.tscn`.
 7. `docs/PROGRAMMER_COLLABORATION.md`
 8. `docs/ASSET_HANDOFF.md`
 9. `docs/PIXEL_ART_PROMPT_GUIDE.md` or `docs/VFX_PROMPT_GUIDE.md`
+10. `docs/FIST_ANIMATION_PRODUCTION_PACK.md` if you are working on Yuan's fist-first player animation pass
 10. `docs/MILESTONES.md`
 
 ## CodeGraph
