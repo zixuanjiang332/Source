@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/DemoLevel.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2"]
 [ext_resource type="Texture2D" path="res://assets/pixel/background/shop/bg_initial_shop_workshop.png" id="3"]
 [ext_resource type="Script" path="res://scripts/levels/DemoInteractable.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/items/WeaponPickup.gd" id="5"]
+[ext_resource type="Resource" path="res://resources/weapons/initial_dagger.tres" id="6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(920, 28)
@@ -16,6 +18,9 @@ size = Vector2(76, 64)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_elevator"]
 size = Vector2(110, 160)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
+radius = 16.0
 
 [node name="DemoLevel" type="Node2D"]
 script = ExtResource("1")
@@ -118,4 +123,25 @@ offset_right = 30.0
 offset_bottom = -80.0
 theme_override_font_sizes/font_size = 16
 text = "E"
+horizontal_alignment = 1
+
+[node name="DaggerPickup" type="Area2D" parent="Interactables"]
+position = Vector2(200, 200)
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("5")
+weapon_data = ExtResource("6")
+
+[node name="Body" type="Sprite2D" parent="Interactables/DaggerPickup"]
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/DaggerPickup"]
+shape = SubResource("CircleShape2D_pickup")
+
+[node name="Label" type="Label" parent="Interactables/DaggerPickup"]
+offset_left = -60.0
+offset_top = -30.0
+offset_right = 60.0
+offset_bottom = -10.0
+text = "匕首 // Dagger"
 horizontal_alignment = 1
