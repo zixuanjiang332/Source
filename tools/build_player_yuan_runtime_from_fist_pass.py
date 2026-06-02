@@ -20,6 +20,7 @@ SHEET_COLUMNS = 10
 FOOT_BASELINE_Y = 92
 MAX_FRAME_WIDTH = 86
 MAX_FRAME_HEIGHT = 88
+MIN_COMPONENT_AREA = 18
 
 LEGACY_ANIMATIONS = [
     ("idle", 6, 8, True),
@@ -122,8 +123,43 @@ def polish_small_sprite(frame: Image.Image) -> Image.Image:
     return frame
 
 
+def strip_tiny_fragments(image: Image.Image) -> Image.Image:
+    image = image.convert("RGBA")
+    pixels = image.load()
+    visited: set[tuple[int, int]] = set()
+    remove_points: list[tuple[int, int]] = []
+
+    for start_y in range(image.height):
+        for start_x in range(image.width):
+            if (start_x, start_y) in visited:
+                continue
+            if pixels[start_x, start_y][3] == 0:
+                visited.add((start_x, start_y))
+                continue
+
+            stack = [(start_x, start_y)]
+            component: list[tuple[int, int]] = []
+            visited.add((start_x, start_y))
+            while stack:
+                x, y = stack.pop()
+                component.append((x, y))
+                for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+                    if nx < 0 or nx >= image.width or ny < 0 or ny >= image.height or (nx, ny) in visited:
+                        continue
+                    visited.add((nx, ny))
+                    if pixels[nx, ny][3] > 0:
+                        stack.append((nx, ny))
+
+            if len(component) < MIN_COMPONENT_AREA:
+                remove_points.extend(component)
+
+    for x, y in remove_points:
+        pixels[x, y] = (0, 0, 0, 0)
+    return image
+
+
 def normalize_frame(source: Image.Image) -> Image.Image:
-    keyed = remove_chroma_key(source)
+    keyed = strip_tiny_fragments(remove_chroma_key(source))
     bbox = keyed.getbbox()
     output = Image.new("RGBA", (CELL_SIZE, CELL_SIZE), (0, 0, 0, 0))
     if bbox is None:
@@ -139,7 +175,7 @@ def normalize_frame(source: Image.Image) -> Image.Image:
     x = (CELL_SIZE - resized.width) // 2
     y = max(0, FOOT_BASELINE_Y - resized.height)
     output.alpha_composite(resized, (x, y))
-    return polish_small_sprite(output)
+    return strip_tiny_fragments(polish_small_sprite(output))
 
 
 def read_strip_frames(strip_dir: Path, name: str, frame_count: int) -> list[Image.Image]:

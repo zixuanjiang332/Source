@@ -12,6 +12,7 @@ CELL = 96
 BASELINE_Y = 92
 MAX_BODY_WIDTH = 84
 MAX_BODY_HEIGHT = 88
+MIN_COMPONENT_AREA = 18
 
 
 def remove_background(image: Image.Image) -> Image.Image:
@@ -69,8 +70,93 @@ def polish_small_sprite(frame: Image.Image) -> Image.Image:
     return frame
 
 
+def strip_tiny_fragments(image: Image.Image) -> Image.Image:
+    image = image.convert("RGBA")
+    pixels = image.load()
+    visited: set[tuple[int, int]] = set()
+    remove_points: list[tuple[int, int]] = []
+
+    for start_y in range(image.height):
+        for start_x in range(image.width):
+            if (start_x, start_y) in visited:
+                continue
+            if pixels[start_x, start_y][3] == 0:
+                visited.add((start_x, start_y))
+                continue
+
+            stack = [(start_x, start_y)]
+            component: list[tuple[int, int]] = []
+            visited.add((start_x, start_y))
+            while stack:
+                x, y = stack.pop()
+                component.append((x, y))
+                for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+                    if nx < 0 or nx >= image.width or ny < 0 or ny >= image.height or (nx, ny) in visited:
+                        continue
+                    visited.add((nx, ny))
+                    if pixels[nx, ny][3] > 0:
+                        stack.append((nx, ny))
+
+            if len(component) < MIN_COMPONENT_AREA:
+                remove_points.extend(component)
+
+    for x, y in remove_points:
+        pixels[x, y] = (0, 0, 0, 0)
+    return image
+
+
+def strip_detached_fragments(image: Image.Image, min_overlap: int = 5) -> Image.Image:
+    image = image.convert("RGBA")
+    pixels = image.load()
+    visited: set[tuple[int, int]] = set()
+    components: list[list[tuple[int, int]]] = []
+
+    for start_y in range(image.height):
+        for start_x in range(image.width):
+            if (start_x, start_y) in visited:
+                continue
+            if pixels[start_x, start_y][3] == 0:
+                visited.add((start_x, start_y))
+                continue
+
+            stack = [(start_x, start_y)]
+            component: list[tuple[int, int]] = []
+            visited.add((start_x, start_y))
+            while stack:
+                x, y = stack.pop()
+                component.append((x, y))
+                for nx, ny in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
+                    if nx < 0 or nx >= image.width or ny < 0 or ny >= image.height or (nx, ny) in visited:
+                        continue
+                    visited.add((nx, ny))
+                    if pixels[nx, ny][3] > 0:
+                        stack.append((nx, ny))
+            components.append(component)
+
+    if not components:
+        return image
+
+    main_component = max(components, key=len)
+    main_xs = [x for x, _y in main_component]
+    main_left = min(main_xs)
+    main_right = max(main_xs) + 1
+    remove_points: list[tuple[int, int]] = []
+
+    for component in components:
+        if component is main_component:
+            continue
+        xs = [x for x, _y in component]
+        overlap = min(max(xs) + 1, main_right) - max(min(xs), main_left)
+        if overlap < min_overlap:
+            remove_points.extend(component)
+
+    for x, y in remove_points:
+        pixels[x, y] = (0, 0, 0, 0)
+    return image
+
+
 def normalize_frame(frame: Image.Image) -> Image.Image:
-    frame = remove_background(frame)
+    frame = strip_tiny_fragments(remove_background(frame))
     bbox = frame.getbbox()
     output = Image.new("RGBA", (CELL, CELL), (0, 0, 0, 0))
     if bbox is None:
@@ -86,7 +172,7 @@ def normalize_frame(frame: Image.Image) -> Image.Image:
     x = (CELL - resized.width) // 2
     y = max(0, BASELINE_Y - resized.height)
     output.alpha_composite(resized, (x, y))
-    return polish_small_sprite(output)
+    return strip_tiny_fragments(polish_small_sprite(output))
 
 
 def offset_frame(frame: Image.Image, dx: int, dy: int) -> Image.Image:
@@ -110,6 +196,11 @@ def main() -> None:
         required=True,
         help="panel_index:frame_index[:dx[:dy]]",
     )
+    parser.add_argument(
+        "--drop-detached",
+        action="store_true",
+        help="remove components that do not overlap the main body; use for non-effect movement frames",
+    )
     args = parser.parse_args()
 
     source_path = Path(args.source)
@@ -130,6 +221,8 @@ def main() -> None:
         right = round((panel_index + 1) * panel_width)
         panel = image.crop((left, 0, right, image.height))
         normalized = normalize_frame(panel)
+        if args.drop_detached:
+            normalized = strip_detached_fragments(normalized)
         normalized = offset_frame(normalized, dx, dy)
         out_path = out_dir / f"frame_{frame_index:02d}.png"
         normalized.save(out_path)
