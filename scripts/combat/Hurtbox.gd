@@ -5,6 +5,9 @@ signal hit_received(attack_data, source: Node2D)
 
 @export var receiver_path: NodePath = NodePath("..")
 
+func _ready() -> void:
+	add_to_group("hurtboxes")
+
 func get_receiver() -> Node:
 	var receiver: Node = get_node_or_null(receiver_path)
 	if receiver != null:

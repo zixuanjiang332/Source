@@ -7,6 +7,7 @@ const DEFAULT_ATTACK = preload("res://resources/attacks/enemy_metal_swipe.tres")
 @export var enemy_id: StringName = &"enemy"
 @export var stats: CharacterStats = DEFAULT_STATS
 @export var attack_data: AttackData = DEFAULT_ATTACK
+@export var elite_tier: StringName = &"normal"
 @export var aggro_range: float = 190.0
 @export var attack_range: float = 42.0
 @export var attack_interval: float = 0.9
@@ -29,6 +30,7 @@ var _player: Node2D
 
 func _ready() -> void:
 	add_to_group("enemies")
+	add_to_group("bosses" if elite_tier == &"boss" else "non_boss_enemies")
 	_runtime_stats = stats.runtime_copy()
 	_health = _runtime_stats.max_health
 	_spawn_x = global_position.x
@@ -67,6 +69,22 @@ func apply_hit(attack_data, source: Node2D, _hit_position: Vector2, facing: int)
 
 	if _health <= 0:
 		_die()
+
+
+func health_ratio() -> float:
+	if _runtime_stats == null or _runtime_stats.max_health <= 0:
+		return 0.0
+	return clampf(float(_health) / float(_runtime_stats.max_health), 0.0, 1.0)
+
+
+func max_health_value() -> int:
+	if _runtime_stats == null:
+		return 0
+	return int(_runtime_stats.max_health)
+
+
+func is_boss_enemy() -> bool:
+	return elite_tier == &"boss"
 
 
 func _chase_or_attack(delta: float) -> void:

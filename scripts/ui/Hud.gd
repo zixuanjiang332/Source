@@ -10,6 +10,8 @@ const ENERGY_FILL_WIDTH := 356.0
 @onready var energy_label: Label = $Root/Margin/EnergyLabel
 @onready var weapon_icon: TextureRect = $Root/Margin/WeaponIcon
 @onready var weapon_label: Label = $Root/Margin/WeaponLabel
+@onready var weapon_stat_label: Label = $Root/Margin/WeaponStatLabel
+@onready var passive_label: Label = $Root/Margin/PassiveLabel
 @onready var skill_label: Label = $Root/Margin/SkillLabel
 @onready var ultimate_label: Label = $Root/Margin/UltimateLabel
 @onready var combo_label: Label = $Root/Margin/ComboLabel
@@ -35,15 +37,12 @@ func _ready() -> void:
 	GameEvents.objective_changed.connect(_on_objective_changed)
 	GameEvents.toast_requested.connect(_show_toast)
 	GameEvents.currency_changed.connect(_on_currency_changed)
-	weapon_label.visible = false
-	skill_label.visible = false
-	ultimate_label.visible = false
-	objective_label.visible = false
-	toast_label.visible = false
 	currency_label.text = "CR 0500"
 	objective_label.text = ""
 	toast_label.text = ""
 	weapon_label.text = ""
+	weapon_stat_label.text = ""
+	passive_label.text = ""
 	skill_label.text = ""
 	ultimate_label.text = ""
 	combo_label.text = ""
@@ -67,10 +66,16 @@ func _on_player_energy_changed(current_energy: int, max_energy: int) -> void:
 	_update_skill_label()
 
 
-func _on_player_weapon_changed(weapon_name: String, skill_name: String, skill_cost: int) -> void:
-	_skill_name = skill_name
-	_skill_cost = skill_cost
-	weapon_label.text = "WEAPON // %s" % weapon_name
+func _on_player_weapon_changed(weapon_data: WeaponData) -> void:
+	var skill_attack: Resource = null
+	_skill_name = "--"
+	_skill_cost = 0
+	_apply_weapon_panel(weapon_data)
+	if weapon_data != null:
+		_skill_name = weapon_data.skill_display_name if weapon_data.skill_display_name != "" else "--"
+		skill_attack = weapon_data.skill_attack
+	if skill_attack != null:
+		_skill_cost = skill_attack.energy_cost
 	_update_skill_label()
 
 
@@ -106,10 +111,38 @@ func _on_currency_changed(amount: int) -> void:
 
 func _show_toast(message: String) -> void:
 	toast_label.text = message
+	toast_label.visible = true
 	var tween: Tween = create_tween()
 	toast_label.modulate.a = 1.0
 	tween.tween_interval(1.2)
 	tween.tween_property(toast_label, "modulate:a", 0.35, 0.35)
+
+
+func _apply_weapon_panel(weapon_data: WeaponData) -> void:
+	if weapon_data == null:
+		weapon_label.text = "WEAPON // --"
+		weapon_stat_label.text = ""
+		passive_label.text = ""
+		weapon_icon.texture = null
+		return
+
+	weapon_label.text = "WEAPON // %s" % weapon_data.display_name
+	weapon_stat_label.text = "%s // DMG %03d // SPD %03d // ELEM %s" % [
+		_format_weapon_type(weapon_data.weapon_type),
+		weapon_data.base_damage_rating,
+		weapon_data.attack_speed_rating,
+		_format_element_type(weapon_data.element_type),
+	]
+	passive_label.text = "PASSIVE // %s" % weapon_data.passive_summary
+	weapon_icon.texture = weapon_data.resolved_hud_icon()
+
+
+func _format_weapon_type(weapon_type: StringName) -> String:
+	return String(weapon_type).to_upper()
+
+
+func _format_element_type(element_type: StringName) -> String:
+	return String(element_type).to_upper()
 
 
 func _update_skill_label() -> void:
@@ -121,5 +154,7 @@ func _update_skill_label() -> void:
 	var ultimate_state: String = "READY" if _current_energy >= _ultimate_cost else "CHARGING"
 	if _ultimate_cost <= 0:
 		ultimate_state = "--"
+	if _ultimate_name == "":
+		_ultimate_name = "--"
 	ultimate_label.text = "HOLD K %s // %s %d EN" % [_ultimate_name, ultimate_state, _ultimate_cost]
 	ultimate_label.modulate = Color(1.0, 1.0, 1.0, 0.92) if ultimate_state == "READY" else Color(1.0, 1.0, 1.0, 0.48)

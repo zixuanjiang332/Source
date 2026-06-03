@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"katana_flash_slash"
+display_name = "Charged Flash Slash"
+animation_id = &"skill"
+damage = 120
+energy_cost = 0
+knockback = Vector2(360, -132)
+lunge = 180.0
+active_time = 0.16
+cooldown = 0.42
+hit_stun = 0.32
+hit_stop = 0.08
+screen_shake = 1.1
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_energy_cleave_01"
+energy_regen = 5

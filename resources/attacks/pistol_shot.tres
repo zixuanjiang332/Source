@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"pistol_shot"
+display_name = "Pistol Shot"
+animation_id = &"atk_1"
+damage = 5
+energy_cost = 0
+knockback = Vector2(96, -18)
+lunge = 0.0
+active_time = 0.02
+cooldown = 0.1
+hit_stun = 0.05
+hit_stop = 0.01
+screen_shake = 0.12
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_light_01"
+energy_regen = 2
