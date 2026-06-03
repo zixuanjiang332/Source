@@ -3,16 +3,16 @@ extends Area2D
 
 signal hit_landed(target: Node, attack_data)
 
-var attack_data
+var attack_data: AttackData
 @export var source_path: NodePath = NodePath("../..")
 
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 var _source: Node2D
-var _facing := 1
-var _active := false
-var _token := 0
-var _targets_hit := {}
+var _facing: int = 1
+var _active: bool = false
+var _token: int = 0
+var _targets_hit: Dictionary = {}
 
 func _ready() -> void:
 	monitoring = false
@@ -21,12 +21,12 @@ func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 
 
-func activate(next_attack, next_source: Node2D, next_facing: int) -> void:
+func activate(next_attack: AttackData, next_source: Node2D, next_facing: int) -> void:
 	if next_attack == null:
 		return
 
 	_token += 1
-	var token := _token
+	var token: int = _token
 	attack_data = next_attack
 	_source = next_source
 	_facing = signi(next_facing)
@@ -65,7 +65,7 @@ func _on_area_entered(area: Area2D) -> void:
 	if target == null or target == _source:
 		return
 
-	var key := area.get_instance_id()
+	var key: int = area.get_instance_id()
 	if _targets_hit.has(key):
 		return
 

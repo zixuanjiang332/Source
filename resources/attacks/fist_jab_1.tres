@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"fist_jab_1"
+display_name = "Shock Jab"
+animation_id = &"punch_1"
+damage = 12
+energy_cost = 0
+knockback = Vector2(110, -26)
+lunge = 28.0
+active_time = 0.08
+cooldown = 0.12
+hit_stun = 0.12
+hit_stop = 0.032
+screen_shake = 0.42
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_light_01"
+energy_regen = 10

@@ -13,3 +13,4 @@
 
 导出到 Godot 的 PNG 放入 `assets/pixel/`，不要直接让 Godot 引用 `art_src/`。
 
+`art_src/generated/` 可同时保存 AI 出图使用的提示词、审核表和逐帧源图；这类生产文件也应登记到 `docs/ASSET_MANIFEST.csv`，便于团队同步当前素材生产状态。

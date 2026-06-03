@@ -1,0 +1,53 @@
+tag,frame,purpose,priority,prompt_ref,status,notes
+combat_idle,01,main_pose_a,high,FIST_ANIMATION_PRODUCTION_PACK 5.1,planned,Front foot loaded and guard readable
+combat_idle,02,breath_down,medium,FIST_ANIMATION_PRODUCTION_PACK 5.1,planned,Shoulder compression and chest sink
+combat_idle,03,rebound,medium,FIST_ANIMATION_PRODUCTION_PACK 5.1,planned,Small lift without losing threat
+combat_idle,04,main_pose_b,high,FIST_ANIMATION_PRODUCTION_PACK 5.1,planned,Weight shifted but still attack-ready
+combat_idle,05,breath_down,medium,FIST_ANIMATION_PRODUCTION_PACK 5.1,planned,Pelvis sink with planted feet
+combat_idle,06,rebound,medium,FIST_ANIMATION_PRODUCTION_PACK 5.1,planned,Guard returns with aggression
+combat_idle,07,forward_pressure,high,FIST_ANIMATION_PRODUCTION_PACK 5.1,planned,Head and front shoulder subtly advance
+combat_idle,08,loop_return,medium,FIST_ANIMATION_PRODUCTION_PACK 5.1,planned,Return cleanly into frame 01
+combat_run,01,contact_a,high,KEYFRAME_PROMPTS run_contact,planned,Chase-run contact pose
+combat_run,02,carry_a,medium,FIST_ANIMATION_PRODUCTION_PACK 5.2,planned,Maintain pressure through landing
+combat_run,03,push_a,high,KEYFRAME_PROMPTS run_push,planned,Rear leg pushes body forward
+combat_run,04,travel_a,medium,FIST_ANIMATION_PRODUCTION_PACK 5.2,planned,Bridge into opposite side
+combat_run,05,contact_b,high,FIST_ANIMATION_PRODUCTION_PACK 5.2,planned,Opposite contact with same combat guard
+combat_run,06,carry_b,medium,FIST_ANIMATION_PRODUCTION_PACK 5.2,planned,Stable head and torso
+combat_run,07,push_b,high,FIST_ANIMATION_PRODUCTION_PACK 5.2,planned,Second push-off pose
+combat_run,08,travel_b,medium,FIST_ANIMATION_PRODUCTION_PACK 5.2,planned,Loop back into frame 01
+punch_1,01,start,medium,FRAME_BY_FRAME_PROMPTS punch_1 frame_01,planned,Must inherit combat_idle guard
+punch_1,02,anticipation,high,KEYFRAME_PROMPTS punch_1_load,planned,Short load before fast jab
+punch_1,03,launch,medium,FRAME_BY_FRAME_PROMPTS punch_1 frame_03,planned,Shoulder begins driving through
+punch_1,04,impact,critical,KEYFRAME_PROMPTS punch_1_contact,planned,Cleanest jab silhouette
+punch_1,05,extension,high,FRAME_BY_FRAME_PROMPTS punch_1 frame_05,planned,Half-beat of penetration
+punch_1,06,pullback,high,FRAME_BY_FRAME_PROMPTS punch_1 frame_06,planned,Recovery starts without snapping
+punch_1,07,recovery,medium,FRAME_BY_FRAME_PROMPTS punch_1 frame_07,planned,Ready for combo chain
+punch_1,08,combo_ready,high,FRAME_BY_FRAME_PROMPTS punch_1 frame_08,planned,Hand-off to punch_2
+punch_2,01,chain_start,medium,FRAME_BY_FRAME_PROMPTS punch_2 frame_01,planned,Continue from punch_1 end
+punch_2,02,coil,high,KEYFRAME_PROMPTS punch_2_load,planned,Rear shoulder and pelvis loaded
+punch_2,03,launch,medium,FRAME_BY_FRAME_PROMPTS punch_2 frame_03,planned,Hips unwind into strike
+punch_2,04,impact,critical,KEYFRAME_PROMPTS punch_2_contact,planned,Heavier than punch_1
+punch_2,05,follow_through,high,FRAME_BY_FRAME_PROMPTS punch_2 frame_05,planned,Driving extension after hit
+punch_2,06,brake,high,FRAME_BY_FRAME_PROMPTS punch_2 frame_06,planned,Catch momentum while grounded
+punch_2,07,recovery,medium,FRAME_BY_FRAME_PROMPTS punch_2 frame_07,planned,Return to guard while loading finisher
+punch_2,08,finisher_transition,high,FRAME_BY_FRAME_PROMPTS punch_2 frame_08,planned,Bridge into heavy third hit
+punch_3,01,threat_start,medium,FRAME_BY_FRAME_PROMPTS punch_3 frame_01,planned,Signal heavy finisher immediately
+punch_3,02,early_load,high,FRAME_BY_FRAME_PROMPTS punch_3 frame_02,planned,Clear lower center of gravity
+punch_3,03,deep_load,critical,KEYFRAME_PROMPTS punch_3_load,planned,Most important anticipation pose
+punch_3,04,pre_launch,high,FRAME_BY_FRAME_PROMPTS punch_3 frame_04,planned,Dangerous release setup
+punch_3,05,launch,medium,FRAME_BY_FRAME_PROMPTS punch_3 frame_05,planned,Mass moves through strike
+punch_3,06,impact,critical,KEYFRAME_PROMPTS punch_3_contact,planned,Strongest silhouette in combo
+punch_3,07,pressure_hold,high,FRAME_BY_FRAME_PROMPTS punch_3 frame_07,planned,Preserve weight after hit
+punch_3,08,early_recovery,high,FRAME_BY_FRAME_PROMPTS punch_3 frame_08,planned,Heavy follow-through
+punch_3,09,late_recovery,medium,FRAME_BY_FRAME_PROMPTS punch_3 frame_09,planned,Control momentum, stay threatening
+punch_3,10,end,high,FRAME_BY_FRAME_PROMPTS punch_3 frame_10,planned,Return to mobile combat stance
+punch_skill,01,startup,medium,KEYFRAME_PROMPTS punch_skill_start,planned,Stored forward momentum
+punch_skill,02,deep_startup,high,FRAME_BY_FRAME_PROMPTS punch_skill frame_02,planned,Lower center and clear direction
+punch_skill,03,dash_release,medium,FRAME_BY_FRAME_PROMPTS punch_skill frame_03,planned,Begin explosive forward motion
+punch_skill,04,full_dash,critical,KEYFRAME_PROMPTS punch_skill_dash,planned,Fast but readable body
+punch_skill,05,dash_to_hit,high,FRAME_BY_FRAME_PROMPTS punch_skill frame_05,planned,Travel converting into strike
+punch_skill,06,first_contact,high,FRAME_BY_FRAME_PROMPTS punch_skill frame_06,planned,Collision begins
+punch_skill,07,main_impact,critical,KEYFRAME_PROMPTS punch_skill_contact,planned,Biggest skill contact frame
+punch_skill,08,follow_through,high,FRAME_BY_FRAME_PROMPTS punch_skill frame_08,planned,Keep force for a beat
+punch_skill,09,brake,high,FRAME_BY_FRAME_PROMPTS punch_skill frame_09,planned,Absorb dash energy cleanly
+punch_skill,10,end,medium,FRAME_BY_FRAME_PROMPTS punch_skill frame_10,planned,Resolve back to player control

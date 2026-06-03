@@ -29,6 +29,7 @@ docs/ASSET_MANIFEST.csv 素材清单
 - 每个动画帧数。
 - 角色脚底基准线。
 - 攻击帧的命中窗口说明。
+- 如果是主角正式动作替换，还要附上逐动作的关键帧说明和审核结论。
 
 示例：
 
@@ -41,6 +42,40 @@ docs/ASSET_MANIFEST.csv 素材清单
 导出: assets/pixel/spr_player_neon_runner.png
 源文件: art_src/chr_player_neon_runner.aseprite
 ```
+
+主角“源”的拳头开局动作第二轮出图，额外遵循：
+
+- `PLAYER_ANIMATION_SPEC.md`
+- `FIST_ANIMATION_PRODUCTION_PACK.md`
+
+其中 `FIST_ANIMATION_PRODUCTION_PACK.md` 负责定义 `combat_idle`、`combat_run`、`punch_1`、`punch_2`、`punch_3`、`punch_skill` 的逐动作、逐关键帧和审核规则。
+`PLAYER_FIST_STRIP_EXPORT_SPEC.md` 负责定义正式高质量拳头条带的文件名、尺寸、帧数和替换流程。
+`PLAYER_FIST_REDRAW_TASKS.md` 负责定义当前过渡拳头 runtime 中优先重绘哪些帧、保留哪些节奏。
+`PLAYER_FIST_REDRAW_BATCH_01.md` 负责把第一批 9 帧正式重绘任务进一步拆成逐帧目标。
+`PLAYER_FIST_BATCH_01_REPLACE_CHECKLIST.md` 负责把 Batch 01 的重绘成品安全地压回当前 runtime 并重新部署。
+`PLAYER_FIST_VISUAL_REFERENCES.md` 负责记录已经落地的拳头视觉参考图，供重绘前统一动作味道。
+`art_src/generated/player_yuan_fist_pass/prompts/YUAN_APPEARANCE_LOCK.md` 负责锁定“源”的外貌设定，尤其是“只有右臂机械、左臂必须保持人类手臂”的硬约束。
+
+如果要先统一拳头连段的单帧力量方向，再做逐帧重绘，可先参考：
+
+- `art_src/generated/player_yuan_fist_pass/prompts/REDRAW_BATCH_01_VISUAL_REFERENCE_PROMPT.md`
+
+如果要直接在正确格式上绘制正式拳头条带，可使用：
+
+- `art_src/generated/player_yuan_fist_pass/templates/*.png`
+
+如果要在当前过渡拳头动作上直接做 paintover，可使用：
+
+- `art_src/generated/player_yuan_fist_pass/paintover_guides/*_guide.png`
+
+推荐同时交付：
+
+- `art_src/generated/player_yuan_fist_pass/prompts/KEYFRAME_PROMPTS.md`
+- `art_src/generated/player_yuan_fist_pass/prompts/FRAME_BY_FRAME_PROMPTS.md`
+- `art_src/generated/player_yuan_fist_pass/prompts/REVIEW_WORKSHEET.md`
+- `art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv`
+- `art_src/generated/player_yuan_fist_pass/prompts/CONSISTENCY_LOCK.md`
+- `art_src/generated/player_yuan_fist_pass/prompts/BATCH_01_FINAL_PROMPTS.md`
 
 ## 4. 特效交付
 

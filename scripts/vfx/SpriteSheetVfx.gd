@@ -1,11 +1,11 @@
 class_name SpriteSheetVfx
 extends Sprite2D
 
-var _frame_count := 1
-var _fps := 12.0
-var _frame_size := Vector2i(64, 64)
-var _timer := 0.0
-var _frame := 0
+var _frame_count: int = 1
+var _fps: float = 12.0
+var _frame_size: Vector2i = Vector2i(64, 64)
+var _timer: float = 0.0
+var _frame: int = 0
 
 func configure(entry: VfxEntry, facing: int) -> void:
 	texture = entry.texture
@@ -22,7 +22,7 @@ func configure(entry: VfxEntry, facing: int) -> void:
 
 func _process(delta: float) -> void:
 	_timer += delta
-	var next_frame := floori(_timer * _fps)
+	var next_frame: int = floori(_timer * _fps)
 	if next_frame == _frame:
 		return
 

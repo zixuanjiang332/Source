@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"fist_cross_2"
+display_name = "Pulse Cross"
+animation_id = &"punch_2"
+damage = 17
+energy_cost = 0
+knockback = Vector2(150, -38)
+lunge = 34.0
+active_time = 0.09
+cooldown = 0.145
+hit_stun = 0.15
+hit_stop = 0.038
+screen_shake = 0.56
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_light_02"
+energy_regen = 10

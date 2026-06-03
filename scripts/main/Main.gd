@@ -20,15 +20,16 @@ const VFX_SPAWNER_SCRIPT = preload("res://scripts/vfx/VfxSpawner.gd")
 @onready var transition_overlay: ColorRect = $TransitionLayer/TransitionOverlay
 @onready var shop: Node = get_node_or_null("Shop")
 
-var _title_active := true
-var _game_started := false
+var _title_active: bool = true
+var _game_started: bool = false
 var _notice_tween: Tween
 var _current_level: Node = null
-var _transitioning := false
-var _shop_open := false
-var _selected_button_index := 0
+var _transitioning: bool = false
+var _shop_open: bool = false
+var _selected_button_index: int = 0
 var _menu_buttons: Array[Button] = []
 var _button_tweens: Dictionary = {}
+var _persistent_player: CharacterBody2D = null
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -77,7 +78,7 @@ func _reload_run() -> void:
 	get_tree().paused = false
 	pause_overlay.visible = false
 	_clear_gameplay()
-	_build_gameplay()
+	_build_gameplay(false)
 
 
 func _show_title() -> void:
@@ -102,16 +103,19 @@ func _start_run() -> void:
 	pause_overlay.visible = false
 	transition_overlay.visible = false
 	get_tree().paused = false
-	_build_gameplay()
+	_build_gameplay(true)
 
 
-func _build_gameplay() -> void:
-	var vfx_spawner := Node2D.new()
+func _build_gameplay(reset_respawn := true) -> void:
+	_persistent_player = null
+	if reset_respawn:
+		GameEvents.clear_respawn_point()
+	var vfx_spawner: Node2D = Node2D.new()
 	vfx_spawner.name = "VfxSpawner"
 	vfx_spawner.set_script(VFX_SPAWNER_SCRIPT)
 	game_root.add_child(vfx_spawner)
 
-	var hud := HUD_SCENE.instantiate()
+	var hud: Node = HUD_SCENE.instantiate()
 	hud.name = "Hud"
 	game_root.add_child(hud)
 
@@ -120,6 +124,7 @@ func _build_gameplay() -> void:
 
 func _clear_gameplay() -> void:
 	_close_shop()
+	_persistent_player = null
 	_current_level = null
 	_transitioning = false
 	for child in game_root.get_children():
@@ -180,7 +185,7 @@ func _set_selected_button(index: int, animate := true) -> void:
 
 
 func _on_menu_button_hovered(button: Button) -> void:
-	var index := _menu_buttons.find(button)
+	var index: int = _menu_buttons.find(button)
 	if index >= 0:
 		_selected_button_index = index
 	_set_selected_button(_selected_button_index)
@@ -211,7 +216,7 @@ func _tween_button_scale(button: Button, target_scale: Vector2, animate := true)
 		button.scale = target_scale
 		return
 
-	var tween := create_tween()
+	var tween: Tween = create_tween()
 	_button_tweens[button] = tween
 	tween.tween_property(button, "scale", target_scale, 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
@@ -222,13 +227,18 @@ func _load_level(level_id: StringName) -> void:
 		&"workshop":
 			_current_level = WORKSHOP_LEVEL_SCENE.instantiate()
 			_current_level.name = "WorkshopLevel"
+		&"outside":
+			_current_level = MAIN_CITY_LEVEL_SCENE.instantiate()
+			_current_level.name = "MainCityLevel"
 		&"main_city":
 			_current_level = MAIN_CITY_LEVEL_SCENE.instantiate()
 			_current_level.name = "MainCityLevel"
 		_:
 			_current_level = REBIRTH_LEVEL_SCENE.instantiate()
 			_current_level.name = "RebirthLevel"
+	_attach_persistent_player(_current_level)
 	game_root.add_child(_current_level)
+	_capture_initial_respawn_point()
 
 
 func _clear_current_level() -> void:
@@ -251,12 +261,13 @@ func _transition_to_level(level_id: StringName) -> void:
 	_transitioning = true
 	transition_overlay.visible = true
 	transition_overlay.modulate.a = 0.0
-	var fade_in := create_tween()
+	var fade_in: Tween = create_tween()
 	fade_in.tween_property(transition_overlay, "modulate:a", 0.94, 0.28)
 	await fade_in.finished
+	_capture_player_for_transition()
 	_load_level(level_id)
 	await get_tree().process_frame
-	var fade_out := create_tween()
+	var fade_out: Tween = create_tween()
 	fade_out.tween_interval(0.1)
 	fade_out.tween_property(transition_overlay, "modulate:a", 0.0, 0.24)
 	await fade_out.finished
@@ -267,3 +278,63 @@ func _transition_to_level(level_id: StringName) -> void:
 func _close_shop() -> void:
 	if shop != null and shop.has_method("close") and bool(shop.get("visible")):
 		shop.call("close")
+
+
+func _capture_player_for_transition() -> void:
+	_persistent_player = null
+	if _current_level == null:
+		return
+
+	var player: CharacterBody2D = _current_level.get_node_or_null("Actors/Player") as CharacterBody2D
+	if player == null:
+		return
+
+	var parent: Node = player.get_parent()
+	if parent != null:
+		parent.remove_child(player)
+	player.velocity = Vector2.ZERO
+	_persistent_player = player
+
+
+func _attach_persistent_player(level_root: Node) -> void:
+	if level_root == null or _persistent_player == null:
+		return
+
+	var actors: Node = level_root.get_node_or_null("Actors")
+	if actors == null:
+		return
+
+	var placeholder_player: Node2D = level_root.get_node_or_null("Actors/Player") as Node2D
+	var target_position: Vector2 = Vector2.ZERO
+	if placeholder_player != null:
+		target_position = placeholder_player.position
+		actors.remove_child(placeholder_player)
+		placeholder_player.queue_free()
+
+	actors.add_child(_persistent_player)
+	_persistent_player.name = "Player"
+	_persistent_player.position = target_position
+	_persistent_player.velocity = Vector2.ZERO
+
+
+func _capture_initial_respawn_point() -> void:
+	if _current_level == null:
+		return
+
+	var player: Node2D = _current_level.get_node_or_null("Actors/Player") as Node2D
+	if player == null:
+		return
+
+	if not GameEvents.has_respawn_point():
+		GameEvents.set_respawn_point(player.global_position)
+	_apply_saved_respawn_point(player)
+
+
+func _apply_saved_respawn_point(player: Node2D) -> void:
+	if player == null or not GameEvents.has_respawn_point():
+		return
+
+	player.global_position = GameEvents.respawn_point()
+	var character: CharacterBody2D = player as CharacterBody2D
+	if character != null:
+		character.velocity = Vector2.ZERO

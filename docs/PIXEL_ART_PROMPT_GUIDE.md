@@ -56,6 +56,30 @@ Color priority: player-friendly cyan or blue energy accents, dark outfit base, o
 Output: single clean pixel art frame, transparent background, no text, no watermark.
 ```
 
+### 主角动作强化附加语
+
+当你要生成“更有力量感、更流畅”的动作帧时，把这些要求直接补进提示词：
+
+```text
+Motion direction: strong anticipation, clear contact frame, readable follow-through, body-driven force from hips and shoulders, stable foot planting, no floaty posing, no repeated copy-paste swings.
+Animation quality target: smooth frame-to-frame weight transfer, clean silhouette on every frame, strongest extension on impact frame, visible recoil and recovery after impact.
+Combat feel: aggressive close-range pressure, forward momentum, striking weight, premium action-game readability.
+```
+
+### 拳头连段提示词模板
+
+```text
+Create a 2D side-view pixel art playable character animation frame for a cyberpunk machine-crisis action game.
+Canvas target: 96x96.
+Character: Yuan early clone, agile melee fighter, dark combat outfit, cyan energy accents, no handheld weapon, fists raised in a combat stance.
+Animation tag: [combat_idle/combat_run/punch_1/punch_2/punch_3/punch_skill].
+Frame purpose: [startup/contact/recovery].
+Motion direction: strong anticipation, force driven by hips and shoulders, stable planted feet, readable torso twist, powerful punch impact, smooth weight transfer, no floaty motion.
+Silhouette priority: clear fist direction, readable head/torso/pelvis rotation, clean contact pose.
+Background: transparent background.
+Do not include text, watermark, motion-graphic streaks replacing the body, blurry pixels, extra arms, duplicate fists, or weapon silhouettes.
+```
+
 ## 5. 敌人提示词模板
 
 ```text
@@ -121,6 +145,7 @@ AI 素材进入项目之前必须检查：
 - 透明背景和边缘干净，没有水印、文字或伪 UI。
 - 脚底、武器方向和动作重心对齐。
 - 动画帧数、单帧尺寸、排列方式和标签清楚。
+- 出拳动作必须包含明确的 `startup / contact / recovery` 阶段，不接受只有命中姿势的“断片式”条带。
 - 导出 PNG 到 `assets/pixel/`。
 - AI 源图、逐帧 PNG 或工程源文件保存到 `art_src/`。
 - 在 `docs/ASSET_MANIFEST.csv` 更新状态。

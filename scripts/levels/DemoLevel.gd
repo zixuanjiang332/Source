@@ -26,8 +26,8 @@ const WALL_CENTER_OFFSET := 4.0
 @onready var supply_station: Area2D = $Interactables/SupplyStationInteract
 @onready var elevator_interact: Area2D = $Interactables/ElevatorInteract
 
-var _defeated_count := 0
-var _room_width := BASE_VIEWPORT_WIDTH
+var _defeated_count: int = 0
+var _room_width: float = BASE_VIEWPORT_WIDTH
 
 func _ready() -> void:
 	if route_label != null:
@@ -74,7 +74,7 @@ func _on_viewport_size_changed() -> void:
 
 func _apply_responsive_layout() -> void:
 	_room_width = _resolve_room_width()
-	var room_center := Vector2(_room_width * 0.5, BACKDROP_CENTER_Y)
+	var room_center: Vector2 = Vector2(_room_width * 0.5, BACKDROP_CENTER_Y)
 
 	_layout_background(room_center)
 	_layout_collision()
@@ -84,7 +84,7 @@ func _apply_responsive_layout() -> void:
 
 
 func _resolve_room_width() -> float:
-	var viewport_size := get_viewport_rect().size
+	var viewport_size: Vector2 = get_viewport_rect().size
 	if viewport_size.y <= 0.0:
 		return BASE_VIEWPORT_WIDTH
 	return maxf(BASE_VIEWPORT_WIDTH, roundf(BASE_VIEWPORT_HEIGHT * (viewport_size.x / viewport_size.y)))
@@ -94,20 +94,20 @@ func _layout_background(room_center: Vector2) -> void:
 	if workshop_bg == null or workshop_bg.texture == null:
 		return
 
-	var texture_size := workshop_bg.texture.get_size()
+	var texture_size: Vector2 = workshop_bg.texture.get_size()
 	if texture_size.x <= 0.0 or texture_size.y <= 0.0:
 		return
 
 	workshop_bg.position = room_center
-	var scale_x := _room_width / texture_size.x
-	var scale_y := BASE_VIEWPORT_HEIGHT / texture_size.y
-	var cover_scale := maxf(scale_x, scale_y)
+	var scale_x: float = _room_width / texture_size.x
+	var scale_y: float = BASE_VIEWPORT_HEIGHT / texture_size.y
+	var cover_scale: float = maxf(scale_x, scale_y)
 	workshop_bg.scale = Vector2.ONE * cover_scale
 
 
 func _layout_collision() -> void:
 	if ground_shape != null:
-		var ground_rect := ground_shape.shape as RectangleShape2D
+		var ground_rect: RectangleShape2D = ground_shape.shape as RectangleShape2D
 		if ground_rect != null:
 			ground_rect.size.x = _room_width
 		ground_shape.position = Vector2(_room_width * 0.5, FLOOR_Y)
@@ -144,7 +144,7 @@ func _layout_camera() -> void:
 	if player == null:
 		return
 
-	var camera := player.get_node_or_null("Camera2D") as Camera2D
+	var camera: Camera2D = player.get_node_or_null("Camera2D") as Camera2D
 	if camera == null:
 		return
 

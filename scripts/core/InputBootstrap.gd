@@ -33,14 +33,14 @@ func _ensure_action(action: StringName, keys: Array) -> void:
 		if keycode in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]:
 			if _has_mouse_event(action, keycode):
 				continue
-			var event := InputEventMouseButton.new()
+			var event: InputEventMouseButton = InputEventMouseButton.new()
 			event.button_index = keycode
 			InputMap.action_add_event(action, event)
 		# 处理键盘事件（KEY_* 常量）
 		else:
 			if _has_key_event(action, keycode):
 				continue
-			var event := InputEventKey.new()
+			var event: InputEventKey = InputEventKey.new()
 			event.physical_keycode = keycode
 			InputMap.action_add_event(action, event)
 

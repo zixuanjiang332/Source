@@ -5,27 +5,27 @@ const DEFAULT_STATS = preload("res://resources/characters/drone_stats.tres")
 const DEFAULT_ATTACK = preload("res://resources/attacks/enemy_metal_swipe.tres")
 
 @export var enemy_id: StringName = &"enemy"
-@export var stats = DEFAULT_STATS
-@export var attack_data = DEFAULT_ATTACK
+@export var stats: CharacterStats = DEFAULT_STATS
+@export var attack_data: AttackData = DEFAULT_ATTACK
 @export var elite_tier: StringName = &"normal"
-@export var aggro_range := 190.0
-@export var attack_range := 42.0
-@export var attack_interval := 0.9
-@export var patrol_width := 80.0
+@export var aggro_range: float = 190.0
+@export var attack_range: float = 42.0
+@export var attack_interval: float = 0.9
+@export var patrol_width: float = 80.0
 @export var drop_item_scene: PackedScene
 
 @onready var body: Polygon2D = $VisualRoot/Body
 @onready var eye: Polygon2D = $VisualRoot/Eye
-@onready var hitbox = $FacingPivot/Hitbox
+@onready var hitbox: Hitbox = $FacingPivot/Hitbox
 @onready var facing_pivot: Node2D = $FacingPivot
 @onready var debug_label: Label = $DebugLabel
 
-var _runtime_stats
-var _health := 1
-var _spawn_x := 0.0
-var _facing := -1
-var _attack_timer := 0.0
-var _dead := false
+var _runtime_stats: CharacterStats
+var _health: int = 1
+var _spawn_x: float = 0.0
+var _facing: int = -1
+var _attack_timer: float = 0.0
+var _dead: bool = false
 var _player: Node2D
 
 func _ready() -> void:
@@ -60,7 +60,7 @@ func apply_hit(attack_data, source: Node2D, _hit_position: Vector2, facing: int)
 		return
 
 	_health = max(0, _health - attack_data.damage)
-	var knock_direction := facing
+	var knock_direction: int = facing
 	if source != null:
 		knock_direction = 1 if global_position.x >= source.global_position.x else -1
 	velocity.x = attack_data.knockback.x * knock_direction
@@ -88,8 +88,8 @@ func is_boss_enemy() -> bool:
 
 
 func _chase_or_attack(delta: float) -> void:
-	var distance := _player.global_position - global_position
-	var horizontal_distance := absf(distance.x)
+	var distance: Vector2 = _player.global_position - global_position
+	var horizontal_distance: float = absf(distance.x)
 
 	if horizontal_distance <= aggro_range:
 		_facing = 1 if distance.x > 0.0 else -1
@@ -112,7 +112,7 @@ func _patrol(delta: float) -> void:
 
 func _attack() -> void:
 	_attack_timer = attack_interval
-	var attack = attack_data.duplicate(true)
+	var attack: AttackData = attack_data.duplicate(true)
 	hitbox.activate(attack, self, _facing)
 	velocity.x = _facing * attack.lunge
 
@@ -125,7 +125,7 @@ func _die() -> void:
 	GameEvents.request_camera_impulse(0.9, 0.1)
 
 	if drop_item_scene != null:
-		var drop := drop_item_scene.instantiate()
+		var drop: Node2D = drop_item_scene.instantiate()
 		drop.global_position = global_position + Vector2(0.0, -24.0)
 		get_parent().add_child(drop)
 
@@ -135,7 +135,7 @@ func _die() -> void:
 func _flash() -> void:
 	body.modulate = Color(1.0, 0.27, 0.18, 1.0)
 	eye.modulate = Color.WHITE
-	var tween := create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(body, "modulate", Color.WHITE, 0.12)
 	tween.parallel().tween_property(eye, "modulate", Color(1.0, 0.08, 0.12, 1.0), 0.12)
 

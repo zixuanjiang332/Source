@@ -1,25 +1,26 @@
 class_name DemoInteractable
 extends Area2D
 
-@export var prompt_text := "E"
-@export var speaker := ""
+@export var prompt_text: String = "E"
+@export var speaker: String = ""
 @export var dialogue_lines: PackedStringArray = PackedStringArray()
-@export var objective_after := ""
-@export var one_shot := false
-@export var completed_text := "already synchronized"
-@export var teleport_enabled := false
-@export var teleport_target := Vector2.ZERO
+@export var objective_after: String = ""
+@export var one_shot: bool = false
+@export var completed_text: String = "already synchronized"
+@export var teleport_enabled: bool = false
+@export var teleport_target: Vector2 = Vector2.ZERO
 @export var level_change_id: StringName = &""
-@export var opens_shop := false
+@export var opens_shop: bool = false
 @export var shop_id: StringName = &"main"
 
 @onready var prompt_label: Label = get_node_or_null("PromptLabel") as Label
 
 var _player: Node2D = null
-var _line_index := 0
-var _used := false
+var _line_index: int = 0
+var _used: bool = false
 
 func _ready() -> void:
+	monitoring = true
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	if prompt_label != null:
@@ -29,6 +30,11 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if _player == null:
+		_player = _resolve_player()
+		if _player != null and not (one_shot and _used):
+			_set_prompt_visible(true)
+
 	if _player == null:
 		return
 
@@ -50,13 +56,20 @@ func _on_body_exited(body: Node2D) -> void:
 	if body != _player:
 		return
 
-	_player = null
-	set_process(false)
-	_set_prompt_visible(false)
+	_player = _resolve_player()
+	if _player == null:
+		set_process(false)
+		_set_prompt_visible(false)
 
 
 func _interact() -> void:
+	if _player == null:
+		_player = _resolve_player()
+
 	if one_shot and _used:
+		return
+
+	if _player == null:
 		return
 
 	if opens_shop:
@@ -73,7 +86,7 @@ func _interact() -> void:
 		GameEvents.request_objective(objective_after)
 
 	if teleport_enabled and _player != null:
-		var character := _player as CharacterBody2D
+		var character: CharacterBody2D = _player as CharacterBody2D
 		if character != null:
 			character.velocity = Vector2.ZERO
 		_player.global_position = teleport_target
@@ -81,6 +94,7 @@ func _interact() -> void:
 
 	if level_change_id != &"":
 		GameEvents.request_level_change(level_change_id)
+		return
 
 	if one_shot:
 		_used = true
@@ -94,3 +108,11 @@ func _is_player(body: Node2D) -> bool:
 func _set_prompt_visible(is_visible: bool) -> void:
 	if prompt_label != null:
 		prompt_label.visible = is_visible
+
+
+func _resolve_player() -> Node2D:
+	for body in get_overlapping_bodies():
+		var node: Node2D = body as Node2D
+		if node != null and _is_player(node):
+			return node
+	return null

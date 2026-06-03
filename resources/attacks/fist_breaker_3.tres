@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"fist_breaker_3"
+display_name = "Impact Breaker"
+animation_id = &"punch_3"
+damage = 25
+energy_cost = 0
+knockback = Vector2(215, -76)
+lunge = 40.0
+active_time = 0.11
+cooldown = 0.22
+hit_stun = 0.21
+hit_stop = 0.05
+screen_shake = 0.84
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_heavy_01"
+energy_regen = 10

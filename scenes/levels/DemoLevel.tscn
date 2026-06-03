@@ -151,13 +151,13 @@ position = Vector2(838, 154)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("4")
-level_change_id = &"main_city"
+level_change_id = &"outside"
 prompt_text = "E LIFT"
 speaker = "LIFT"
-dialogue_lines = PackedStringArray("Workshop lift online. entering the combat route.")
-objective_after = "SURFACE // cross the robot high road"
+dialogue_lines = PackedStringArray("Workshop lift online. ascending to the outside route.")
+objective_after = "OUTSIDE // cross the robot high road"
 one_shot = true
-completed_text = "city lift already used"
+completed_text = "outside lift already used"
 
 [node name="NextGenPickup" type="Area2D" parent="Interactables"]
 position = Vector2(538, 196)
@@ -243,15 +243,7 @@ script = ExtResource("5")
 weapon_data = ExtResource("6")
 
 [node name="Body" type="Sprite2D" parent="Interactables/DaggerPickup"]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.1, 0.1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/DaggerPickup"]
 shape = SubResource("CircleShape2D_pickup")
-
-[node name="Label" type="Label" parent="Interactables/DaggerPickup"]
-offset_left = -60.0
-offset_top = -30.0
-offset_right = 60.0
-offset_bottom = -10.0
-text = "匕首 // Dagger"
-horizontal_alignment = 1

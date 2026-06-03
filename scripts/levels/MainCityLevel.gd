@@ -3,7 +3,7 @@ extends Node2D
 
 @onready var route_label: Label = $RouteLabel
 
-var _defeated_count := 0
+var _defeated_count: int = 0
 
 func _ready() -> void:
 	route_label.text = "Combat route // machine high road"
@@ -18,7 +18,7 @@ func _announce_start() -> void:
 
 
 func _configure_player_camera() -> void:
-	var camera := get_node_or_null("Actors/Player/Camera2D") as Camera2D
+	var camera: Camera2D = get_node_or_null("Actors/Player/Camera2D") as Camera2D
 	if camera == null:
 		return
 

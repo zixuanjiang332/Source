@@ -19,13 +19,5 @@ texture = ExtResource("3")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_pickup")
 
-[node name="Label" type="Label" parent="."]
-offset_left = -60.0
-offset_top = -30.0
-offset_right = 60.0
-offset_bottom = -10.0
-text = "Weapon"
-horizontal_alignment = 1
-
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

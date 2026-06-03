@@ -1,8 +1,8 @@
 class_name CameraJuice
 extends Camera2D
 
-var _shake_strength := 0.0
-var _shake_timer := 0.0
+var _shake_strength: float = 0.0
+var _shake_timer: float = 0.0
 
 func _ready() -> void:
 	GameEvents.camera_impulse_requested.connect(_on_camera_impulse_requested)
@@ -14,7 +14,7 @@ func _process(delta: float) -> void:
 		return
 
 	_shake_timer = max(0.0, _shake_timer - delta)
-	var falloff := _shake_timer
+	var falloff: float = _shake_timer
 	offset = Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)) * _shake_strength * 3.5 * falloff
 
 

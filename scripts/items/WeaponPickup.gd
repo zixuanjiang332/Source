@@ -4,9 +4,7 @@ extends Area2D
 @export var weapon_data: WeaponData
 
 @onready var body: Sprite2D = $Body
-@onready var label: Label = $Label
-
-var _base_y := 0.0
+var _base_y: float = 0.0
 var _nearby_players: Array[Node2D] = []
 
 func _ready() -> void:
@@ -39,16 +37,13 @@ func _sync_visuals() -> void:
 	if not is_node_ready():
 		return
 	if weapon_data != null:
-		label.text = weapon_data.display_name
-		body.texture = weapon_data.world_texture
+		body.texture = weapon_data.resolved_world_texture()
 	else:
-		label.text = "Unknown Weapon"
 		body.texture = null
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	position.y = _base_y + sin(Time.get_ticks_msec() * 0.006) * 3.0
-	rotation += delta * 0.9
 
 
 func _on_body_entered(body_node: Node2D) -> void:
