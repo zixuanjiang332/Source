@@ -185,7 +185,8 @@ def stabilize_head_region(frames: list[Image.Image]) -> list[Image.Image]:
     if not frames:
         return frames
 
-    template = frames[0].convert("RGBA").crop(STABLE_IDLE_HEAD_BOX)
+    template_frame = polish_idle_face(frames[0].convert("RGBA"))
+    template = template_frame.crop(STABLE_IDLE_HEAD_BOX)
     stabilized: list[Image.Image] = []
     for frame in frames:
         output = frame.convert("RGBA").copy()
@@ -196,6 +197,66 @@ def stabilize_head_region(frames: list[Image.Image]) -> list[Image.Image]:
         output.alpha_composite(template, STABLE_IDLE_HEAD_BOX[:2])
         stabilized.append(output)
     return stabilized
+
+
+def polish_idle_face(frame: Image.Image) -> Image.Image:
+    frame = frame.copy()
+    pixels = frame.load()
+    for y in range(12, 22):
+        for x in range(51, 61):
+            r, g, b, a = pixels[x, y]
+            if a > 40 and r > 70 and g > 35 and b > 25 and r >= g >= b:
+                pixels[x, y] = (
+                    min(255, r + 38),
+                    min(220, g + 24),
+                    min(170, b + 14),
+                    max(a, 230),
+                )
+
+    skin_hi = (226, 154, 108, 255)
+    skin = (202, 126, 86, 255)
+    skin_sh = (154, 82, 61, 240)
+    outline = (34, 24, 26, 255)
+    eye = (68, 232, 255, 255)
+    face_pixels = {
+        (55, 13): skin_sh,
+        (56, 13): skin,
+        (57, 13): skin,
+        (54, 14): skin_sh,
+        (55, 14): skin,
+        (56, 14): skin_hi,
+        (57, 14): skin_hi,
+        (58, 14): skin,
+        (53, 15): skin_sh,
+        (54, 15): skin,
+        (55, 15): skin_hi,
+        (56, 15): skin_hi,
+        (57, 15): skin,
+        (58, 15): skin,
+        (54, 16): skin,
+        (55, 16): outline,
+        (56, 16): eye,
+        (57, 16): outline,
+        (58, 16): skin,
+        (54, 17): skin,
+        (55, 17): skin_sh,
+        (56, 17): skin,
+        (57, 17): skin,
+        (58, 17): skin_sh,
+        (53, 18): skin_sh,
+        (54, 18): skin,
+        (55, 18): skin,
+        (56, 18): skin_sh,
+        (57, 18): skin_sh,
+        (54, 19): skin_sh,
+        (55, 19): skin,
+        (56, 19): skin_sh,
+        (55, 20): outline,
+        (56, 20): skin_sh,
+    }
+    for point, color in face_pixels.items():
+        pixels[point] = color
+    return frame
 
 
 def read_strip_frames(strip_dir: Path, name: str, frame_count: int) -> list[Image.Image]:
