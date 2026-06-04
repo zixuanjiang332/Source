@@ -16,6 +16,7 @@ const ENERGY_FILL_WIDTH := 356.0
 @onready var objective_label: Label = $Root/Margin/Objective
 @onready var toast_label: Label = $Root/Margin/Toast
 @onready var currency_label: Label = $Root/Margin/CurrencyLabel
+@onready var accessory_bar: AccessoryBar = $Root/AccessoryBar
 
 var _current_energy: int = 0
 var _skill_cost: int = 0

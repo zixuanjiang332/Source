@@ -18,6 +18,7 @@ signal shop_requested(shop_id: StringName)
 signal shop_closed
 signal currency_changed(current_amount: int)
 signal item_purchased(shop_item_id: StringName, item_data: Resource)
+signal accessory_inventory_changed(accessory_list: Array)
 
 var _respawn_point: Vector2 = Vector2.ZERO
 var _has_respawn_point: bool = false
@@ -110,3 +111,7 @@ func report_currency_changed(current_amount: int) -> void:
 
 func report_item_purchased(shop_item_id: StringName, item_data: Resource) -> void:
 	item_purchased.emit(shop_item_id, item_data)
+
+
+func report_accessory_inventory_changed(accessory_list: Array) -> void:
+	accessory_inventory_changed.emit(accessory_list)

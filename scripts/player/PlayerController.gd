@@ -196,12 +196,15 @@ func apply_item(item_data) -> bool:
 	if item_data == null:
 		return false
 
-	if item_data.effect_id == &"revive_accessory":
+	# 饰品：进入饰品栏显示
+	if item_data.is_accessory:
 		accessory_inventory.append(item_data)
 		GameEvents.report_item_collected(item_data.item_id)
 		GameEvents.request_toast("Accessory equipped: %s" % item_data.display_name)
+		GameEvents.report_accessory_inventory_changed(accessory_inventory)
 		return true
 
+	# 道具：即时生效，不进入饰品栏
 	match item_data.effect_id:
 		&"damage_multiplier":
 			_damage_multiplier += item_data.magnitude
@@ -687,7 +690,7 @@ func _consume_best_revive_accessory() -> ItemData:
 	var selected_priority: int = -999999
 	for index in range(accessory_inventory.size()):
 		var item: ItemData = accessory_inventory[index]
-		if item == null or item.effect_id != &"revive_accessory":
+		if item == null or not item.is_accessory or item.effect_id != &"revive_accessory":
 			continue
 		if selected_index < 0 or item.revive_priority > selected_priority:
 			selected_index = index
@@ -697,6 +700,7 @@ func _consume_best_revive_accessory() -> ItemData:
 
 	var selected_item: ItemData = accessory_inventory[selected_index]
 	accessory_inventory.remove_at(selected_index)
+	GameEvents.report_accessory_inventory_changed(accessory_inventory)
 	return selected_item
 
 

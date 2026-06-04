@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/Hud.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/ui/portrait_yuan_stage_01.png" id="2"]
+[ext_resource type="Script" path="res://scripts/ui/AccessoryBar.gd" id="3"]
 
 [node name="Hud" type="CanvasLayer"]
 layer = 10
@@ -191,3 +192,11 @@ theme_override_font_sizes/font_size = 30
 text = "A/D move  Space jump  E interact"
 horizontal_alignment = 2
 modulate = Color(1, 1, 1, 0.55)
+
+[node name="AccessoryBar" type="HBoxContainer" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 32.0
+offset_right = 1100.0
+offset_bottom = 68.0
+script = ExtResource("3")
