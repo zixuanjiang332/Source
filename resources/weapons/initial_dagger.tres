@@ -1,19 +1,32 @@
-[gd_resource type="Resource" script_class="WeaponData" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="WeaponData" load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/WeaponData.gd" id="1"]
 [ext_resource type="Resource" path="res://resources/attacks/dagger_cut_1.tres" id="2"]
 [ext_resource type="Resource" path="res://resources/attacks/dagger_cut_2.tres" id="3"]
 [ext_resource type="Resource" path="res://resources/attacks/dagger_cut_3.tres" id="4"]
 [ext_resource type="Texture2D" path="res://assets/pixel/weapons/individual/weapon_01_dagger.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/ui/icon_initial_dagger.png" id="6"]
+[ext_resource type="Resource" path="res://resources/attacks/dagger_flash_step.tres" id="7"]
 
 [resource]
 script = ExtResource("1")
 weapon_id = &"initial_dagger"
 display_name = "匕首 // Dagger"
 description = "初始近战武器。中伤害中攻速，三段连击。"
+weapon_type = &"melee"
+element_type = &"none"
+world_texture = ExtResource("5")
+hud_icon = ExtResource("6")
 icon_texture = ExtResource("5")
+base_damage_rating = 20
+attack_speed_rating = 50
+passive_summary = "中伤害中攻速"
+equip_move_speed_scale = 1.0
+equip_max_health_scale = 1.0
+attack_damage_scale = 1.0
+attack_speed_scale = 1.0
 light_attack = ExtResource("2")
 followup_attack = ExtResource("3")
 finisher_attack = ExtResource("4")
-skill_display_name = ""
-skill_attack = null
+skill_display_name = "Flash Step"
+skill_attack = ExtResource("7")

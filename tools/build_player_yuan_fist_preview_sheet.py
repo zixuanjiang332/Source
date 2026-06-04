@@ -10,12 +10,19 @@ FRAME_ROOT = ROOT / "assets" / "pixel" / "characters" / "player_yuan_runtime" / 
 OUTPUT_PATH = ROOT / "art_src" / "generated" / "player_yuan_fist_pass" / "preview_sheet.png"
 
 ANIMATION_ROWS = [
-    ("combat_idle", 8),
-    ("combat_run", 8),
-    ("punch_1", 8),
-    ("punch_2", 8),
-    ("punch_3", 10),
-    ("punch_skill", 10),
+    ("idle", 12),
+    ("run", 8),
+    ("jump", 3),
+    ("fall", 3),
+    ("dash", 5),
+    ("hit", 3),
+    ("death", 8),
+    ("combat_idle", 12),
+    ("combat_run", 10),
+    ("punch_1", 12),
+    ("punch_2", 12),
+    ("punch_3", 14),
+    ("punch_skill", 14),
 ]
 
 CELL = 96
@@ -32,7 +39,7 @@ def build_preview_sheet() -> Path:
     sheet = Image.new("RGBA", (width, height), (10, 12, 18, 255))
     draw = ImageDraw.Draw(sheet)
 
-    draw.text((PADDING, 8), "Yuan Fist Runtime Preview", fill=(220, 235, 255, 255))
+    draw.text((PADDING, 8), "Cyber Fist Runtime Preview", fill=(220, 235, 255, 255))
 
     y = HEADER + PADDING
     for animation_name, frame_count in ANIMATION_ROWS:

@@ -44,6 +44,28 @@ BATCH_CONFIGS = {
         "punch_2": [1, 2, 3, 4, 5],
         "punch_3": [1, 2, 3, 4, 5, 6, 7],
     },
+    "batch_gamepixel_seed": {
+        "combat_idle": [0],
+        "punch_1": [3],
+        "punch_2": [3],
+        "punch_3": [5],
+        "punch_skill": [4],
+    },
+    "batch_gamepixel_combat_idle": {
+        "combat_idle": [0, 1, 2, 3, 4, 5, 6, 7],
+    },
+    "batch_gamepixel_punch_1": {
+        "punch_1": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    },
+    "batch_gamepixel_punch_2": {
+        "punch_2": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    },
+    "batch_gamepixel_punch_3": {
+        "punch_3": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    },
+    "batch_gamepixel_punch_skill": {
+        "punch_skill": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    },
 }
 
 MIN_COMPONENT_AREA = 18

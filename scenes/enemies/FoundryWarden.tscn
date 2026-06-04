@@ -24,6 +24,7 @@ script = ExtResource("1")
 enemy_id = &"foundry_warden"
 stats = ExtResource("2")
 attack_data = ExtResource("3")
+elite_tier = &"boss"
 aggro_range = 250.0
 attack_range = 74.0
 attack_interval = 1.55
@@ -80,4 +81,3 @@ offset_bottom = -108.0
 theme_override_font_sizes/font_size = 8
 text = "warden"
 horizontal_alignment = 1
-

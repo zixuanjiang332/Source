@@ -1,18 +1,15 @@
 # Player Fist Strip Export Spec
 
-本文档定义“源”拳头开局动作的正式导出规格。目标是让后续更高质量动作帧可以直接替换当前过渡版 runtime 资源，而不用再改代码或手动重接节点。
+本文档定义“源”拳头开局动作的正式导出规格。目标是让后续更高质量动作帧可以直接替换当前活跃 runtime 资源，而不用再改代码或手动重接节点。
 
 ## 1. 当前状态
 
-当前项目已经实装一版过渡拳头 runtime：
+当前项目已经实装并接入一版活跃拳头 runtime：
 
 - `assets/pixel/spr_player_yuan_runtime.png`
 - `resources/characters/player_yuan_runtime_frames.tres`
 
-其中：
-
-- `combat_* / punch_*` 来自过渡拳头条带
-- `idle/run/jump/fall/dash/hit/death` 也已经切到无武器过渡版
+其中 `idle/run/jump/fall/dash/hit/death` 和 `combat_* / punch_*` 全部来自当前 `player_yuan_fist_pass` 条带。
 
 后续正式高质量拳头动作，只需要替换条带输入，不要改运行时文件名和标签名。
 
@@ -30,15 +27,15 @@ art_src/generated/player_yuan_fist_pass/strips/
 art_src/generated/player_yuan_fist_pass/templates/
 ```
 
-如果想在当前过渡拳头动作上直接重绘，而不是从空白模板起稿，可使用：
+如果想在当前活跃拳头动作上直接重绘，而不是从空白模板起稿，可使用：
 
 ```text
 art_src/generated/player_yuan_fist_pass/paintover_guides/
 ```
 
-这组 guide 会保留当前过渡拳头帧的体块、节奏和脚底基准线，适合快速做正式版本覆盖。
+这组 guide 会保留当前运行时拳头帧的体块、节奏和脚底基准线，适合快速做正式版本覆盖。
 
-运行这条命令后会自动接入：
+运行这条命令后会自动重建并更新运行时资源：
 
 ```powershell
 python .\tools\build_player_yuan_runtime_from_fist_pass.py
@@ -84,19 +81,19 @@ punch_skill.png
 
 | 文件 | 帧数 | FPS | 说明 |
 |---|---:|---:|---|
-| `idle.png` | 6 | 8 | 无武器基础站立 |
+| `idle.png` | 12 | 8 | 无武器基础站立 |
 | `run.png` | 8 | 12 | 无武器基础跑动 |
 | `jump.png` | 3 | 10 | 无武器跳跃 |
 | `fall.png` | 3 | 10 | 无武器下落 |
 | `dash.png` | 5 | 18 | 无武器冲刺 |
 | `hit.png` | 3 | 12 | 无武器受击 |
 | `death.png` | 8 | 10 | 无武器死亡 |
-| `combat_idle.png` | 8 | 8 | 拳架待机 |
-| `combat_run.png` | 8 | 12 | 拳架追击跑 |
-| `punch_1.png` | 8 | 18 | 前手快拳 |
-| `punch_2.png` | 8 | 18 | 后手重拳 |
-| `punch_3.png` | 10 | 16 | 连段收尾重拳 |
-| `punch_skill.png` | 10 | 16 | 冲刺接重击 |
+| `combat_idle.png` | 12 | 8 | 拳架待机 |
+| `combat_run.png` | 10 | 12 | 拳架追击跑 |
+| `punch_1.png` | 12 | 18 | 前手快拳 |
+| `punch_2.png` | 12 | 18 | 后手重拳 |
+| `punch_3.png` | 14 | 16 | 连段收尾重拳 |
+| `punch_skill.png` | 14 | 16 | 冲刺接重击 |
 
 条带顺序要求：
 
@@ -109,19 +106,19 @@ punch_skill.png
 
 | 文件 | 宽 x 高 |
 |---|---|
-| `idle.png` | `576 x 96` |
+| `idle.png` | `1152 x 96` |
 | `run.png` | `768 x 96` |
 | `jump.png` | `288 x 96` |
 | `fall.png` | `288 x 96` |
 | `dash.png` | `480 x 96` |
 | `hit.png` | `288 x 96` |
 | `death.png` | `768 x 96` |
-| `combat_idle.png` | `768 x 96` |
-| `combat_run.png` | `768 x 96` |
-| `punch_1.png` | `768 x 96` |
-| `punch_2.png` | `768 x 96` |
-| `punch_3.png` | `960 x 96` |
-| `punch_skill.png` | `960 x 96` |
+| `combat_idle.png` | `1152 x 96` |
+| `combat_run.png` | `960 x 96` |
+| `punch_1.png` | `1152 x 96` |
+| `punch_2.png` | `1152 x 96` |
+| `punch_3.png` | `1344 x 96` |
+| `punch_skill.png` | `1344 x 96` |
 
 ## 7. 正式替换流程
 
@@ -144,13 +141,13 @@ python .\tools\build_player_yuan_runtime_from_fist_pass.py
 
 ## 8. 验收要点
 
-正式拳头条带替换过渡版时，至少确认：
+正式拳头条带替换当前运行时资源时，至少确认：
 
 1. 待机和跑步不再带旧光刀轮廓
 2. `punch_1 / punch_2 / punch_3` 力量层级明显递增
 3. `punch_skill` 是“突进接重击”，不是刀式挥斩
 4. 玩家轮廓、脚底基准线、头身比稳定
-5. 进入游戏后可正常移动、跳跃、冲刺、普攻、技能和终结技
+5. 进入游戏后可正常移动、跳跃、冲刺、普攻和技能
 
 ## 9. 与当前目标的关系
 

@@ -1,45 +1,33 @@
-# Player Fist Visual References
+# Player Visual Reference
 
-这份文档记录当前项目里已经落地的“拳头正式重绘参考图”。这些图不是直接切进 runtime 的动画条带，而是用于统一力量方向、姿态层级和终结拳气质。
+Current canonical character reference image:
 
-## 当前参考图
+- `art_src/concepts/player_cyber_fist_reference_v1.png`
 
-### 1. 拳头连段 9 宫格
+This image replaces all previous Yuan, clone, geometry, and board-cropped appearance references.
 
-文件：
+Production note:
 
-`art_src/generated/player_yuan_fist_pass/visual_refs/yuan_punch_combo_reference_board_v1.png`
+- `art_src/generated/player_yuan_fist_pass/preview_sheet.png` is the current runtime review sheet.
+- `art_src/generated/player_yuan_fist_pass/runtime_frame_audit.csv` is the current crop/fragment audit.
+- Final playable frames are generated directly as isolated `96x96` frames and strips. Do not use multi-pose boards as a crop source.
 
-用途：
+Core direction:
 
-- 对齐 `punch_1 / punch_2 / punch_3` 的重量递进
-- 看三段拳的读招、命中、回收层级
-- 给 Batch 01 的逐帧重绘提供单帧方向参考
+- fresh cyberpunk fist-fighter protagonist
+- slim athletic build
+- intact black long coat with high collar
+- pixel-art rendering is the visual baseline
+- both arms human-proportioned
+- right forearm only has a thin mechanical shell overlay
+- one cyan cyber eye cue inside the face
+- no external visor, glasses, monocle, or eyepiece
+- no giant gauntlet
+- no exposed chest core
+- no torn clothing
+- no weapons
+- restrained cyan cyber accents
+- easy-to-read silhouette for future frame generation
+- prefer medium-low density gameplay pixel art over high-definition pixel rendering
 
-注意：
-
-- 这张图偏“力量概念参考”，不能直接拆成动画帧
-- 蓝色能量爆点可以参考冲击感，但正式拳头帧不应让能量特效盖过角色本体
-
-### 2. 终结重拳 1x4
-
-文件：
-
-`art_src/generated/player_yuan_fist_pass/visual_refs/yuan_punch_finisher_reference_strip_v1.png`
-
-用途：
-
-- 强化 `punch_3` 的下沉、爆发、命中、重收势
-- 给 `punch_3_02 / 05 / 07` 提供更重的下盘和肩髋联动参考
-
-注意：
-
-- 这张图更适合看终结拳逻辑，不适合直接拿来做 `punch_1` 或 `punch_2`
-- 正式 runtime 替换时仍以 `PLAYER_FIST_REDRAW_BATCH_01.md` 的逐帧职责为准
-
-## 推荐使用方式
-
-1. 先看视觉参考图，统一“这一版拳头到底要有多重”
-2. 再看 `PLAYER_FIST_REDRAW_BATCH_01.md`，明确要改哪 9 帧
-3. 再用 `REDRAW_BATCH_01_FINAL_PROMPTS.md` 逐帧出图
-4. 完成后投放到 `redraw_batches/batch_01/`，用替换脚本压回 runtime
+Do not use deleted legacy references, board-cropped frames, damaged-core variants, oversized mechanical arms, weapons, or placeholder bodies.

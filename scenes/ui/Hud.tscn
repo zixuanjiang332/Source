@@ -22,32 +22,6 @@ offset_top = 28.0
 offset_right = 1888.0
 offset_bottom = 1032.0
 
-[node name="PortraitBack" type="Polygon2D" parent="Root/Margin"]
-position = Vector2(72, 72)
-color = Color(0.012, 0.018, 0.03, 0.88)
-polygon = PackedVector2Array(0, -62, 27, -56, 48, -48, 60, -28, 64, 0, 60, 28, 48, 48, 27, 56, 0, 62, -27, 56, -48, 48, -60, 28, -64, 0, -60, -28, -48, -48, -27, -56)
-
-[node name="PortraitFrame" type="Line2D" parent="Root/Margin"]
-position = Vector2(72, 72)
-points = PackedVector2Array(0, -66, 28, -60, 52, -52, 64, -28, 68, 0, 64, 28, 52, 52, 28, 60, 0, 66, -28, 60, -52, 52, -64, 28, -68, 0, -64, -28, -52, -52, -28, -60, 0, -66)
-width = 5.0
-default_color = Color(0.16, 0.95, 1, 0.95)
-
-[node name="PortraitAccent" type="Line2D" parent="Root/Margin"]
-position = Vector2(72, 72)
-points = PackedVector2Array(36, -52, 60, -24, 68, 0)
-width = 3.0
-default_color = Color(1, 0.18, 0.68, 0.95)
-
-[node name="PortraitImage" type="TextureRect" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 18.0
-offset_right = 126.0
-offset_bottom = 126.0
-texture = ExtResource("2")
-stretch_mode = 5
-
 [node name="HealthBack" type="ColorRect" parent="Root/Margin"]
 layout_mode = 0
 offset_left = 160.0
@@ -79,16 +53,6 @@ theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.92)
 theme_override_font_sizes/font_size = 28
 text = "HP 000/000"
 
-[node name="CurrencyLabel" type="Label" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 552.0
-offset_top = 78.0
-offset_right = 820.0
-offset_bottom = 114.0
-theme_override_colors/font_color = Color(0.16, 0.95, 1, 0.9)
-theme_override_font_sizes/font_size = 28
-text = "CR 0500"
-
 [node name="EnergyBack" type="ColorRect" parent="Root/Margin"]
 layout_mode = 0
 offset_left = 160.0
@@ -119,75 +83,3 @@ offset_bottom = 186.0
 theme_override_colors/font_color = Color(0.88, 0.92, 1, 0.9)
 theme_override_font_sizes/font_size = 28
 text = "EN 000/000"
-
-[node name="WeaponIcon" type="TextureRect" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 34.0
-offset_top = 166.0
-offset_right = 120.0
-offset_bottom = 252.0
-stretch_mode = 5
-
-[node name="WeaponLabel" type="Label" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 206.0
-offset_right = 720.0
-offset_bottom = 248.0
-theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.92)
-theme_override_font_sizes/font_size = 28
-text = "WEAPON // --"
-
-[node name="SkillLabel" type="Label" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 258.0
-offset_right = 820.0
-offset_bottom = 304.0
-theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.86)
-theme_override_font_sizes/font_size = 26
-text = "K Skill // --"
-
-[node name="UltimateLabel" type="Label" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 160.0
-offset_top = 310.0
-offset_right = 860.0
-offset_bottom = 356.0
-theme_override_colors/font_color = Color(1, 0.34, 0.38, 0.9)
-theme_override_font_sizes/font_size = 26
-text = "HOLD K // CHARGING"
-
-[node name="ComboLabel" type="Label" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 1120.0
-offset_top = 112.0
-offset_right = 1824.0
-offset_bottom = 160.0
-theme_override_colors/font_color = Color(0.78, 0.96, 1, 0.94)
-theme_override_font_sizes/font_size = 32
-text = ""
-horizontal_alignment = 2
-
-[node name="Objective" type="Label" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 1000.0
-offset_top = 24.0
-offset_right = 1824.0
-offset_bottom = 76.0
-theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.9)
-theme_override_font_sizes/font_size = 32
-text = "WAKE // speak with Dr. Lin"
-horizontal_alignment = 2
-
-[node name="Toast" type="Label" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 760.0
-offset_top = 910.0
-offset_right = 1824.0
-offset_bottom = 970.0
-theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.62)
-theme_override_font_sizes/font_size = 30
-text = "A/D move  Space jump  E interact"
-horizontal_alignment = 2
-modulate = Color(1, 1, 1, 0.55)
