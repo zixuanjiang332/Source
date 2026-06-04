@@ -12,7 +12,7 @@
 - `InputBootstrap`: 启动时注册默认输入，避免空项目缺少 InputMap。
 - `CharacterStats`: 角色数值 Resource，玩家、普通敌人、Boss 共用。
 - `AttackData`: 攻击数据 Resource，统一伤害、击退、命中停顿、VFX、SFX，并可通过 `animation_id` 映射角色攻击动画。
-- `WeaponData`: 当前武器数据 Resource，保存武器 ID、显示名、普攻链、Demo 技能攻击和 HUD 名称。
+- `WeaponData`: 当前武器数据 Resource，保存武器 ID、显示名、图标、基础评分、普攻链、技能和终结技配置。
 - `Hitbox` / `Hurtbox`: 所有攻击命中都走这两个 Area2D。
 - `VfxCatalog`: 通过 `vfx_id` / `sfx_id` 查找特效和音效。旧特效可继续返回 PackedScene；spritesheet VFX 和 SFX 使用 `VfxEntry` / `SfxEntry` 登记。
 - `PlayerAnimationController`: 玩家动画桥接层，正式 spritesheet 缺失或动画标签缺失时回退到灰盒视觉。
@@ -30,7 +30,7 @@
 
 重生段电梯通过 `GameEvents.request_level_change(&"workshop")` 进入作坊段。作坊段电梯再通过 `GameEvents.request_level_change(&"outside")` 进入外界主关卡；`Main.gd` 仍兼容旧的 `main_city` ID。切换时会播放短暂蓝色扫描/淡出转场，然后卸载当前场景并加载目标关卡。
 
-当前“源”的概念图已全量导出到 `assets/pixel/characters/yuan/`。运行时玩家现已切到 `assets/pixel/spr_player_yuan_runtime.png` 和 `resources/characters/player_yuan_runtime_frames.tres`。这套 runtime 资源保留原有移动/受击/死亡条带，同时接入新的 `combat_idle`、`combat_run`、`punch_1`、`punch_2`、`punch_3`、`punch_skill`。当前拳头动作属于“过渡实装版”：由旧早期克隆体战斗帧去刀光、重排和拼条后生成，用于先把拳头开局的手感、时序和资源接线跑通；后续再用更高质量手工或 AI 重绘帧替换。HUD 使用 `portrait_yuan_stage_01.png`，武器图标暂时仍复用 `icon_initial_dagger.png` 作为占位，等待拳头版 HUD 图标。
+当前玩家角色只保留新一轮“源”运行时素材：`assets/pixel/spr_player_yuan_runtime.png` 和 `resources/characters/player_yuan_runtime_frames.tres`。旧 `assets/pixel/characters/yuan/` 概念角色集已移除。当前拳头动作已经切到新的游戏像素方向帧，角色特征锁定为年轻黑色长外套、内嵌蓝色机械左眼、右前臂薄机械壳、开局空手拳击。HUD 使用新的 `portrait_yuan_stage_01.png`；武器图标改为按 `WeaponData` 动态解析，拳头专用 HUD icon 仍可后续补齐。
 
 项目渲染基准为 1920x1080，Stretch 使用 `canvas_items`，避免菜单、HUD 和大背景被 480p 内部分辨率压缩后放大。玩家视觉缩放为 70%，相机默认 `zoom` 为 `2.0`，并关闭相机平滑以减少亚像素模糊；该设置在保持像素清晰的同时给出约 960x540 world units 的录屏视距。各关卡使用不可见边界限制玩家离开路线，并通过相机 `limit_*` 避免显示明显地图外空白。
 
@@ -59,11 +59,12 @@
 - `fist_cross_2`: 第二段追击，增加转髋和身体前压。
 - `fist_breaker_3`: 连段收尾重拳，击退和停顿更明显。
 - `fist_drive_step`: Demo 用冲步重拳技能，用于展示位移接近和爆发命中。
-- `Overdrive Sever`: 满能量长按 `K` 触发的 Demo 终结技。前 7 段为蓝色全息高速斩击，玩家本体隐藏，只留下残影和刀痕；第 8 段播放 `ultimate_slam`，角色双手持红色光刀下坠重击。
 
 玩家 HUD 通过 `GameEvents.player_weapon_changed`、`player_energy_changed` 和 `player_combo_changed` 显示武器名、能量、技能状态和连段。UI 只监听事件，不驱动战斗逻辑。
 
-终结技 HUD 通过 `GameEvents.player_ultimate_changed` 获取显示名、能量消耗和长按时间，并在能量满时显示 `HOLD K ... READY`。终结技仍复用当前玩家 Hitbox，但每一段会临时放大 hitbox 并在段落结束后恢复默认普攻尺寸。
+终结技 HUD 事件接口 `GameEvents.player_ultimate_changed` 仍保留给后续扩展，但当前活跃开局武器不再挂旧版终结技数据。
+
+当前垂直切片也已经接入两类路线交互：世界内 `WeaponPickup` 用于拾取和替换武器，`DemoInteractable` 则可配置为打开商店、房间内定点传送或触发关卡切换。
 
 本阶段不做 1/2/3 武器槽、`Q` 切换、远程武器或正式多武器主技能框架。等初始拳头路线稳定并接入正式动画后，再抽象完整武器系统。
 
@@ -73,6 +74,6 @@
 - 不做永久存档和复杂元成长。
 - 不做多主角、多武器库。
 - 不做多武器槽、快速切换和远程武器框架。
-- 不做完整商店、NPC 和剧情系统。
+- 不做完整多商店经济、NPC 长链对话和剧情系统。
 
 这些都等 8 月 15 日 Demo 稳定后再扩展。

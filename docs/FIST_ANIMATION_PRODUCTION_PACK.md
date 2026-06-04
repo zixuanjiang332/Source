@@ -11,7 +11,7 @@
 - `punch_3`
 - `punch_skill`
 
-当前代码已经接线到这些标签；在正式拳头帧未替换前，运行时仍会回退到旧的 `atk_*` / `skill` 条带。
+当前代码已经优先接线到这些标签；兼容层仍保留旧 `atk_* / skill` 别名映射用于旧资源回放，但当前活跃拳头 runtime 不再依赖旧终结技动作链。
 
 ## 1. 本轮交付目标
 
@@ -41,9 +41,9 @@ art_src/generated/player_yuan_fist_pass/
   frames/
   strips/
 
-assets/pixel/characters/player_yuan_fist_pass/frames/
-assets/pixel/spr_player_yuan_fist_pass.png
-resources/characters/player_yuan_fist_pass_frames.tres
+assets/pixel/characters/player_yuan_runtime/frames/
+assets/pixel/spr_player_yuan_runtime.png
+resources/characters/player_yuan_runtime_frames.tres
 ```
 
 推荐命名：
@@ -135,12 +135,14 @@ art_src/generated/player_yuan_fist_pass/prompts/FRAME_SHOTLIST.csv
 
 目标：看起来不是普通站立，而是“随时会往前压”的空手战斗架势。
 
-- 帧数：`8`
+- 帧数：`12`
 - FPS：`8`
 - 循环：`yes`
 - 关键词：呼吸、压肩、前倾、拳架不对称、轻微重心切换
 
 逐帧要求：
+
+当前运行时用 `12` 帧承载这个循环，建议以上面 `8` 个关键姿势为骨架，在姿势切换之间补 4 个缓冲停顿帧，避免呼吸感过快。
 
 | 帧 | 目的 | 动作要求 |
 |---|---|---|
@@ -387,12 +389,12 @@ Blue afterimages may support speed, but the body must stay readable.
 - `resources/attacks/fist_breaker_3.tres`
 - `resources/attacks/fist_drive_step.tres`
 
-动作帧正式接入后，需要同步做这几件事：
+动作帧继续迭代时，需要同步确认这几件事：
 
-1. 将新条带导出到 `assets/pixel/spr_player_yuan_fist_pass.png`
-2. 新建或更新 `resources/characters/player_yuan_fist_pass_frames.tres`
-3. 把 `punch_1 / punch_2 / punch_3 / punch_skill` 真正加入 SpriteFrames
-4. 移除 `PlayerAnimationController` 对旧 `atk_* / skill` 的临时别名回退
+1. 将新条带覆盖到 `art_src/generated/player_yuan_fist_pass/strips/`
+2. 重新构建 `assets/pixel/spr_player_yuan_runtime.png`
+3. 更新 `resources/characters/player_yuan_runtime_frames.tres`
+4. 保持 `punch_* / combat_*` 标签稳定，不再把旧终结技动作链当作当前拳头 runtime 依赖
 5. 在 `CHANGELOG.md`、`PROGRESS_LOG.md`、`ASSET_MANIFEST.csv` 记录状态变更
 
 ## 10. 推荐执行方式
@@ -443,6 +445,5 @@ python .\tools\build_player_yuan_runtime_from_fist_pass.py
 
 说明：
 
-- `deploy_player_yuan_fist_pass.ps1` 会把 `Player.tscn` 切到新的 `player_yuan_runtime_frames.tres`
-- 同时删除旧的 `atk_1` / `atk_2` / `atk_3` / `skill` 逐帧 PNG 与 `.import`
-- 新帧接入后，`PlayerAnimationController.gd` 会优先播放真正的 `punch_*` 和 `combat_*` 标签；旧刀系动画只作为缺失时的兜底
+- `deploy_player_yuan_fist_pass.ps1` 会确保玩家场景继续引用 `player_yuan_runtime_frames.tres`
+- 新帧接入后，`PlayerAnimationController.gd` 会优先播放真正的 `punch_*` 和 `combat_*` 标签；旧别名只保留给历史资源兼容

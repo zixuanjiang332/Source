@@ -20,11 +20,11 @@
 
 固定标签：
 
-`idle`, `run`, `jump`, `fall`, `dash`, `atk_1`, `atk_2`, `atk_3`, `skill`, `hit`, `death`
+`idle`, `run`, `jump`, `fall`, `dash`, `hit`, `death`, `combat_idle`, `combat_run`, `punch_1`, `punch_2`, `punch_3`, `punch_skill`
 
 ## First Asset List
 
-- Player: idle, run, jump, fall, dash, atk_1, atk_2, atk_3, skill, hit, death
+- Player: idle, run, jump, fall, dash, hit, death, combat_idle, combat_run, punch_1, punch_2, punch_3, punch_skill
 - Scout Drone: idle, walk, attack, hit, death
 - Riot Frame: idle, walk, heavy_attack, hit, death
 - Foundry Warden: idle, attack, hit, death

@@ -352,7 +352,7 @@ func _update_skill_input(delta: float) -> void:
 
 	if _skill_hold_active:
 		_skill_hold_timer += delta
-		if _skill_hold_timer >= _ultimate_hold_time():
+		if _weapon_has_ultimate() and _skill_hold_timer >= _ultimate_hold_time():
 			if _can_start_ultimate():
 				_skill_hold_active = false
 				_skill_hold_consumed = true
@@ -1280,7 +1280,7 @@ func _apply_surge_health_wave(target: Node, _attack_data) -> void:
 	var max_health := _resolve_target_max_health(target)
 	if max_health <= 0:
 		return
-	var bonus_damage := max(1, roundi(float(weapon_data.base_damage_rating) * max_health * 0.015))
+	var bonus_damage: int = max(1, roundi(float(weapon_data.base_damage_rating) * max_health * 0.015))
 	var wave_attack := AttackData.new()
 	wave_attack.damage = bonus_damage
 	wave_attack.knockback = Vector2.ZERO

@@ -142,13 +142,13 @@ No readable text, no logo, no UI mockup, no full scene.
 - 环境类特效放关卡场景。
 - 强特效必须测试低配 60 FPS。
 
-## 12. 终结技特效包实例
+## 12. 历史终结技特效包实例
 
-当前 `Overdrive Sever` 使用以下规格作为 Demo 终结技基准：
+以下 `Overdrive Sever` 规格保留为历史 Demo 终结技参考，当前活跃武器链不再依赖它：
 
 - 蓝色多段斩：`vfx_yuan_ult_blue_slash_01` 到 `07`，`256x128`，`6f`，电子蓝主色，少量 magenta glitch。
 - 残影：`vfx_yuan_ult_afterimage`，`96x96`，`7f`，角色本体隐藏时用于提示位移轨迹。
 - 红色重击：`vfx_yuan_ult_red_slam_arc` 与 `vfx_yuan_ult_red_impact`，`256x128`，`6f`，用于最后坠落斩和落点爆发。
-- 角色动作：`spr_player_yuan_ultimate_slam`，`96x96`，`8f`，只在最终红色重击阶段显示。
+- 角色动作：`spr_player_yuan_ultimate_slam`，`96x96`，`8f`，原本只在最终红色重击阶段显示。
 
 提示词方向：前 7 段强调“蓝色全息横向/斜向刀痕、角色消失、空间切割”；最后一段强调“红色下坠重击、双手持刀、落点爆发”。运行时必须保证前 7 段不长时间遮挡敌人轮廓，最后红色爆点允许短暂遮挡以制造高潮。
