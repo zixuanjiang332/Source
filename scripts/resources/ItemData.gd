@@ -5,6 +5,7 @@ extends Resource
 @export var display_name: String = "Prototype Item"
 @export_multiline var description: String = ""
 @export var icon_id: StringName = &"placeholder"
+@export var is_accessory: bool = false
 @export var effect_id: StringName = &"damage_multiplier"
 @export var magnitude: float = 1.0
 @export var stackable: bool = true

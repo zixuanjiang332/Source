@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/Hud.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/ui/portrait_yuan_stage_01.png" id="2"]
+[ext_resource type="Script" path="res://scripts/ui/AccessoryBar.gd" id="3"]
 
 [node name="Hud" type="CanvasLayer"]
 layer = 10
@@ -83,3 +84,83 @@ offset_bottom = 186.0
 theme_override_colors/font_color = Color(0.88, 0.92, 1, 0.9)
 theme_override_font_sizes/font_size = 28
 text = "EN 000/000"
+
+[node name="WeaponIcon" type="TextureRect" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 166.0
+offset_right = 120.0
+offset_bottom = 252.0
+stretch_mode = 5
+
+[node name="WeaponLabel" type="Label" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 206.0
+offset_right = 720.0
+offset_bottom = 248.0
+theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.92)
+theme_override_font_sizes/font_size = 28
+text = "WEAPON // --"
+
+[node name="SkillLabel" type="Label" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 258.0
+offset_right = 820.0
+offset_bottom = 304.0
+theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.86)
+theme_override_font_sizes/font_size = 26
+text = "K Skill // --"
+
+[node name="UltimateLabel" type="Label" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 310.0
+offset_right = 860.0
+offset_bottom = 356.0
+theme_override_colors/font_color = Color(1, 0.34, 0.38, 0.9)
+theme_override_font_sizes/font_size = 26
+text = "HOLD K // CHARGING"
+
+[node name="ComboLabel" type="Label" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 1120.0
+offset_top = 112.0
+offset_right = 1824.0
+offset_bottom = 160.0
+theme_override_colors/font_color = Color(0.78, 0.96, 1, 0.94)
+theme_override_font_sizes/font_size = 32
+text = ""
+horizontal_alignment = 2
+
+[node name="Objective" type="Label" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 24.0
+offset_right = 1824.0
+offset_bottom = 76.0
+theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.9)
+theme_override_font_sizes/font_size = 32
+text = "WAKE // speak with Dr. Lin"
+horizontal_alignment = 2
+
+[node name="Toast" type="Label" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 760.0
+offset_top = 910.0
+offset_right = 1824.0
+offset_bottom = 970.0
+theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.62)
+theme_override_font_sizes/font_size = 30
+text = "A/D move  Space jump  E interact"
+horizontal_alignment = 2
+modulate = Color(1, 1, 1, 0.55)
+
+[node name="AccessoryBar" type="HBoxContainer" parent="Root/Margin"]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 32.0
+offset_right = 1100.0
+offset_bottom = 68.0
+script = ExtResource("3")
