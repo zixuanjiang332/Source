@@ -38,7 +38,7 @@ AttackData (.tres) → Hitbox.activate() → area_entered → Hurtbox.receive_hi
 
 - `CharacterStats`：生命、速度、冲刺、重力、接触伤害。运行时通过 `runtime_copy()` 复制，避免修改原始资源。
 - `AttackData`：伤害、击退、主动帧、冷却、命中停顿、屏幕震动、VFX/SFX ID。
-- `WeaponData`：当前武器 ID、显示名、三段普攻、Demo 技能攻击和 HUD 技能名。当前只服务初始匕首切片。
+- `WeaponData`：武器 ID、显示名、图标、基础评分、被动、三段普攻、技能和终结技配置。当前已服务拳头开局武器、拾取武器和 HUD 面板。
 - `ItemData`：道具 ID、效果 ID（`damage_multiplier`/`heal`/`dash_cooldown`/`max_health`）、倍率。
 - `VfxCatalog`：`vfx_id` → PackedScene 映射，`VfxSpawner` 查表实例化。
 - `ShopData`：商店数据资源，定义可购买道具和价格。
@@ -92,7 +92,7 @@ class_name → extends → signal → enum → const → @export var → 成员�
 - 数值放 `.tres` 或 `@export`，不硬编码在 `_physics_process()` 里
 - UI 只监听事件/读状态，不驱动战斗逻辑
 - 特效/音效通过 `GameEvents` 请求，不直接实例化
-- 当前玩法分支只实现初始匕首切片，不加入多武器槽、数字键切换或 `Q` 切换
+- 当前玩法主线已支持世界内武器拾取、商店界面和关卡间传送；仍不做多武器槽、数字键切换或 `Q` 快速切换
 - 背景动态素材使用拆分 tiles/props 和横向 spritesheet，不做全屏背景帧序列
 - 脚本超 250 行需在 PR 说明原因
 - 代码不引用 `art_src/`，运行时只引用 `assets/`、`resources/`、`scenes/`、`scripts/`

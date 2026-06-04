@@ -14,7 +14,8 @@ BASELINE_Y = 92
 CENTER_X = 48
 
 STRIPS = [
-    ("combat_idle", 8),
+    ("idle", 12),
+    ("combat_idle", 12),
     ("combat_run", 8),
     ("punch_1", 8),
     ("punch_2", 8),

@@ -24,9 +24,9 @@
 6. Boss impact
 7. Low industrial ambience
 
-## Current Ultimate SFX Pack
+## Legacy Ultimate SFX Pack
 
-`Overdrive Sever` 终结技已接入一组电子锋利风格 WAV：
+这组 `Overdrive Sever` 终结技 WAV 仍保留在仓库中作为历史占位资产，但当前活跃武器链不再依赖它：
 
 - `sfx_yuan_ult_charge_01.wav`
 - `sfx_yuan_ult_afterimage_01.wav`
@@ -34,7 +34,7 @@
 - `sfx_yuan_ult_red_drop_01.wav`
 - `sfx_yuan_ult_red_impact_01.wav`
 
-这些文件由 `tools/generate_yuan_ultimate_assets.py` 合成，作为可直接运行的 final placeholder。后续如果重制音频，应保留相同 `sfx_id` 或同步更新 `resources/vfx/vfx_catalog.tres`。
+这些文件由 `tools/generate_yuan_ultimate_assets.py` 合成。后续如果恢复终结技路线，可复用相同 `sfx_id`，否则视作历史保留资源。
 
 ## Tooling
 

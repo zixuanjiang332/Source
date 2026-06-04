@@ -38,7 +38,7 @@ func _process(_delta: float) -> void:
 	if _player == null:
 		return
 
-	if Input.is_action_just_pressed("interact"):
+	if Input.is_action_just_pressed("interact") and not get_viewport().is_input_handled():
 		_interact()
 
 

@@ -13,14 +13,14 @@ BASELINE_Y = 92
 CENTER_X = 48
 
 TEMPLATES = [
-    ("idle", 6),
+    ("idle", 12),
     ("run", 8),
     ("jump", 3),
     ("fall", 3),
     ("dash", 5),
     ("hit", 3),
     ("death", 8),
-    ("combat_idle", 8),
+    ("combat_idle", 12),
     ("combat_run", 8),
     ("punch_1", 8),
     ("punch_2", 8),

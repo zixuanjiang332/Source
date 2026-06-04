@@ -8,25 +8,22 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 
-LEGACY_STRIP_DIR = ROOT / "art_src" / "generated" / "player_yuan_early_clone" / "strips"
-FIST_STRIP_DIR = ROOT / "art_src" / "generated" / "player_yuan_fist_pass" / "strips"
+STRIP_DIR = ROOT / "art_src" / "generated" / "player_yuan_fist_pass" / "strips"
 OUTPUT_FRAME_DIR = ROOT / "assets" / "pixel" / "characters" / "player_yuan_runtime" / "frames"
 OUTPUT_SHEET_PATH = ROOT / "assets" / "pixel" / "spr_player_yuan_runtime.png"
 OUTPUT_RESOURCE_PATH = ROOT / "resources" / "characters" / "player_yuan_runtime_frames.tres"
-ULTIMATE_SLAM_PATH = ROOT / "assets" / "pixel" / "characters" / "player_yuan_early_clone" / "spr_player_yuan_ultimate_slam.png"
 
 CELL_SIZE = 96
 ATLAS_GUTTER = 2
 ATLAS_STRIDE = CELL_SIZE + ATLAS_GUTTER * 2
-SHEET_COLUMNS = 10
+SHEET_COLUMNS = 14
 FOOT_BASELINE_Y = 92
 MAX_FRAME_WIDTH = 86
 MAX_FRAME_HEIGHT = 88
 MIN_COMPONENT_AREA = 18
-STABLE_IDLE_HEAD_BOX = (28, 2, 68, 47)
 
-LEGACY_ANIMATIONS = [
-    ("idle", 6, 8, True),
+BASE_ANIMATIONS = [
+    ("idle", 12, 8, True),
     ("run", 8, 12, True),
     ("jump", 3, 10, False),
     ("fall", 3, 10, True),
@@ -36,16 +33,14 @@ LEGACY_ANIMATIONS = [
 ]
 
 FIST_ANIMATIONS = [
-    ("combat_idle", 8, 8, True),
-    ("combat_run", 8, 12, True),
-    ("punch_1", 8, 18, False),
-    ("punch_2", 8, 18, False),
-    ("punch_3", 10, 16, False),
-    ("punch_skill", 10, 16, False),
+    ("combat_idle", 12, 8, True),
+    ("combat_run", 10, 12, True),
+    ("punch_1", 12, 18, False),
+    ("punch_2", 12, 18, False),
+    ("punch_3", 14, 16, False),
+    ("punch_skill", 14, 16, False),
 ]
-
-ULTIMATE_ANIMATION = ("ultimate_slam", 8, 16, False)
-ALL_ANIMATIONS = LEGACY_ANIMATIONS + FIST_ANIMATIONS + [ULTIMATE_ANIMATION]
+ALL_ANIMATIONS = BASE_ANIMATIONS + FIST_ANIMATIONS
 
 
 def resource_path(path: Path) -> str:
@@ -54,10 +49,8 @@ def resource_path(path: Path) -> str:
 
 def expected_strip_paths() -> list[Path]:
     paths: list[Path] = []
-    for name, _frame_count, _fps, _loop in LEGACY_ANIMATIONS:
-        paths.append(LEGACY_STRIP_DIR / f"{name}.png")
-    for name, _frame_count, _fps, _loop in FIST_ANIMATIONS:
-        paths.append(FIST_STRIP_DIR / f"{name}.png")
+    for name, _frame_count, _fps, _loop in ALL_ANIMATIONS:
+        paths.append(STRIP_DIR / f"{name}.png")
     return paths
 
 
@@ -161,6 +154,17 @@ def strip_tiny_fragments(image: Image.Image) -> Image.Image:
     return image
 
 
+def remove_residual_key_green(image: Image.Image) -> Image.Image:
+    image = image.convert("RGBA")
+    pixels = image.load()
+    for y in range(image.height):
+        for x in range(image.width):
+            r, g, b, a = pixels[x, y]
+            if a >= 20 and g > 180 and r < 80 and b < 80:
+                pixels[x, y] = (0, 0, 0, 0)
+    return image
+
+
 def normalize_frame(source: Image.Image) -> Image.Image:
     keyed = strip_tiny_fragments(remove_chroma_key(source))
     bbox = keyed.getbbox()
@@ -169,33 +173,17 @@ def normalize_frame(source: Image.Image) -> Image.Image:
         return output
 
     cropped = keyed.crop(bbox)
-    scale = min(MAX_FRAME_WIDTH / cropped.width, MAX_FRAME_HEIGHT / cropped.height, 1.0)
+    scale = min(MAX_FRAME_WIDTH / cropped.width, MAX_FRAME_HEIGHT / cropped.height)
     next_size = (
         max(1, round(cropped.width * scale)),
         max(1, round(cropped.height * scale)),
     )
-    resized = cropped.resize(next_size, Image.Resampling.LANCZOS)
+    resample = Image.Resampling.NEAREST if scale >= 1.0 else Image.Resampling.LANCZOS
+    resized = cropped.resize(next_size, resample)
     x = (CELL_SIZE - resized.width) // 2
     y = max(0, FOOT_BASELINE_Y - resized.height)
     output.alpha_composite(resized, (x, y))
-    return strip_tiny_fragments(polish_small_sprite(output))
-
-
-def stabilize_head_region(frames: list[Image.Image]) -> list[Image.Image]:
-    if not frames:
-        return frames
-
-    template = frames[0].convert("RGBA").crop(STABLE_IDLE_HEAD_BOX)
-    stabilized: list[Image.Image] = []
-    for frame in frames:
-        output = frame.convert("RGBA").copy()
-        output.paste(
-            (0, 0, 0, 0),
-            STABLE_IDLE_HEAD_BOX,
-        )
-        output.alpha_composite(template, STABLE_IDLE_HEAD_BOX[:2])
-        stabilized.append(output)
-    return stabilized
+    return remove_residual_key_green(strip_tiny_fragments(polish_small_sprite(output)))
 
 
 def read_strip_frames(strip_dir: Path, name: str, frame_count: int) -> list[Image.Image]:
@@ -213,30 +201,15 @@ def read_strip_frames(strip_dir: Path, name: str, frame_count: int) -> list[Imag
     return frames
 
 
-def read_preferred_strip_frames(name: str, frame_count: int) -> list[Image.Image]:
-    preferred = FIST_STRIP_DIR / f"{name}.png"
-    if preferred.exists():
-        return read_strip_frames(FIST_STRIP_DIR, name, frame_count)
-    return read_strip_frames(LEGACY_STRIP_DIR, name, frame_count)
-
-
 def build_frames() -> dict[str, list[Path]]:
     OUTPUT_FRAME_DIR.mkdir(parents=True, exist_ok=True)
+    for stale_frame in OUTPUT_FRAME_DIR.glob("*.png"):
+        stale_frame.unlink()
     frames_by_animation: dict[str, list[Path]] = {}
 
-    for name, frame_count, _fps, _loop in LEGACY_ANIMATIONS:
-        out_paths: list[Path] = []
-        for index, frame in enumerate(read_preferred_strip_frames(name, frame_count)):
-            out_path = OUTPUT_FRAME_DIR / f"{name}_{index:02d}.png"
-            frame.save(out_path)
-            out_paths.append(out_path)
-        frames_by_animation[name] = out_paths
-
-    for name, frame_count, _fps, _loop in FIST_ANIMATIONS:
+    for name, frame_count, _fps, _loop in ALL_ANIMATIONS:
         out_paths = []
-        frames = read_strip_frames(FIST_STRIP_DIR, name, frame_count)
-        if name == "combat_idle":
-            frames = stabilize_head_region(frames)
+        frames = read_strip_frames(STRIP_DIR, name, frame_count)
         for index, frame in enumerate(frames):
             out_path = OUTPUT_FRAME_DIR / f"{name}_{index:02d}.png"
             frame.save(out_path)
@@ -248,14 +221,13 @@ def build_frames() -> dict[str, list[Path]]:
 
 def build_sheet(frames_by_animation: dict[str, list[Path]]) -> None:
     OUTPUT_SHEET_PATH.parent.mkdir(parents=True, exist_ok=True)
-    rows_without_ultimate = len(ALL_ANIMATIONS) - 1
     sheet = Image.new(
         "RGBA",
-        (ATLAS_STRIDE * SHEET_COLUMNS, ATLAS_STRIDE * rows_without_ultimate),
+        (ATLAS_STRIDE * SHEET_COLUMNS, ATLAS_STRIDE * len(ALL_ANIMATIONS)),
         (0, 0, 0, 0),
     )
 
-    for row, (name, _frame_count, _fps, _loop) in enumerate(LEGACY_ANIMATIONS + FIST_ANIMATIONS):
+    for row, (name, _frame_count, _fps, _loop) in enumerate(ALL_ANIMATIONS):
         for column, frame_path in enumerate(frames_by_animation[name]):
             frame = Image.open(frame_path).convert("RGBA")
             x = column * ATLAS_STRIDE + ATLAS_GUTTER
@@ -271,8 +243,7 @@ def build_sprite_frames_resource() -> None:
     subresources: list[str] = []
     animations: list[str] = []
 
-    packed_rows = LEGACY_ANIMATIONS + FIST_ANIMATIONS
-    for row, (name, frame_count, fps, loop) in enumerate(packed_rows):
+    for row, (name, frame_count, fps, loop) in enumerate(ALL_ANIMATIONS):
         frame_entries: list[str] = []
         for column in range(frame_count):
             sub_id = f"AtlasTexture_{name}_{column:02d}"
@@ -305,44 +276,11 @@ def build_sprite_frames_resource() -> None:
             + "}"
         )
 
-    ultimate_name, ultimate_frame_count, ultimate_fps, ultimate_loop = ULTIMATE_ANIMATION
-    ultimate_entries: list[str] = []
-    for column in range(ultimate_frame_count):
-        sub_id = f"AtlasTexture_{ultimate_name}_{column:02d}"
-        x = column * CELL_SIZE
-        subresources.append(
-            "\n".join(
-                [
-                    f'[sub_resource type="AtlasTexture" id="{sub_id}"]',
-                    'atlas = ExtResource("2_ultimate_slam")',
-                    f"region = Rect2({x}, 0, {CELL_SIZE}, {CELL_SIZE})",
-                    "filter_clip = true",
-                ]
-            )
-        )
-        ultimate_entries.append(
-            '{\n"duration": 1.0,\n"texture": SubResource("'
-            + sub_id
-            + '")\n}'
-        )
-
-    animations.append(
-        "{\n"
-        + '"frames": ['
-        + ", ".join(ultimate_entries)
-        + "],\n"
-        + f'"loop": {str(ultimate_loop).lower()},\n'
-        + f'"name": &"{ultimate_name}",\n'
-        + f'"speed": {float(ultimate_fps):.1f}\n'
-        + "}"
-    )
-
-    load_steps = 1 + 2 + len(subresources)
+    load_steps = 1 + 1 + len(subresources)
     content = [
         f'[gd_resource type="SpriteFrames" load_steps={load_steps} format=3]',
         "",
         f'[ext_resource type="Texture2D" path="{resource_path(OUTPUT_SHEET_PATH)}" id="1_sheet"]',
-        f'[ext_resource type="Texture2D" path="{resource_path(ULTIMATE_SLAM_PATH)}" id="2_ultimate_slam"]',
         "",
         "\n\n".join(subresources),
         "",
@@ -377,7 +315,7 @@ def main() -> None:
     frames = build_frames()
     build_sheet(frames)
     build_sprite_frames_resource()
-    total = sum(len(items) for items in frames.values()) + ULTIMATE_ANIMATION[1]
+    total = sum(len(items) for items in frames.values())
     print(f"Built runtime player set with {total} frames")
     print(resource_path(OUTPUT_SHEET_PATH))
     print(resource_path(OUTPUT_RESOURCE_PATH))

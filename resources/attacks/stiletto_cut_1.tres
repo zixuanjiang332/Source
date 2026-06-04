@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"stiletto_cut_1"
+display_name = "Tri-Point Jab"
+animation_id = &"atk_1"
+damage = 40
+energy_cost = 0
+knockback = Vector2(135, -34)
+lunge = 42.0
+active_time = 0.065
+cooldown = 0.15
+hit_stun = 0.11
+hit_stop = 0.026
+screen_shake = 0.32
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_light_01"
+energy_regen = 7

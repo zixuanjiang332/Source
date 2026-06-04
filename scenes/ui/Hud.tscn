@@ -23,32 +23,6 @@ offset_top = 28.0
 offset_right = 1888.0
 offset_bottom = 1032.0
 
-[node name="PortraitBack" type="Polygon2D" parent="Root/Margin"]
-position = Vector2(72, 72)
-color = Color(0.012, 0.018, 0.03, 0.88)
-polygon = PackedVector2Array(0, -62, 27, -56, 48, -48, 60, -28, 64, 0, 60, 28, 48, 48, 27, 56, 0, 62, -27, 56, -48, 48, -60, 28, -64, 0, -60, -28, -48, -48, -27, -56)
-
-[node name="PortraitFrame" type="Line2D" parent="Root/Margin"]
-position = Vector2(72, 72)
-points = PackedVector2Array(0, -66, 28, -60, 52, -52, 64, -28, 68, 0, 64, 28, 52, 52, 28, 60, 0, 66, -28, 60, -52, 52, -64, 28, -68, 0, -64, -28, -52, -52, -28, -60, 0, -66)
-width = 5.0
-default_color = Color(0.16, 0.95, 1, 0.95)
-
-[node name="PortraitAccent" type="Line2D" parent="Root/Margin"]
-position = Vector2(72, 72)
-points = PackedVector2Array(36, -52, 60, -24, 68, 0)
-width = 3.0
-default_color = Color(1, 0.18, 0.68, 0.95)
-
-[node name="PortraitImage" type="TextureRect" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 18.0
-offset_top = 18.0
-offset_right = 126.0
-offset_bottom = 126.0
-texture = ExtResource("2")
-stretch_mode = 5
-
 [node name="HealthBack" type="ColorRect" parent="Root/Margin"]
 layout_mode = 0
 offset_left = 160.0
@@ -79,16 +53,6 @@ offset_bottom = 114.0
 theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.92)
 theme_override_font_sizes/font_size = 28
 text = "HP 000/000"
-
-[node name="CurrencyLabel" type="Label" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 552.0
-offset_top = 78.0
-offset_right = 820.0
-offset_bottom = 114.0
-theme_override_colors/font_color = Color(0.16, 0.95, 1, 0.9)
-theme_override_font_sizes/font_size = 28
-text = "CR 0500"
 
 [node name="EnergyBack" type="ColorRect" parent="Root/Margin"]
 layout_mode = 0
