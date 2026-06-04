@@ -2,6 +2,7 @@ class_name WeaponPickup
 extends Area2D
 
 @export var weapon_data: WeaponData
+@export var weapon_scale: float = 0.08
 
 @onready var body: Sprite2D = $Body
 var _base_y: float = 0.0
@@ -11,6 +12,7 @@ func _ready() -> void:
 	_base_y = position.y
 	add_to_group("weapon_pickups")
 	_sync_visuals()
+	body.scale = Vector2(weapon_scale, weapon_scale)
 
 
 func set_weapon_data(value: WeaponData) -> void:
@@ -19,11 +21,13 @@ func set_weapon_data(value: WeaponData) -> void:
 
 
 func is_player_in_range(player: Node2D) -> bool:
-	return _nearby_players.has(player)
+	return _nearby_players.has(player) or global_position.distance_to(player.global_position) <= 48.0
 
 
 func try_pickup(player: Node2D) -> bool:
-	if weapon_data == null or not is_player_in_range(player):
+	if weapon_data == null:
+		return false
+	if not is_player_in_range(player):
 		return false
 	if not player.has_method("apply_weapon_pickup"):
 		return false

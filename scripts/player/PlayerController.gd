@@ -83,8 +83,8 @@ var _enemy_kill_count: int = 0
 var _attack_lunge_timer: float = 0.0
 var _attack_lunge_duration: float = 0.0
 var _attack_lunge_speed: float = 0.0
-var inventory: Array[WeaponData] = []
-var equipped_index: int = 0
+var inventory: Array[WeaponData] = [null, null, null]  # 3 weapon slots, null = fist
+var equipped_index: int = 0  # 0, 1, 2; null slot means using fist
 var accessory_inventory: Array[ItemData] = []
 
 func _ready() -> void:
@@ -97,7 +97,7 @@ func _ready() -> void:
 	_energy = _runtime_stats.max_energy
 	GameEvents.report_player_health(_health, _runtime_stats.max_health)
 	GameEvents.report_player_energy(_energy, _runtime_stats.max_energy)
-	inventory.append(weapon_data)
+	# All slots start as null (fist)
 	equipped_index = 0
 	_apply_equipped_weapon_modifiers()
 	_report_weapon()
@@ -226,93 +226,97 @@ func apply_weapon_pickup(wd: WeaponData) -> void:
 	if wd == null:
 		return
 
-	if inventory.size() >= 3:
+	# Find first empty slot (null)
+	var empty_slot: int = -1
+	for i in range(3):
+		if inventory[i] == null:
+			empty_slot = i
+			break
+
+	if empty_slot >= 0:
+		# Found empty slot, place weapon there and equip it
+		inventory[empty_slot] = wd
+		equip_weapon(empty_slot)
+	else:
+		# All slots full, replace current equipped weapon
 		var replaced: WeaponData = inventory[equipped_index]
 		inventory[equipped_index] = wd
 		weapon_data = wd
 		_apply_equipped_weapon_modifiers()
 		_report_weapon()
-		GameEvents.request_toast("Replaced %s with %s" % [replaced.display_name, wd.display_name])
-	else:
-		inventory.append(wd)
-		equip_weapon(inventory.size() - 1)
-		GameEvents.request_toast("Equipped: %s" % wd.display_name)
+		_spawn_dropped_weapon_pickup(replaced)
+
+
+func _try_pickup_weapon() -> void:
+	var pickup := _nearest_weapon_pickup()
+	if pickup != null:
+		if pickup.try_pickup(self):
+			get_viewport().set_input_as_handled()
 
 
 func pickup_weapon() -> void:
-	var pickup := _nearest_weapon_pickup()
-	if pickup == null:
-		GameEvents.request_toast("No weapon in range")
-		return
-	if not pickup.try_pickup(self):
-		GameEvents.request_toast("Weapon not ready")
+	_try_pickup_weapon()
 
 
 func equip_weapon(index: int) -> void:
-	if index < 0 or index >= inventory.size():
+	if index < 0 or index >= 3:
 		return
 	if equipped_index == index:
 		return
 
-	if equipped_index >= 0 and equipped_index < inventory.size():
-		_previous_equipped_index = equipped_index
+	_previous_equipped_index = equipped_index
 	equipped_index = index
 	weapon_data = inventory[equipped_index]
 	_apply_equipped_weapon_modifiers()
 	_report_weapon()
-	GameEvents.request_toast("Switched to: %s" % weapon_data.display_name)
 
 
 func try_equip_slot(slot: int) -> void:
-	# If the slot has a weapon, equip it
-	if slot < inventory.size():
-		equip_weapon(slot)
-	else:
-		# Slot is empty - try to equip next available weapon
-		var next_index: int = (slot + 1) % 3
-		var attempts: int = 0
-		while attempts < 3:
-			if next_index < inventory.size() and next_index != equipped_index:
-				equip_weapon(next_index)
-				return
-			next_index = (next_index + 1) % 3
-			attempts += 1
-		# No other weapon available
-		GameEvents.request_toast("Slot %d empty" % (slot + 1))
+	# slot is 0-indexed (0=slot1, 1=slot2, 2=slot3)
+	if slot >= 3:
+		return
+	if equipped_index == slot:
+		return
+	_previous_equipped_index = equipped_index
+	equipped_index = slot
+	weapon_data = inventory[equipped_index]
+	_apply_equipped_weapon_modifiers()
+	_report_weapon()
 
 
 func switch_previous_weapon() -> void:
-	if _previous_equipped_index < 0 or _previous_equipped_index >= inventory.size():
-		GameEvents.request_toast("No previous weapon")
+	if _previous_equipped_index < 0 or _previous_equipped_index >= 3:
 		return
 	if _previous_equipped_index == equipped_index:
-		GameEvents.request_toast("No previous weapon")
 		return
 	equip_weapon(_previous_equipped_index)
 
 
 func drop_weapon() -> void:
-	if inventory.is_empty():
-		return
-
-	if inventory.size() <= 1:
-		GameEvents.request_toast("Cannot drop last weapon!")
+	if inventory[equipped_index] == null:
 		return
 
 	var dropped: WeaponData = inventory[equipped_index]
+	inventory[equipped_index] = null  # Replace with fist (empty slot)
 
-	inventory.remove_at(equipped_index)
-	var replacement_index: int = mini(equipped_index, inventory.size() - 1)
-	if _previous_equipped_index == equipped_index:
-		_previous_equipped_index = -1
-	elif _previous_equipped_index > equipped_index:
-		_previous_equipped_index -= 1
-	equipped_index = clampi(replacement_index, 0, inventory.size() - 1)
-	weapon_data = inventory[equipped_index]
+	# Find next non-null slot to equip
+	var next_index: int = -1
+	for i in range(3):
+		if inventory[i] != null:
+			next_index = i
+			break
+
+	if next_index >= 0:
+		equipped_index = next_index
+		weapon_data = inventory[equipped_index]
+	else:
+		# All slots are null, switch to fist
+		equipped_index = 0
+		weapon_data = null
+
 	_apply_equipped_weapon_modifiers()
 	_report_weapon()
 	_spawn_dropped_weapon_pickup(dropped)
-	GameEvents.request_toast("Dropped: %s" % dropped.display_name)
 
 
 func is_alive() -> bool:
@@ -635,7 +639,7 @@ func _skill_name() -> String:
 func _ultimate_name() -> String:
 	if weapon_data != null and weapon_data.get("ultimate_display_name") != null:
 		return weapon_data.ultimate_display_name
-	return "Ultimate"
+	return "Yuan Jie"
 
 
 func _ultimate_cost() -> int:
@@ -657,20 +661,33 @@ func _ultimate_attacks() -> Array:
 
 
 func _can_start_ultimate() -> bool:
-	return (
-		not _attack_locked
-		and not _ultimate_active
-		and _energy >= _ultimate_cost()
-		and _ultimate_attacks().size() >= 8
-	)
+	if weapon_data != null:
+		return (
+			not _attack_locked
+			and not _ultimate_active
+			and _energy >= _ultimate_cost()
+			and weapon_data.has_method("has_ultimate")
+			and weapon_data.has_ultimate()
+		)
+	else:
+		# Fist ultimate
+		return (
+			not _attack_locked
+			and not _ultimate_active
+			and _energy >= _runtime_stats.max_energy
+		)
 
 
 func _report_weapon() -> void:
 	GameEvents.report_player_weapon(weapon_data)
-	if _weapon_has_ultimate():
-		GameEvents.report_player_ultimate(_ultimate_name(), _ultimate_cost(), _ultimate_hold_time())
+	if weapon_data != null:
+		if weapon_data.has_method("has_ultimate") and weapon_data.has_ultimate():
+			GameEvents.report_player_ultimate(_ultimate_name(), _ultimate_cost(), _ultimate_hold_time())
+		else:
+			GameEvents.report_player_ultimate("--", 0, 0.0)
 	else:
-		GameEvents.report_player_ultimate("--", 0, 0.0)
+		# Fist has ultimate
+		GameEvents.report_player_ultimate("Yuan Jie", _runtime_stats.max_energy, 0.45)
 
 
 func _report_combo(combo_step: int) -> void:
@@ -797,7 +814,7 @@ func _handle_weapon_input() -> void:
 		drop_weapon()
 
 	if Input.is_action_just_pressed("interact"):
-		pickup_weapon()
+		_try_pickup_weapon()
 
 	if Input.is_action_just_pressed("weapon_slot_1"):
 		try_equip_slot(0)
@@ -858,8 +875,6 @@ func _nearest_weapon_pickup() -> WeaponPickup:
 	for node in get_tree().get_nodes_in_group("weapon_pickups"):
 		var pickup := node as WeaponPickup
 		if pickup == null or not is_instance_valid(pickup):
-			continue
-		if not pickup.is_player_in_range(self):
 			continue
 		var distance := global_position.distance_squared_to(pickup.global_position)
 		if distance < nearest_distance:

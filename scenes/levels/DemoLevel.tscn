@@ -108,43 +108,29 @@ horizontal_alignment = 1
 position = Vector2(370, 196)
 collision_layer = 16
 collision_mask = 2
+weapon_scale = 0.08
 script = ExtResource("5")
 weapon_data = ExtResource("8")
 
 [node name="Body" type="Sprite2D" parent="Interactables/StilettoPickup"]
-scale = Vector2(0.45, 0.45)
+scale = Vector2(0.08, 0.08)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/StilettoPickup"]
 shape = SubResource("CircleShape2D_pickup")
-
-[node name="Label" type="Label" parent="Interactables/StilettoPickup"]
-offset_left = -96.0
-offset_top = -30.0
-offset_right = 96.0
-offset_bottom = -10.0
-text = "三棱军刺 // Triangular Stiletto"
-horizontal_alignment = 1
 
 [node name="KatanaPickup" type="Area2D" parent="Interactables"]
 position = Vector2(286, 196)
 collision_layer = 16
 collision_mask = 2
+weapon_scale = 0.08
 script = ExtResource("5")
 weapon_data = ExtResource("7")
 
 [node name="Body" type="Sprite2D" parent="Interactables/KatanaPickup"]
-scale = Vector2(0.38, 0.38)
+scale = Vector2(0.08, 0.08)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/KatanaPickup"]
 shape = SubResource("CircleShape2D_pickup")
-
-[node name="Label" type="Label" parent="Interactables/KatanaPickup"]
-offset_left = -96.0
-offset_top = -30.0
-offset_right = 96.0
-offset_bottom = -10.0
-text = "反手充能太刀 // Reverse Charge Katana"
-horizontal_alignment = 1
 
 [node name="ElevatorInteract" type="Area2D" parent="Interactables"]
 position = Vector2(838, 154)
@@ -163,64 +149,43 @@ completed_text = "outside lift already used"
 position = Vector2(538, 196)
 collision_layer = 16
 collision_mask = 2
+weapon_scale = 0.08
 script = ExtResource("5")
 weapon_data = ExtResource("10")
 
 [node name="Body" type="Sprite2D" parent="Interactables/NextGenPickup"]
-scale = Vector2(0.42, 0.42)
+scale = Vector2(0.08, 0.08)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/NextGenPickup"]
 shape = SubResource("CircleShape2D_pickup")
-
-[node name="Label" type="Label" parent="Interactables/NextGenPickup"]
-offset_left = -86.0
-offset_top = -30.0
-offset_right = 86.0
-offset_bottom = -10.0
-text = "娆′笘浠� // Next Gen"
-horizontal_alignment = 1
 
 [node name="SurgePickup" type="Area2D" parent="Interactables"]
 position = Vector2(622, 196)
 collision_layer = 16
 collision_mask = 2
+weapon_scale = 0.08
 script = ExtResource("5")
 weapon_data = ExtResource("11")
 
 [node name="Body" type="Sprite2D" parent="Interactables/SurgePickup"]
-scale = Vector2(0.42, 0.42)
+scale = Vector2(0.08, 0.08)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/SurgePickup"]
 shape = SubResource("CircleShape2D_pickup")
-
-[node name="Label" type="Label" parent="Interactables/SurgePickup"]
-offset_left = -74.0
-offset_top = -30.0
-offset_right = 74.0
-offset_bottom = -10.0
-text = "婢庢箖 // Surge"
-horizontal_alignment = 1
 
 [node name="PistolPickup" type="Area2D" parent="Interactables"]
 position = Vector2(454, 196)
 collision_layer = 16
 collision_mask = 2
+weapon_scale = 0.08
 script = ExtResource("5")
 weapon_data = ExtResource("9")
 
 [node name="Body" type="Sprite2D" parent="Interactables/PistolPickup"]
-scale = Vector2(0.42, 0.42)
+scale = Vector2(0.08, 0.08)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/PistolPickup"]
 shape = SubResource("CircleShape2D_pickup")
-
-[node name="Label" type="Label" parent="Interactables/PistolPickup"]
-offset_left = -72.0
-offset_top = -30.0
-offset_right = 72.0
-offset_bottom = -10.0
-text = "鎵嬫灙 // Pistol"
-horizontal_alignment = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/ElevatorInteract"]
 shape = SubResource("RectangleShape2D_elevator")
@@ -239,11 +204,12 @@ horizontal_alignment = 1
 position = Vector2(200, 200)
 collision_layer = 16
 collision_mask = 2
+weapon_scale = 0.08
 script = ExtResource("5")
 weapon_data = ExtResource("6")
 
 [node name="Body" type="Sprite2D" parent="Interactables/DaggerPickup"]
-scale = Vector2(0.1, 0.1)
+scale = Vector2(0.08, 0.08)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactables/DaggerPickup"]
 shape = SubResource("CircleShape2D_pickup")
