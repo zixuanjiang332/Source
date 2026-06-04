@@ -8,6 +8,7 @@ item_id = &"cardiac_pacing_linkage"
 display_name = "心脏起搏连杆"
 description = "消耗型饰品。只在饰品栏里生效，死亡时消耗并以 75% 血量原地复活。"
 icon_id = &"icon_cardiac_pacing_linkage"
+is_accessory = true
 effect_id = &"revive_accessory"
 magnitude = 0.0
 stackable = false
