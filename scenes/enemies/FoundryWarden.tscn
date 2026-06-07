@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/enemies/EnemyController.gd" id="1"]
 [ext_resource type="Resource" path="res://resources/characters/boss_stats.tres" id="2"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/items/PickupDashCore.tscn" id="4"]
 [ext_resource type="Script" path="res://scripts/combat/Hitbox.gd" id="5"]
 [ext_resource type="Script" path="res://scripts/combat/Hurtbox.gd" id="6"]
+[ext_resource type="Resource" path="res://resources/attacks/boss_heavy_attack.tres" id="7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(66, 92)
@@ -24,11 +25,25 @@ script = ExtResource("1")
 enemy_id = &"foundry_warden"
 stats = ExtResource("2")
 attack_data = ExtResource("3")
+heavy_attack_data = ExtResource("7")
 elite_tier = &"boss"
+behavior_type = &"bruiser"
 aggro_range = 250.0
+lose_aggro_range = 520.0
+vertical_aggro_range = 128.0
 attack_range = 74.0
+preferred_range = 90.0
 attack_interval = 1.55
+attack_windup = 0.34
+attack_recovery = 0.58
+special_attack_every = 2
 patrol_width = 42.0
+patrol_speed_scale = 0.28
+chase_speed_scale = 0.78
+hurt_stun_duration = 0.04
+enrage_health_ratio = 0.5
+enrage_speed_scale = 1.22
+enrage_attack_interval_scale = 0.78
 drop_item_scene = ExtResource("4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

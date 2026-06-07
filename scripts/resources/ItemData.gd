@@ -19,3 +19,4 @@ extends Resource
 @export var revive_vfx_id: StringName = &"dash_burst"
 @export var revive_sfx_id: StringName = &""
 @export_multiline var revive_toast: String = ""
+@export var bounce_count: int = 0

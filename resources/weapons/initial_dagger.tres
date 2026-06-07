@@ -28,5 +28,4 @@ attack_speed_scale = 1.0
 light_attack = ExtResource("2")
 followup_attack = ExtResource("3")
 finisher_attack = ExtResource("4")
-skill_display_name = "Flash Step"
-skill_attack = ExtResource("7")
+skill_display_name = "No Skill"

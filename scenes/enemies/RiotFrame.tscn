@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/enemies/EnemyController.gd" id="1"]
 [ext_resource type="Resource" path="res://resources/characters/bruiser_stats.tres" id="2"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/items/PickupRepairCell.tscn" id="4"]
 [ext_resource type="Script" path="res://scripts/combat/Hitbox.gd" id="5"]
 [ext_resource type="Script" path="res://scripts/combat/Hurtbox.gd" id="6"]
+[ext_resource type="Resource" path="res://resources/attacks/enemy_riot_slam.tres" id="7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(40, 58)
@@ -24,10 +25,22 @@ script = ExtResource("1")
 enemy_id = &"riot_frame"
 stats = ExtResource("2")
 attack_data = ExtResource("3")
+heavy_attack_data = ExtResource("7")
+elite_tier = &"elite"
+behavior_type = &"bruiser"
 aggro_range = 175.0
+lose_aggro_range = 360.0
 attack_range = 50.0
 attack_interval = 1.25
+attack_windup = 0.24
+attack_recovery = 0.42
+special_attack_every = 3
 patrol_width = 60.0
+chase_speed_scale = 0.92
+hurt_stun_duration = 0.1
+enrage_health_ratio = 0.4
+enrage_speed_scale = 1.18
+enrage_attack_interval_scale = 0.82
 drop_item_scene = ExtResource("4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -76,4 +89,3 @@ offset_bottom = -66.0
 theme_override_font_sizes/font_size = 7
 text = "riot"
 horizontal_alignment = 1
-

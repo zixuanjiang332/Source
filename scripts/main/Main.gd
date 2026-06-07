@@ -17,6 +17,10 @@ const VFX_SPAWNER_SCRIPT = preload("res://scripts/vfx/VfxSpawner.gd")
 @onready var hover_marker: Label = $TitleLayer/MenuRoot/HoverMarker
 @onready var menu_notice: Label = $TitleLayer/MenuNotice
 @onready var pause_overlay: CanvasItem = $PauseLayer/PauseOverlay
+@onready var pause_panel: Control = $PauseLayer/PauseOverlay/PausePanel
+@onready var resume_button: Button = $PauseLayer/PauseOverlay/PausePanel/ResumeButton
+@onready var quit_button: Button = $PauseLayer/PauseOverlay/PausePanel/QuitButton
+@onready var pause_hover_marker: Label = $PauseLayer/PauseOverlay/PausePanel/HoverMarker
 @onready var transition_overlay: ColorRect = $TransitionLayer/TransitionOverlay
 @onready var shop: Node = get_node_or_null("Shop")
 
@@ -28,6 +32,8 @@ var _transitioning: bool = false
 var _shop_open: bool = false
 var _selected_button_index: int = 0
 var _menu_buttons: Array[Button] = []
+var _pause_selected_button_index: int = 0
+var _pause_buttons: Array[Button] = []
 var _button_tweens: Dictionary = {}
 var _persistent_player: CharacterBody2D = null
 
@@ -41,13 +47,20 @@ func _ready() -> void:
 	_menu_buttons = [start_button, combat_button, archive_button, chip_button, settings_button]
 	for button: Button in _menu_buttons:
 		_setup_menu_button(button)
+	_pause_buttons = [resume_button, quit_button]
+	for button: Button in _pause_buttons:
+		_setup_pause_button(button)
 	start_button.pressed.connect(_start_run)
 	combat_button.pressed.connect(_show_locked_notice.bind("战斗模式"))
 	archive_button.pressed.connect(_show_locked_notice.bind("核心档案"))
 	chip_button.pressed.connect(_show_locked_notice.bind("芯片系统"))
 	settings_button.pressed.connect(_show_locked_notice.bind("系统设置"))
+	resume_button.pressed.connect(_resume_from_pause)
+	quit_button.pressed.connect(_quit_game)
 	_show_title()
 	pause_overlay.visible = false
+	pause_panel.visible = false
+	pause_hover_marker.visible = false
 	transition_overlay.visible = false
 
 
@@ -62,6 +75,16 @@ func _unhandled_input(_event: InputEvent) -> void:
 		or Input.is_action_just_pressed("interact")
 	):
 		_menu_buttons[_selected_button_index].emit_signal("pressed")
+	elif _game_started and get_tree().paused and Input.is_action_just_pressed("move_down"):
+		_set_pause_selected_button(_pause_selected_button_index + 1)
+	elif _game_started and get_tree().paused and Input.is_action_just_pressed("move_up"):
+		_set_pause_selected_button(_pause_selected_button_index - 1)
+	elif _game_started and get_tree().paused and (
+		Input.is_action_just_pressed("attack")
+		or Input.is_action_just_pressed("jump")
+		or Input.is_action_just_pressed("interact")
+	):
+		_pause_buttons[_pause_selected_button_index].emit_signal("pressed")
 	elif _game_started and _shop_open and Input.is_action_just_pressed("pause"):
 		return
 	elif _game_started and Input.is_action_just_pressed("restart"):
@@ -77,6 +100,8 @@ func _reload_run() -> void:
 	Engine.time_scale = 1.0
 	get_tree().paused = false
 	pause_overlay.visible = false
+	pause_panel.visible = false
+	pause_hover_marker.visible = false
 	_clear_gameplay()
 	_build_gameplay(false)
 
@@ -88,6 +113,8 @@ func _show_title() -> void:
 	menu_notice.modulate.a = 0.0
 	get_tree().paused = false
 	pause_overlay.visible = false
+	pause_panel.visible = false
+	pause_hover_marker.visible = false
 	transition_overlay.visible = false
 	_clear_gameplay()
 	_set_selected_button(0, false)
@@ -101,6 +128,8 @@ func _start_run() -> void:
 	_game_started = true
 	title_layer.visible = false
 	pause_overlay.visible = false
+	pause_panel.visible = false
+	pause_hover_marker.visible = false
 	transition_overlay.visible = false
 	get_tree().paused = false
 	_build_gameplay(true)
@@ -127,6 +156,10 @@ func _clear_gameplay() -> void:
 	_persistent_player = null
 	_current_level = null
 	_transitioning = false
+	# 先断开旧的 VfxSpawner/HUD 的 GameEvents 连接，再删除节点
+	for child in game_root.get_children():
+		if child.has_method("_disconnect_signals"):
+			child.call("_disconnect_signals")
 	for child in game_root.get_children():
 		game_root.remove_child(child)
 		child.queue_free()
@@ -135,6 +168,11 @@ func _clear_gameplay() -> void:
 func _toggle_pause() -> void:
 	get_tree().paused = not get_tree().paused
 	pause_overlay.visible = get_tree().paused
+	pause_panel.visible = get_tree().paused
+	if get_tree().paused:
+		_set_pause_selected_button(0, false)
+	else:
+		pause_hover_marker.visible = false
 
 
 func _on_shop_requested(shop_id: StringName) -> void:
@@ -149,6 +187,9 @@ func _on_shop_requested(shop_id: StringName) -> void:
 func _on_shop_closed() -> void:
 	_shop_open = false
 	get_tree().paused = false
+	pause_overlay.visible = false
+	pause_panel.visible = false
+	pause_hover_marker.visible = false
 
 
 func _show_locked_notice(option_name: String) -> void:
@@ -172,6 +213,17 @@ func _setup_menu_button(button: Button) -> void:
 	button.focus_entered.connect(_on_menu_button_hovered.bind(button))
 
 
+func _setup_pause_button(button: Button) -> void:
+	button.add_theme_font_size_override("font_size", 38)
+	button.add_theme_color_override("font_color", Color(0.34, 0.86, 1.0, 0.9))
+	button.add_theme_color_override("font_hover_color", Color(0.7, 1.0, 1.0, 1.0))
+	button.add_theme_color_override("font_pressed_color", Color(1.0, 1.0, 1.0, 1.0))
+	button.add_theme_color_override("font_focus_color", Color(0.7, 1.0, 1.0, 1.0))
+	button.mouse_entered.connect(_on_pause_button_hovered.bind(button))
+	button.mouse_exited.connect(_on_pause_button_exited.bind(button))
+	button.focus_entered.connect(_on_pause_button_hovered.bind(button))
+
+
 func _set_selected_button(index: int, animate := true) -> void:
 	if _menu_buttons.is_empty():
 		return
@@ -182,6 +234,18 @@ func _set_selected_button(index: int, animate := true) -> void:
 			_apply_button_hover(_menu_buttons[i], animate)
 		else:
 			_apply_button_idle(_menu_buttons[i], animate)
+
+
+func _set_pause_selected_button(index: int, animate := true) -> void:
+	if _pause_buttons.is_empty():
+		return
+
+	_pause_selected_button_index = posmod(index, _pause_buttons.size())
+	for i in range(_pause_buttons.size()):
+		if i == _pause_selected_button_index:
+			_apply_pause_button_hover(_pause_buttons[i], animate)
+		else:
+			_apply_pause_button_idle(_pause_buttons[i], animate)
 
 
 func _on_menu_button_hovered(button: Button) -> void:
@@ -197,6 +261,19 @@ func _on_menu_button_exited(button: Button) -> void:
 		hover_marker.visible = false
 
 
+func _on_pause_button_hovered(button: Button) -> void:
+	var index: int = _pause_buttons.find(button)
+	if index >= 0:
+		_pause_selected_button_index = index
+	_set_pause_selected_button(_pause_selected_button_index)
+
+
+func _on_pause_button_exited(button: Button) -> void:
+	_apply_pause_button_idle(button)
+	if button == _pause_buttons[_pause_selected_button_index]:
+		pause_hover_marker.visible = false
+
+
 func _apply_button_hover(button: Button, animate := true) -> void:
 	_tween_button_scale(button, Vector2(1.1, 1.1), animate)
 	button.modulate = Color(1.0, 1.0, 1.0, 1.0)
@@ -205,6 +282,18 @@ func _apply_button_hover(button: Button, animate := true) -> void:
 
 
 func _apply_button_idle(button: Button, animate := true) -> void:
+	_tween_button_scale(button, Vector2.ONE, animate)
+	button.modulate = Color(0.78, 0.9, 1.0, 0.88)
+
+
+func _apply_pause_button_hover(button: Button, animate := true) -> void:
+	_tween_button_scale(button, Vector2(1.06, 1.06), animate)
+	button.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	pause_hover_marker.visible = true
+	pause_hover_marker.position = button.position + Vector2(-48.0, 4.0)
+
+
+func _apply_pause_button_idle(button: Button, animate := true) -> void:
 	_tween_button_scale(button, Vector2.ONE, animate)
 	button.modulate = Color(0.78, 0.9, 1.0, 0.88)
 
@@ -219,6 +308,20 @@ func _tween_button_scale(button: Button, target_scale: Vector2, animate := true)
 	var tween: Tween = create_tween()
 	_button_tweens[button] = tween
 	tween.tween_property(button, "scale", target_scale, 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+
+func _resume_from_pause() -> void:
+	if not get_tree().paused:
+		return
+
+	get_tree().paused = false
+	pause_overlay.visible = false
+	pause_panel.visible = false
+	pause_hover_marker.visible = false
+
+
+func _quit_game() -> void:
+	get_tree().quit()
 
 
 func _load_level(level_id: StringName) -> void:

@@ -41,7 +41,9 @@
       "Bash(git fsck *)",
       "Bash(git show *)",
       "Read(//tmp/**)",
-      "Bash(git merge *)"
+      "Bash(git merge *)",
+      "Bash(powershell -ExecutionPolicy Bypass -File tools\\\\validate_project.ps1)",
+      "Bash(powershell -ExecutionPolicy Bypass -File \"e:\\\\Project\\\\game\\\\Source\\\\tools\\\\validate_project.ps1\")"
     ],
     "additionalDirectories": [
       "e:\\Project\\game\\Source",

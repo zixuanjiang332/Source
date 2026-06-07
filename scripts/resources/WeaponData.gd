@@ -18,8 +18,25 @@ extends Resource
 @export var attack_speed_scale: float = 1.0
 @export var ammo_capacity: int = 0
 @export var attack_mode: StringName = &"melee"
+@export var trigger_mode: StringName = &"auto"
+@export var fire_pattern: StringName = &"single"
 @export var ranged_range: float = 520.0
 @export var ranged_pierce_count: int = 1
+@export var magazine_size: int = 0
+@export var reload_time: float = 0.0
+@export var burst_count: int = 1
+@export var burst_interval: float = 0.06
+@export var pellet_count: int = 1
+@export var spread_angle_degrees: float = 0.0
+@export var charge_time: float = 0.0
+@export var charge_damage_scale: float = 1.0
+@export var recoil_impulse: float = 0.0
+@export var aim_move_speed_scale: float = 1.0
+@export var projectile_speed: float = 800.0
+@export var projectile_lifetime: float = 1.5
+@export var projectile_size: Vector2 = Vector2(12.0, 6.0)
+@export var projectile_texture: Texture2D
+@export var projectile_color: Color = Color(1, 1, 0, 1)
 @export var passive_effect_id: StringName = &"none"
 @export var passive_threshold: int = 0
 @export var passive_radius: float = 0.0

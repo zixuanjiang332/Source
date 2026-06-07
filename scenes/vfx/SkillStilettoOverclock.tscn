@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/vfx/HitSpark.gd" id="1"]
+
+[node name="SkillStilettoOverclock" type="Node2D"]
+script = ExtResource("1")
+lifetime = 0.28
+spark_count = 11
+color_a = Color(0.48, 1, 0.42, 1)
+color_b = Color(0.18, 0.95, 1, 1)

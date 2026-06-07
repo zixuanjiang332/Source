@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/Hud.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/ui/portrait_yuan_stage_01.png" id="2"]
-[ext_resource type="Script" path="res://scripts/ui/AccessoryBar.gd" id="3"]
 
 [node name="Hud" type="CanvasLayer"]
 layer = 10
@@ -85,82 +84,136 @@ theme_override_colors/font_color = Color(0.88, 0.92, 1, 0.9)
 theme_override_font_sizes/font_size = 28
 text = "EN 000/000"
 
-[node name="WeaponIcon" type="TextureRect" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 34.0
-offset_top = 166.0
-offset_right = 120.0
-offset_bottom = 252.0
-stretch_mode = 5
-
-[node name="WeaponLabel" type="Label" parent="Root/Margin"]
+[node name="AmmoLabel" type="Label" parent="Root/Margin"]
 layout_mode = 0
 offset_left = 160.0
 offset_top = 206.0
-offset_right = 720.0
-offset_bottom = 248.0
-theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.92)
-theme_override_font_sizes/font_size = 28
-text = "WEAPON // --"
+offset_right = 620.0
+offset_bottom = 246.0
+theme_override_colors/font_color = Color(1, 0.86, 0.34, 0.94)
+theme_override_font_sizes/font_size = 24
+text = "AMMO ∞"
 
-[node name="SkillLabel" type="Label" parent="Root/Margin"]
+[node name="WeaponBar" type="Control" parent="Root/Margin"]
 layout_mode = 0
-offset_left = 160.0
-offset_top = 258.0
-offset_right = 820.0
-offset_bottom = 304.0
-theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.86)
-theme_override_font_sizes/font_size = 26
-text = "K Skill // --"
+offset_left = 624.0
+offset_top = 906.0
+offset_right = 1232.0
+offset_bottom = 992.0
 
-[node name="UltimateLabel" type="Label" parent="Root/Margin"]
+[node name="Slot1" type="Control" parent="Root/Margin/WeaponBar"]
 layout_mode = 0
-offset_left = 160.0
-offset_top = 310.0
-offset_right = 860.0
-offset_bottom = 356.0
-theme_override_colors/font_color = Color(1, 0.34, 0.38, 0.9)
-theme_override_font_sizes/font_size = 26
-text = "HOLD K // CHARGING"
-
-[node name="ComboLabel" type="Label" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 1120.0
-offset_top = 112.0
-offset_right = 1824.0
-offset_bottom = 160.0
-theme_override_colors/font_color = Color(0.78, 0.96, 1, 0.94)
-theme_override_font_sizes/font_size = 32
-text = ""
-horizontal_alignment = 2
-
-[node name="Objective" type="Label" parent="Root/Margin"]
-layout_mode = 0
-offset_left = 1000.0
-offset_top = 24.0
-offset_right = 1824.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 184.0
 offset_bottom = 76.0
-theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.9)
-theme_override_font_sizes/font_size = 32
-text = "WAKE // speak with Dr. Lin"
-horizontal_alignment = 2
 
-[node name="Toast" type="Label" parent="Root/Margin"]
+[node name="Back" type="ColorRect" parent="Root/Margin/WeaponBar/Slot1"]
 layout_mode = 0
-offset_left = 760.0
-offset_top = 910.0
-offset_right = 1824.0
-offset_bottom = 970.0
-theme_override_colors/font_color = Color(0.82, 0.92, 1, 0.62)
-theme_override_font_sizes/font_size = 30
-text = "A/D move  Space jump  E interact"
-horizontal_alignment = 2
-modulate = Color(1, 1, 1, 0.55)
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 184.0
+offset_bottom = 76.0
+color = Color(0.12, 0.15, 0.21, 0.86)
 
-[node name="AccessoryBar" type="HBoxContainer" parent="Root/Margin"]
+[node name="Border" type="Line2D" parent="Root/Margin/WeaponBar/Slot1"]
+points = PackedVector2Array(0, 0, 184, 0, 184, 76, 0, 76, 0, 0)
+width = 2.0
+default_color = Color(0.34, 0.94, 1, 0.72)
+
+[node name="SlotNumber" type="Label" parent="Root/Margin/WeaponBar/Slot1"]
 layout_mode = 0
-offset_left = 660.0
-offset_top = 32.0
-offset_right = 1100.0
+offset_left = 10.0
+offset_top = 6.0
+offset_right = 34.0
+offset_bottom = 28.0
+theme_override_colors/font_color = Color(1, 0.9, 0.42, 0.98)
+theme_override_font_sizes/font_size = 16
+text = "1"
+
+[node name="WeaponIcon" type="TextureRect" parent="Root/Margin/WeaponBar/Slot1"]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 12.0
+offset_right = 132.0
 offset_bottom = 68.0
-script = ExtResource("3")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot2" type="Control" parent="Root/Margin/WeaponBar"]
+layout_mode = 0
+offset_left = 204.0
+offset_top = 0.0
+offset_right = 388.0
+offset_bottom = 76.0
+
+[node name="Back" type="ColorRect" parent="Root/Margin/WeaponBar/Slot2"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 184.0
+offset_bottom = 76.0
+color = Color(0.12, 0.15, 0.21, 0.86)
+
+[node name="Border" type="Line2D" parent="Root/Margin/WeaponBar/Slot2"]
+points = PackedVector2Array(0, 0, 184, 0, 184, 76, 0, 76, 0, 0)
+width = 2.0
+default_color = Color(0.34, 0.94, 1, 0.72)
+
+[node name="SlotNumber" type="Label" parent="Root/Margin/WeaponBar/Slot2"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 6.0
+offset_right = 34.0
+offset_bottom = 28.0
+theme_override_colors/font_color = Color(1, 0.9, 0.42, 0.98)
+theme_override_font_sizes/font_size = 16
+text = "2"
+
+[node name="WeaponIcon" type="TextureRect" parent="Root/Margin/WeaponBar/Slot2"]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 12.0
+offset_right = 132.0
+offset_bottom = 68.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slot3" type="Control" parent="Root/Margin/WeaponBar"]
+layout_mode = 0
+offset_left = 408.0
+offset_top = 0.0
+offset_right = 592.0
+offset_bottom = 76.0
+
+[node name="Back" type="ColorRect" parent="Root/Margin/WeaponBar/Slot3"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 184.0
+offset_bottom = 76.0
+color = Color(0.12, 0.15, 0.21, 0.86)
+
+[node name="Border" type="Line2D" parent="Root/Margin/WeaponBar/Slot3"]
+points = PackedVector2Array(0, 0, 184, 0, 184, 76, 0, 76, 0, 0)
+width = 2.0
+default_color = Color(0.34, 0.94, 1, 0.72)
+
+[node name="SlotNumber" type="Label" parent="Root/Margin/WeaponBar/Slot3"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 6.0
+offset_right = 34.0
+offset_bottom = 28.0
+theme_override_colors/font_color = Color(1, 0.9, 0.42, 0.98)
+theme_override_font_sizes/font_size = 16
+text = "3"
+
+[node name="WeaponIcon" type="TextureRect" parent="Root/Margin/WeaponBar/Slot3"]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 12.0
+offset_right = 132.0
+offset_bottom = 68.0
+expand_mode = 1
+stretch_mode = 5

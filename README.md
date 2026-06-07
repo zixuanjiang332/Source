@@ -19,7 +19,11 @@ Godot 和 Aseprite 当前未在本机 PATH 中检测到；项目文件已经准�
 - Dash: `Shift`
 - Attack: 鼠标左键
 - Skill: 鼠标右键
-- Restart: `R`
+- Reload: `R`
+- Weapon Slots: `1` / `2` / `3`
+- Previous Weapon: `Q`
+- Drop Weapon: `G`
+- Restart: `F`
 - Pause: `Esc`
 
 ## Project Shape

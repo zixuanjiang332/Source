@@ -138,12 +138,84 @@ color = Color(0.01, 0.012, 0.02, 0.72)
 [node name="PauseLabel" type="Label" parent="PauseLayer/PauseOverlay"]
 layout_mode = 0
 offset_left = 760.0
-offset_top = 460.0
+offset_top = 336.0
 offset_right = 1160.0
-offset_bottom = 560.0
+offset_bottom = 436.0
 theme_override_font_sizes/font_size = 64
 text = "PAUSED"
 horizontal_alignment = 1
+
+[node name="PausePanel" type="Panel" parent="PauseLayer/PauseOverlay"]
+layout_mode = 0
+offset_left = 700.0
+offset_top = 438.0
+offset_right = 1220.0
+offset_bottom = 700.0
+
+[node name="PanelBackdrop" type="ColorRect" parent="PauseLayer/PauseOverlay/PausePanel"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.05, 0.08, 0.9)
+
+[node name="PanelBorder" type="Line2D" parent="PauseLayer/PauseOverlay/PausePanel"]
+points = PackedVector2Array(0, 0, 520, 0, 520, 262, 0, 262, 0, 0)
+width = 3.0
+default_color = Color(0.26, 0.92, 1, 0.92)
+
+[node name="HintLabel" type="Label" parent="PauseLayer/PauseOverlay/PausePanel"]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 28.0
+offset_right = 468.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(0.65, 0.88, 1, 0.78)
+theme_override_font_sizes/font_size = 22
+text = "ESC 返回 / 确认键执行"
+horizontal_alignment = 1
+
+[node name="HoverMarker" type="Label" parent="PauseLayer/PauseOverlay/PausePanel"]
+visible = false
+layout_mode = 0
+offset_left = 96.0
+offset_top = 102.0
+offset_right = 146.0
+offset_bottom = 156.0
+theme_override_colors/font_color = Color(0.34, 0.94, 1, 1)
+theme_override_font_sizes/font_size = 44
+text = ">"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="PauseLayer/PauseOverlay/PausePanel"]
+modulate = Color(0.78, 0.9, 1, 0.88)
+layout_mode = 0
+offset_left = 150.0
+offset_top = 92.0
+offset_right = 370.0
+offset_bottom = 152.0
+pivot_offset = Vector2(110, 30)
+mouse_default_cursor_shape = 2
+focus_mode = 0
+flat = true
+text = "继续游戏"
+alignment = 0
+
+[node name="QuitButton" type="Button" parent="PauseLayer/PauseOverlay/PausePanel"]
+modulate = Color(0.78, 0.9, 1, 0.88)
+layout_mode = 0
+offset_left = 150.0
+offset_top = 166.0
+offset_right = 370.0
+offset_bottom = 226.0
+pivot_offset = Vector2(110, 30)
+mouse_default_cursor_shape = 2
+focus_mode = 0
+flat = true
+text = "退出游戏"
+alignment = 0
 
 [node name="TransitionLayer" type="CanvasLayer" parent="."]
 process_mode = 3

@@ -1,9 +1,14 @@
-[gd_resource type="Resource" script_class="VfxCatalog" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="VfxCatalog" load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/VfxCatalog.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/vfx/HitSpark.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/vfx/DashBurst.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/vfx/ItemPickupBurst.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/SkillCastDefault.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/SkillKatanaFlash.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/SkillStilettoOverclock.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/SkillNextGenBurst.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/SkillSurgeArmorPierce.tscn" id="9"]
 
 [resource]
 script = ExtResource("1")
@@ -11,5 +16,10 @@ fallback_scene = ExtResource("2")
 hit_spark_scene = ExtResource("2")
 dash_burst_scene = ExtResource("3")
 item_pickup_scene = ExtResource("4")
+skill_cast_default_scene = ExtResource("5")
+skill_katana_flash_scene = ExtResource("6")
+skill_stiletto_overclock_scene = ExtResource("7")
+skill_next_gen_burst_scene = ExtResource("8")
+skill_surge_armor_pierce_scene = ExtResource("9")
 sheet_entries = Array[VfxEntry]([])
 sfx_entries = Array[SfxEntry]([])
