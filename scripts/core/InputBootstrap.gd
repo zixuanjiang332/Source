@@ -16,6 +16,7 @@ const DEFAULT_KEYMAP := {
 	"weapon_slot_1": [KEY_1],
 	"weapon_slot_2": [KEY_2],
 	"weapon_slot_3": [KEY_3],
+	"switch_previous_weapon": [KEY_Q],
 	"drop_weapon": [KEY_G],
 }
 

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"surge_shot"
+display_name = "Surge Shot"
+animation_id = &"atk_1"
+damage = 150
+energy_cost = 0
+knockback = Vector2(168, -34)
+lunge = 0.0
+active_time = 0.02
+cooldown = 0.14
+hit_stun = 0.08
+hit_stop = 0.014
+screen_shake = 0.2
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_light_01"
+energy_regen = 4

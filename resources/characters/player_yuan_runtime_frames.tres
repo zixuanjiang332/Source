@@ -1,7 +1,6 @@
-[gd_resource type="SpriteFrames" load_steps=99 format=3]
+[gd_resource type="SpriteFrames" load_steps=118 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/pixel/spr_player_yuan_runtime.png" id="1_sheet"]
-[ext_resource type="Texture2D" path="res://assets/pixel/characters/player_yuan_early_clone/spr_player_yuan_ultimate_slam.png" id="2_ultimate_slam"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_idle_00"]
 atlas = ExtResource("1_sheet")
@@ -31,6 +30,36 @@ filter_clip = true
 [sub_resource type="AtlasTexture" id="AtlasTexture_idle_05"]
 atlas = ExtResource("1_sheet")
 region = Rect2(502, 2, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle_06"]
+atlas = ExtResource("1_sheet")
+region = Rect2(602, 2, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle_07"]
+atlas = ExtResource("1_sheet")
+region = Rect2(702, 2, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle_08"]
+atlas = ExtResource("1_sheet")
+region = Rect2(802, 2, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle_09"]
+atlas = ExtResource("1_sheet")
+region = Rect2(902, 2, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle_10"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1002, 2, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle_11"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1102, 2, 96, 96)
 filter_clip = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_run_00"]
@@ -223,6 +252,26 @@ atlas = ExtResource("1_sheet")
 region = Rect2(702, 702, 96, 96)
 filter_clip = true
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_combat_idle_08"]
+atlas = ExtResource("1_sheet")
+region = Rect2(802, 702, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_combat_idle_09"]
+atlas = ExtResource("1_sheet")
+region = Rect2(902, 702, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_combat_idle_10"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1002, 702, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_combat_idle_11"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1102, 702, 96, 96)
+filter_clip = true
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_combat_run_00"]
 atlas = ExtResource("1_sheet")
 region = Rect2(2, 802, 96, 96)
@@ -261,6 +310,16 @@ filter_clip = true
 [sub_resource type="AtlasTexture" id="AtlasTexture_combat_run_07"]
 atlas = ExtResource("1_sheet")
 region = Rect2(702, 802, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_combat_run_08"]
+atlas = ExtResource("1_sheet")
+region = Rect2(802, 802, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_combat_run_09"]
+atlas = ExtResource("1_sheet")
+region = Rect2(902, 802, 96, 96)
 filter_clip = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_punch_1_00"]
@@ -303,6 +362,26 @@ atlas = ExtResource("1_sheet")
 region = Rect2(702, 902, 96, 96)
 filter_clip = true
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_1_08"]
+atlas = ExtResource("1_sheet")
+region = Rect2(802, 902, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_1_09"]
+atlas = ExtResource("1_sheet")
+region = Rect2(902, 902, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_1_10"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1002, 902, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_1_11"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1102, 902, 96, 96)
+filter_clip = true
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_punch_2_00"]
 atlas = ExtResource("1_sheet")
 region = Rect2(2, 1002, 96, 96)
@@ -341,6 +420,26 @@ filter_clip = true
 [sub_resource type="AtlasTexture" id="AtlasTexture_punch_2_07"]
 atlas = ExtResource("1_sheet")
 region = Rect2(702, 1002, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_2_08"]
+atlas = ExtResource("1_sheet")
+region = Rect2(802, 1002, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_2_09"]
+atlas = ExtResource("1_sheet")
+region = Rect2(902, 1002, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_2_10"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1002, 1002, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_2_11"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1102, 1002, 96, 96)
 filter_clip = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_punch_3_00"]
@@ -393,6 +492,26 @@ atlas = ExtResource("1_sheet")
 region = Rect2(902, 1102, 96, 96)
 filter_clip = true
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_3_10"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1002, 1102, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_3_11"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1102, 1102, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_3_12"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1202, 1102, 96, 96)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_3_13"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1302, 1102, 96, 96)
+filter_clip = true
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_punch_skill_00"]
 atlas = ExtResource("1_sheet")
 region = Rect2(2, 1202, 96, 96)
@@ -443,44 +562,24 @@ atlas = ExtResource("1_sheet")
 region = Rect2(902, 1202, 96, 96)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_00"]
-atlas = ExtResource("2_ultimate_slam")
-region = Rect2(0, 0, 96, 96)
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_skill_10"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1002, 1202, 96, 96)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_01"]
-atlas = ExtResource("2_ultimate_slam")
-region = Rect2(96, 0, 96, 96)
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_skill_11"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1102, 1202, 96, 96)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_02"]
-atlas = ExtResource("2_ultimate_slam")
-region = Rect2(192, 0, 96, 96)
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_skill_12"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1202, 1202, 96, 96)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_03"]
-atlas = ExtResource("2_ultimate_slam")
-region = Rect2(288, 0, 96, 96)
-filter_clip = true
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_04"]
-atlas = ExtResource("2_ultimate_slam")
-region = Rect2(384, 0, 96, 96)
-filter_clip = true
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_05"]
-atlas = ExtResource("2_ultimate_slam")
-region = Rect2(480, 0, 96, 96)
-filter_clip = true
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_06"]
-atlas = ExtResource("2_ultimate_slam")
-region = Rect2(576, 0, 96, 96)
-filter_clip = true
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ultimate_slam_07"]
-atlas = ExtResource("2_ultimate_slam")
-region = Rect2(672, 0, 96, 96)
+[sub_resource type="AtlasTexture" id="AtlasTexture_punch_skill_13"]
+atlas = ExtResource("1_sheet")
+region = Rect2(1302, 1202, 96, 96)
 filter_clip = true
 
 [resource]
@@ -503,6 +602,24 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_idle_05")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle_06")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle_07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle_08")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle_09")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle_11")
 }],
 "loop": true,
 "name": &"idle",
@@ -652,6 +769,18 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_combat_idle_07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_combat_idle_08")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_combat_idle_09")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_combat_idle_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_combat_idle_11")
 }],
 "loop": true,
 "name": &"combat_idle",
@@ -681,6 +810,12 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_combat_run_07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_combat_run_08")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_combat_run_09")
 }],
 "loop": true,
 "name": &"combat_run",
@@ -710,6 +845,18 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_punch_1_07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_1_08")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_1_09")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_1_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_1_11")
 }],
 "loop": false,
 "name": &"punch_1",
@@ -739,6 +886,18 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_punch_2_07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_2_08")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_2_09")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_2_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_2_11")
 }],
 "loop": false,
 "name": &"punch_2",
@@ -774,6 +933,18 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_punch_3_09")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_3_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_3_11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_3_12")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_3_13")
 }],
 "loop": false,
 "name": &"punch_3",
@@ -809,37 +980,20 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_punch_skill_09")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_skill_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_skill_11")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_skill_12")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punch_skill_13")
 }],
 "loop": false,
 "name": &"punch_skill",
-"speed": 16.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ultimate_slam_00")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ultimate_slam_01")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ultimate_slam_02")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ultimate_slam_03")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ultimate_slam_04")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ultimate_slam_05")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ultimate_slam_06")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ultimate_slam_07")
-}],
-"loop": false,
-"name": &"ultimate_slam",
 "speed": 16.0
 }]

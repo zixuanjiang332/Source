@@ -1,18 +1,10 @@
-[gd_resource type="Resource" script_class="WeaponData" load_steps=14 format=3]
+[gd_resource type="Resource" script_class="WeaponData" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/WeaponData.gd" id="1"]
 [ext_resource type="Resource" path="res://resources/attacks/fist_jab_1.tres" id="2"]
 [ext_resource type="Resource" path="res://resources/attacks/fist_cross_2.tres" id="3"]
 [ext_resource type="Resource" path="res://resources/attacks/fist_breaker_3.tres" id="4"]
 [ext_resource type="Resource" path="res://resources/attacks/fist_drive_step.tres" id="5"]
-[ext_resource type="Resource" path="res://resources/attacks/yuan_ult_blue_slash_01.tres" id="6"]
-[ext_resource type="Resource" path="res://resources/attacks/yuan_ult_blue_slash_02.tres" id="7"]
-[ext_resource type="Resource" path="res://resources/attacks/yuan_ult_blue_slash_03.tres" id="8"]
-[ext_resource type="Resource" path="res://resources/attacks/yuan_ult_blue_slash_04.tres" id="9"]
-[ext_resource type="Resource" path="res://resources/attacks/yuan_ult_blue_slash_05.tres" id="10"]
-[ext_resource type="Resource" path="res://resources/attacks/yuan_ult_blue_slash_06.tres" id="11"]
-[ext_resource type="Resource" path="res://resources/attacks/yuan_ult_blue_slash_07.tres" id="12"]
-[ext_resource type="Resource" path="res://resources/attacks/yuan_ult_red_slam.tres" id="13"]
 
 [resource]
 script = ExtResource("1")
@@ -24,7 +16,3 @@ followup_attack = ExtResource("3")
 finisher_attack = ExtResource("4")
 skill_display_name = "Drive Step"
 skill_attack = ExtResource("5")
-ultimate_display_name = "Overdrive Sever"
-ultimate_energy_cost = 100
-ultimate_hold_time = 0.45
-ultimate_attacks = Array[Resource]([ExtResource("6"), ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), ExtResource("12"), ExtResource("13")])

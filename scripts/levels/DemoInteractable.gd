@@ -41,7 +41,7 @@ func _process(_delta: float) -> void:
 	if _should_defer_to_weapon_pickup(_player):
 		return
 
-	if Input.is_action_just_pressed("interact"):
+	if Input.is_action_just_pressed("interact") and not get_viewport().is_input_handled():
 		_interact()
 
 

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="AttackData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/AttackData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+attack_id = &"stiletto_cut_2"
+display_name = "Cross Rip"
+animation_id = &"atk_2"
+damage = 44
+energy_cost = 0
+knockback = Vector2(155, -42)
+lunge = 46.0
+active_time = 0.072
+cooldown = 0.17
+hit_stun = 0.12
+hit_stop = 0.03
+screen_shake = 0.42
+vfx_id = &"hit_spark_metal"
+sfx_id = &"sfx_hit_metal_light_02"
+energy_regen = 7
