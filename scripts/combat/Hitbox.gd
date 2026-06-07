@@ -64,6 +64,9 @@ func _on_area_entered(area: Area2D) -> void:
 	var target: Node = area.call("get_receiver")
 	if target == null or target == _source:
 		return
+	# 跳过已经 queue_free 或在重开中被清理的节点
+	if not is_instance_valid(target) or not target.is_inside_tree():
+		return
 
 	var key: int = area.get_instance_id()
 	if _targets_hit.has(key):

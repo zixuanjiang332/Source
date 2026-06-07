@@ -1,209 +1,14 @@
-[gd_resource type="Resource" script_class="VfxCatalog" load_steps=49 format=3]
+[gd_resource type="Resource" script_class="VfxCatalog" load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/VfxCatalog.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/vfx/HitSpark.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/vfx/DashBurst.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/vfx/ItemPickupBurst.tscn" id="4"]
-[ext_resource type="Script" path="res://scripts/resources/VfxEntry.gd" id="5"]
-[ext_resource type="Script" path="res://scripts/resources/SfxEntry.gd" id="6"]
-[ext_resource type="Texture2D" path="res://assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_afterimage.png" id="7"]
-[ext_resource type="Texture2D" path="res://assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_01.png" id="8"]
-[ext_resource type="Texture2D" path="res://assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_02.png" id="9"]
-[ext_resource type="Texture2D" path="res://assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_03.png" id="10"]
-[ext_resource type="Texture2D" path="res://assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_04.png" id="11"]
-[ext_resource type="Texture2D" path="res://assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_05.png" id="12"]
-[ext_resource type="Texture2D" path="res://assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_06.png" id="13"]
-[ext_resource type="Texture2D" path="res://assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_blue_slash_07.png" id="14"]
-[ext_resource type="Texture2D" path="res://assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_red_slam_arc.png" id="15"]
-[ext_resource type="Texture2D" path="res://assets/pixel/vfx/yuan_ultimate/vfx_yuan_ult_red_impact.png" id="16"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_yuan_ult_charge_01.wav" id="17"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_yuan_ult_afterimage_01.wav" id="18"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_yuan_ult_blue_slash_01.wav" id="19"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_yuan_ult_blue_slash_02.wav" id="20"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_yuan_ult_blue_slash_03.wav" id="21"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_yuan_ult_blue_slash_04.wav" id="22"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_yuan_ult_blue_slash_05.wav" id="23"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_yuan_ult_blue_slash_06.wav" id="24"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_yuan_ult_blue_slash_07.wav" id="25"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_yuan_ult_red_drop_01.wav" id="26"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/sfx_yuan_ult_red_impact_01.wav" id="27"]
-
-[sub_resource type="Resource" id="VfxEntry_afterimage"]
-script = ExtResource("5")
-vfx_id = &"yuan_ult_afterimage"
-texture = ExtResource("7")
-frame_size = Vector2i(96, 96)
-frame_count = 7
-fps = 22.0
-origin_offset = Vector2(-10, -64)
-visual_scale = Vector2(1.0, 1.0)
-modulate = Color(0.7, 0.96, 1, 0.72)
-z_index = 18
-
-[sub_resource type="Resource" id="VfxEntry_blue_01"]
-script = ExtResource("5")
-vfx_id = &"yuan_ult_blue_slash_01"
-texture = ExtResource("8")
-frame_size = Vector2i(256, 128)
-frame_count = 6
-fps = 24.0
-origin_offset = Vector2(58, -74)
-visual_scale = Vector2(0.78, 0.78)
-z_index = 28
-
-[sub_resource type="Resource" id="VfxEntry_blue_02"]
-script = ExtResource("5")
-vfx_id = &"yuan_ult_blue_slash_02"
-texture = ExtResource("9")
-frame_size = Vector2i(256, 128)
-frame_count = 6
-fps = 24.0
-origin_offset = Vector2(70, -62)
-visual_scale = Vector2(0.78, 0.78)
-z_index = 28
-
-[sub_resource type="Resource" id="VfxEntry_blue_03"]
-script = ExtResource("5")
-vfx_id = &"yuan_ult_blue_slash_03"
-texture = ExtResource("10")
-frame_size = Vector2i(256, 128)
-frame_count = 6
-fps = 24.0
-origin_offset = Vector2(64, -86)
-visual_scale = Vector2(0.82, 0.82)
-z_index = 28
-
-[sub_resource type="Resource" id="VfxEntry_blue_04"]
-script = ExtResource("5")
-vfx_id = &"yuan_ult_blue_slash_04"
-texture = ExtResource("11")
-frame_size = Vector2i(256, 128)
-frame_count = 6
-fps = 24.0
-origin_offset = Vector2(80, -52)
-visual_scale = Vector2(0.82, 0.82)
-z_index = 28
-
-[sub_resource type="Resource" id="VfxEntry_blue_05"]
-script = ExtResource("5")
-vfx_id = &"yuan_ult_blue_slash_05"
-texture = ExtResource("12")
-frame_size = Vector2i(256, 128)
-frame_count = 6
-fps = 24.0
-origin_offset = Vector2(72, -72)
-visual_scale = Vector2(0.86, 0.86)
-z_index = 28
-
-[sub_resource type="Resource" id="VfxEntry_blue_06"]
-script = ExtResource("5")
-vfx_id = &"yuan_ult_blue_slash_06"
-texture = ExtResource("13")
-frame_size = Vector2i(256, 128)
-frame_count = 6
-fps = 24.0
-origin_offset = Vector2(88, -58)
-visual_scale = Vector2(0.86, 0.86)
-z_index = 28
-
-[sub_resource type="Resource" id="VfxEntry_blue_07"]
-script = ExtResource("5")
-vfx_id = &"yuan_ult_blue_slash_07"
-texture = ExtResource("14")
-frame_size = Vector2i(256, 128)
-frame_count = 6
-fps = 24.0
-origin_offset = Vector2(84, -82)
-visual_scale = Vector2(0.92, 0.92)
-z_index = 28
-
-[sub_resource type="Resource" id="VfxEntry_red_arc"]
-script = ExtResource("5")
-vfx_id = &"yuan_ult_red_slam_arc"
-texture = ExtResource("15")
-frame_size = Vector2i(256, 128)
-frame_count = 6
-fps = 18.0
-origin_offset = Vector2(56, -94)
-visual_scale = Vector2(0.9, 0.9)
-z_index = 30
-
-[sub_resource type="Resource" id="VfxEntry_red_impact"]
-script = ExtResource("5")
-vfx_id = &"yuan_ult_red_impact"
-texture = ExtResource("16")
-frame_size = Vector2i(256, 128)
-frame_count = 6
-fps = 18.0
-origin_offset = Vector2(78, -70)
-visual_scale = Vector2(0.95, 0.95)
-z_index = 31
-
-[sub_resource type="Resource" id="SfxEntry_charge"]
-script = ExtResource("6")
-sfx_id = &"sfx_yuan_ult_charge_01"
-stream = ExtResource("17")
-volume_db = -2.0
-
-[sub_resource type="Resource" id="SfxEntry_afterimage"]
-script = ExtResource("6")
-sfx_id = &"sfx_yuan_ult_afterimage_01"
-stream = ExtResource("18")
-volume_db = -4.0
-
-[sub_resource type="Resource" id="SfxEntry_blue_01"]
-script = ExtResource("6")
-sfx_id = &"sfx_yuan_ult_blue_slash_01"
-stream = ExtResource("19")
-volume_db = -3.0
-
-[sub_resource type="Resource" id="SfxEntry_blue_02"]
-script = ExtResource("6")
-sfx_id = &"sfx_yuan_ult_blue_slash_02"
-stream = ExtResource("20")
-volume_db = -3.0
-
-[sub_resource type="Resource" id="SfxEntry_blue_03"]
-script = ExtResource("6")
-sfx_id = &"sfx_yuan_ult_blue_slash_03"
-stream = ExtResource("21")
-volume_db = -3.0
-
-[sub_resource type="Resource" id="SfxEntry_blue_04"]
-script = ExtResource("6")
-sfx_id = &"sfx_yuan_ult_blue_slash_04"
-stream = ExtResource("22")
-volume_db = -3.0
-
-[sub_resource type="Resource" id="SfxEntry_blue_05"]
-script = ExtResource("6")
-sfx_id = &"sfx_yuan_ult_blue_slash_05"
-stream = ExtResource("23")
-volume_db = -3.0
-
-[sub_resource type="Resource" id="SfxEntry_blue_06"]
-script = ExtResource("6")
-sfx_id = &"sfx_yuan_ult_blue_slash_06"
-stream = ExtResource("24")
-volume_db = -3.0
-
-[sub_resource type="Resource" id="SfxEntry_blue_07"]
-script = ExtResource("6")
-sfx_id = &"sfx_yuan_ult_blue_slash_07"
-stream = ExtResource("25")
-volume_db = -2.0
-
-[sub_resource type="Resource" id="SfxEntry_red_drop"]
-script = ExtResource("6")
-sfx_id = &"sfx_yuan_ult_red_drop_01"
-stream = ExtResource("26")
-volume_db = -1.0
-
-[sub_resource type="Resource" id="SfxEntry_red_impact"]
-script = ExtResource("6")
-sfx_id = &"sfx_yuan_ult_red_impact_01"
-stream = ExtResource("27")
-volume_db = 0.0
+[ext_resource type="PackedScene" path="res://scenes/vfx/SkillCastDefault.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/SkillKatanaFlash.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/SkillStilettoOverclock.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/SkillNextGenBurst.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/vfx/SkillSurgeArmorPierce.tscn" id="9"]
 
 [resource]
 script = ExtResource("1")
@@ -211,5 +16,10 @@ fallback_scene = ExtResource("2")
 hit_spark_scene = ExtResource("2")
 dash_burst_scene = ExtResource("3")
 item_pickup_scene = ExtResource("4")
-sheet_entries = Array[VfxEntry]([SubResource("VfxEntry_afterimage"), SubResource("VfxEntry_blue_01"), SubResource("VfxEntry_blue_02"), SubResource("VfxEntry_blue_03"), SubResource("VfxEntry_blue_04"), SubResource("VfxEntry_blue_05"), SubResource("VfxEntry_blue_06"), SubResource("VfxEntry_blue_07"), SubResource("VfxEntry_red_arc"), SubResource("VfxEntry_red_impact")])
-sfx_entries = Array[SfxEntry]([SubResource("SfxEntry_charge"), SubResource("SfxEntry_afterimage"), SubResource("SfxEntry_blue_01"), SubResource("SfxEntry_blue_02"), SubResource("SfxEntry_blue_03"), SubResource("SfxEntry_blue_04"), SubResource("SfxEntry_blue_05"), SubResource("SfxEntry_blue_06"), SubResource("SfxEntry_blue_07"), SubResource("SfxEntry_red_drop"), SubResource("SfxEntry_red_impact")])
+skill_cast_default_scene = ExtResource("5")
+skill_katana_flash_scene = ExtResource("6")
+skill_stiletto_overclock_scene = ExtResource("7")
+skill_next_gen_burst_scene = ExtResource("8")
+skill_surge_armor_pierce_scene = ExtResource("9")
+sheet_entries = Array[VfxEntry]([])
+sfx_entries = Array[SfxEntry]([])

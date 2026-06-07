@@ -24,10 +24,19 @@ script = ExtResource("1")
 enemy_id = &"scout_drone"
 stats = ExtResource("2")
 attack_data = ExtResource("3")
+behavior_type = &"skirmisher"
 aggro_range = 185.0
+lose_aggro_range = 310.0
+vertical_aggro_range = 92.0
 attack_range = 40.0
+preferred_range = 78.0
 attack_interval = 0.95
+attack_windup = 0.12
+attack_recovery = 0.18
 patrol_width = 72.0
+patrol_speed_scale = 0.55
+chase_speed_scale = 1.12
+strafe_duration = 0.42
 drop_item_scene = ExtResource("4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -77,4 +86,3 @@ offset_bottom = -42.0
 theme_override_font_sizes/font_size = 7
 text = "drone"
 horizontal_alignment = 1
-

@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/WeaponData.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/pixel/weapons/individual/weapon_05_next_gen.png" id="2"]
+[ext_resource type="Resource" path="res://resources/attacks/next_gen_shot.tres" id="3"]
+
+[resource]
+script = ExtResource("1")
+weapon_id = &"next_gen"
+display_name = "次世代 // Next Gen"
+description = "高攻速雷属性远程武器。每 24 发生成冲击波弹，主技能为瞬爆能量球。"
+weapon_type = &"ranged"
+element_type = &"thunder"
+world_texture = ExtResource("2")
+hud_icon = ExtResource("2")
+base_damage_rating = 30
+attack_speed_rating = 200
+passive_summary = "每 24 发生成冲击波弹；聚拢 0.5 秒，对 Boss 造成 200% 伤害"
+equip_move_speed_scale = 1.0
+equip_max_health_scale = 1.0
+attack_damage_scale = 1.0
+attack_speed_scale = 1.0
+attack_mode = &"projectile"
+trigger_mode = &"auto"
+fire_pattern = &"burst"
+ranged_range = 620.0
+magazine_size = 24
+reload_time = 1.05
+burst_count = 2
+burst_interval = 0.045
+recoil_impulse = 6.0
+aim_move_speed_scale = 0.82
+projectile_speed = 900.0
+projectile_lifetime = 1.0
+projectile_size = Vector2(10, 5)
+projectile_color = Color(0.4, 0.8, 1, 1)
+passive_effect_id = &"next_gen_shock_round"
+passive_threshold = 24
+passive_radius = 88.0
+passive_duration = 0.5
+passive_boss_damage_scale = 2.0
+skill_effect_id = &"next_gen_energy_burst"
+skill_display_name = "Instant Energy Burst"
+skill_cooldown = 10.0
+skill_range = 126.0
+skill_radius = 94.0
+skill_boss_damage_scale = 0.5
+skill_damage_bonus_per_kill = 1
+light_attack = ExtResource("3")

@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/WeaponData.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/pixel/weapons/individual/weapon_06_surge.png" id="2"]
+[ext_resource type="Resource" path="res://resources/attacks/surge_shot.tres" id="3"]
+
+[resource]
+script = ExtResource("1")
+weapon_id = &"surge"
+display_name = "澎湃 // Surge"
+description = "水属性高伤远程武器。水波子弹按目标血量上限追加伤害，技能可将子弹强化为穿透弹。"
+weapon_type = &"ranged"
+element_type = &"water"
+world_texture = ExtResource("2")
+hud_icon = ExtResource("2")
+base_damage_rating = 150
+attack_speed_rating = 130
+passive_summary = "水波子弹追加目标 1.5% 血量上限伤害；技能强化 30 秒穿透弹"
+equip_move_speed_scale = 1.0
+equip_max_health_scale = 1.0
+attack_damage_scale = 1.0
+attack_speed_scale = 1.0
+attack_mode = &"projectile"
+trigger_mode = &"charge"
+fire_pattern = &"spread"
+ranged_range = 640.0
+ranged_pierce_count = 4
+magazine_size = 6
+reload_time = 1.35
+pellet_count = 3
+spread_angle_degrees = 10.0
+charge_time = 0.65
+charge_damage_scale = 1.6
+recoil_impulse = 20.0
+aim_move_speed_scale = 0.72
+projectile_speed = 700.0
+projectile_lifetime = 1.3
+projectile_size = Vector2(18, 8)
+projectile_color = Color(0.2, 0.6, 1, 1)
+passive_effect_id = &"surge_health_wave"
+skill_effect_id = &"surge_armor_pierce"
+skill_display_name = "Armor Pierce Flow"
+skill_duration = 30.0
+light_attack = ExtResource("3")

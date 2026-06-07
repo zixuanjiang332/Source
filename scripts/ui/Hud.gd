@@ -3,51 +3,29 @@ extends CanvasLayer
 
 const HEALTH_FILL_WIDTH := 476.0
 const ENERGY_FILL_WIDTH := 356.0
+const WEAPON_SLOT_EMPTY_COLOR := Color(0.12, 0.15, 0.21, 0.86)
+const WEAPON_SLOT_FILLED_COLOR := Color(0.09, 0.12, 0.18, 0.94)
+const WEAPON_SLOT_ACTIVE_COLOR := Color(0.12, 0.22, 0.3, 0.98)
+const WEAPON_SLOT_ACTIVE_BORDER := Color(1.0, 0.9, 0.42, 0.98)
+const WEAPON_SLOT_IDLE_BORDER := Color(0.34, 0.94, 1.0, 0.72)
 
 @onready var health_fill: ColorRect = $Root/Margin/HealthBack/HealthFill
 @onready var health_label: Label = $Root/Margin/HealthLabel
 @onready var energy_fill: ColorRect = $Root/Margin/EnergyBack/EnergyFill
 @onready var energy_label: Label = $Root/Margin/EnergyLabel
-@onready var weapon_icon: TextureRect = $Root/Margin/WeaponIcon
-@onready var weapon_label: Label = $Root/Margin/WeaponLabel
-@onready var skill_label: Label = $Root/Margin/SkillLabel
-@onready var ultimate_label: Label = $Root/Margin/UltimateLabel
-@onready var combo_label: Label = $Root/Margin/ComboLabel
-@onready var objective_label: Label = $Root/Margin/Objective
-@onready var toast_label: Label = $Root/Margin/Toast
-@onready var currency_label: Label = $Root/Margin/CurrencyLabel
-@onready var accessory_bar: AccessoryBar = $Root/AccessoryBar
-
-var _current_energy: int = 0
-var _skill_cost: int = 0
-var _skill_name: String = "Skill"
-var _ultimate_cost: int = 100
-var _ultimate_name: String = "Ultimate"
-var _ultimate_hold_time: float = 0.45
+@onready var ammo_label: Label = $Root/Margin/AmmoLabel
+@onready var weapon_slots: Array[Control] = [
+	$Root/Margin/WeaponBar/Slot1,
+	$Root/Margin/WeaponBar/Slot2,
+	$Root/Margin/WeaponBar/Slot3,
+]
 
 func _ready() -> void:
 	GameEvents.player_health_changed.connect(_on_player_health_changed)
 	GameEvents.player_energy_changed.connect(_on_player_energy_changed)
-	GameEvents.player_weapon_changed.connect(_on_player_weapon_changed)
-	GameEvents.player_ultimate_changed.connect(_on_player_ultimate_changed)
-	GameEvents.player_combo_changed.connect(_on_player_combo_changed)
-	GameEvents.enemy_defeated.connect(_on_enemy_defeated)
-	GameEvents.item_collected.connect(_on_item_collected)
-	GameEvents.objective_changed.connect(_on_objective_changed)
-	GameEvents.toast_requested.connect(_show_toast)
-	GameEvents.currency_changed.connect(_on_currency_changed)
-	weapon_label.visible = false
-	skill_label.visible = false
-	ultimate_label.visible = false
-	objective_label.visible = false
-	toast_label.visible = false
-	currency_label.text = "CR 0500"
-	objective_label.text = ""
-	toast_label.text = ""
-	weapon_label.text = ""
-	skill_label.text = ""
-	ultimate_label.text = ""
-	combo_label.text = ""
+	GameEvents.player_ammo_changed.connect(_on_player_ammo_changed)
+	GameEvents.player_weapon_slots_changed.connect(_on_player_weapon_slots_changed)
+	_on_player_weapon_slots_changed(null, null, null, 0)
 
 
 func _on_player_health_changed(current_health: int, max_health: int) -> void:
@@ -59,68 +37,60 @@ func _on_player_health_changed(current_health: int, max_health: int) -> void:
 
 
 func _on_player_energy_changed(current_energy: int, max_energy: int) -> void:
-	_current_energy = current_energy
 	energy_label.text = "EN %03d/%03d" % [current_energy, max_energy]
 	var ratio: float = 0.0
 	if max_energy > 0:
 		ratio = clampf(float(current_energy) / float(max_energy), 0.0, 1.0)
 	energy_fill.size = Vector2(roundf(ENERGY_FILL_WIDTH * ratio), energy_fill.size.y)
-	_update_skill_label()
 
 
-func _on_player_weapon_changed(weapon_name: String, skill_name: String, skill_cost: int) -> void:
-	_skill_name = skill_name
-	_skill_cost = skill_cost
-	weapon_label.text = "WEAPON // %s" % weapon_name
-	_update_skill_label()
+func _on_player_ammo_changed(current_ammo: int, max_ammo: int, magazine_ammo: int, magazine_size: int, is_reloading: bool) -> void:
+	if is_reloading:
+		ammo_label.text = "AMMO RELOADING"
+		return
+	if max_ammo <= 0 and magazine_size <= 0:
+		ammo_label.text = "AMMO ∞"
+		return
+	if magazine_size > 0:
+		if max_ammo <= 0:
+			ammo_label.text = "AMMO %02d/%02d | ∞" % [magazine_ammo, magazine_size]
+		else:
+			ammo_label.text = "AMMO %02d/%02d | %03d" % [magazine_ammo, magazine_size, current_ammo]
+		return
+	ammo_label.text = "AMMO %03d/%03d" % [current_ammo, max_ammo]
 
 
-func _on_player_ultimate_changed(ultimate_name: String, ultimate_cost: int, hold_time: float) -> void:
-	_ultimate_name = ultimate_name
-	_ultimate_cost = ultimate_cost
-	_ultimate_hold_time = hold_time
-	_update_skill_label()
+func _on_player_weapon_slots_changed(slot_0: WeaponData, slot_1: WeaponData, slot_2: WeaponData, equipped_index: int) -> void:
+	var slot_data: Array[WeaponData] = [slot_0, slot_1, slot_2]
+	for index in range(weapon_slots.size()):
+		_update_weapon_slot(weapon_slots[index], slot_data[index], index == equipped_index, index)
 
 
-func _on_player_combo_changed(combo_step: int, combo_size: int) -> void:
-	if combo_step <= 0:
-		combo_label.text = ""
-	else:
-		combo_label.text = "CHAIN %d/%d" % [combo_step, combo_size]
+func _update_weapon_slot(slot_root: Control, slot_weapon: WeaponData, is_active: bool, slot_index: int) -> void:
+	if slot_root == null:
+		return
+	var back := slot_root.get_node("Back") as ColorRect
+	var border := slot_root.get_node("Border") as Line2D
+	var number_label := slot_root.get_node("SlotNumber") as Label
+	var icon_rect := slot_root.get_node("WeaponIcon") as TextureRect
 
+	if number_label != null:
+		number_label.text = str(slot_index + 1)
 
-func _on_enemy_defeated(enemy_id: StringName) -> void:
-	_show_toast("target neutralized: %s" % String(enemy_id))
+	if slot_weapon == null:
+		if back != null:
+			back.color = WEAPON_SLOT_ACTIVE_COLOR if is_active else WEAPON_SLOT_EMPTY_COLOR
+		if border != null:
+			border.default_color = WEAPON_SLOT_ACTIVE_BORDER if is_active else WEAPON_SLOT_IDLE_BORDER
+		if icon_rect != null:
+			icon_rect.texture = null
+			icon_rect.modulate = Color(1.0, 1.0, 1.0, 0.0)
+		return
 
-
-func _on_item_collected(item_id: StringName) -> void:
-	_show_toast("upgrade linked: %s" % String(item_id))
-
-
-func _on_objective_changed(message: String) -> void:
-	objective_label.text = message
-
-
-func _on_currency_changed(amount: int) -> void:
-	currency_label.text = "CR %04d" % amount
-
-
-func _show_toast(message: String) -> void:
-	toast_label.text = message
-	var tween: Tween = create_tween()
-	toast_label.modulate.a = 1.0
-	tween.tween_interval(1.2)
-	tween.tween_property(toast_label, "modulate:a", 0.35, 0.35)
-
-
-func _update_skill_label() -> void:
-	var state: String = "READY" if _current_energy >= _skill_cost else "CHARGING"
-	if _skill_cost <= 0:
-		state = "--"
-	weapon_icon.modulate = Color.WHITE if state == "READY" else Color(0.45, 0.65, 0.72, 0.72)
-	skill_label.text = "K %s // %s %d EN" % [_skill_name, state, _skill_cost]
-	var ultimate_state: String = "READY" if _current_energy >= _ultimate_cost else "CHARGING"
-	if _ultimate_cost <= 0:
-		ultimate_state = "--"
-	ultimate_label.text = "HOLD K %s // %s %d EN" % [_ultimate_name, ultimate_state, _ultimate_cost]
-	ultimate_label.modulate = Color(1.0, 1.0, 1.0, 0.92) if ultimate_state == "READY" else Color(1.0, 1.0, 1.0, 0.48)
+	if back != null:
+		back.color = WEAPON_SLOT_ACTIVE_COLOR if is_active else WEAPON_SLOT_FILLED_COLOR
+	if border != null:
+		border.default_color = WEAPON_SLOT_ACTIVE_BORDER if is_active else WEAPON_SLOT_IDLE_BORDER
+	if icon_rect != null:
+		icon_rect.texture = slot_weapon.resolved_hud_icon()
+		icon_rect.modulate = Color(1.0, 1.0, 1.0, 1.0)

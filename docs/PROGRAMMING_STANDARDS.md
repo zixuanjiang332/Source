@@ -88,7 +88,7 @@
 
 ## 7. 输入与手感
 
-- 输入动作名固定使用 `move_left`、`move_right`、`jump`、`dash`、`attack`、`skill`、`restart`、`pause`。
+- 输入动作名固定使用 `move_left`、`move_right`、`jump`、`dash`、`attack`、`skill`、`reload`、`restart`、`pause`。
 - 所有手感参数先从 Resource 或 export 变量暴露。
 - 冲刺、攻击、受击、死亡这类状态必须互相排斥或明确优先级。
 - 命中停顿和屏幕震动要短，先保证操作可读。
@@ -103,6 +103,7 @@
 - Layer 4: Hurtbox
 - Layer 8: Hitbox
 - Layer 16: Pickup
+- Layer 32: Projectile（子弹/投射物）
 
 新增层之前先更新本文档，避免多人各自占用。
 
@@ -126,7 +127,8 @@
 
 - 主场景能运行。
 - 控制台无红色报错。
-- `R` 能重开当前 Demo。
+- `R` 能为远程武器主动换弹。
+- `F` 能重开当前 Demo。
 - 玩家能攻击命中至少一个敌人。
 - 新增素材没有缺失引用。
 - 新增 `.png`、`.wav`、`.aseprite` 走 Git LFS。

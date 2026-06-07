@@ -2,7 +2,9 @@ extends Node
 
 signal player_health_changed(current_health: int, max_health: int)
 signal player_energy_changed(current_energy: int, max_energy: int)
-signal player_weapon_changed(weapon_name: String, skill_name: String, skill_cost: int)
+signal player_weapon_changed(weapon_data: WeaponData)
+signal player_weapon_slots_changed(slot_0: WeaponData, slot_1: WeaponData, slot_2: WeaponData, equipped_index: int)
+signal player_ammo_changed(current_ammo: int, max_ammo: int, magazine_ammo: int, magazine_size: int, is_reloading: bool)
 signal player_ultimate_changed(ultimate_name: String, ultimate_cost: int, hold_time: float)
 signal player_combo_changed(combo_step: int, combo_size: int)
 signal enemy_defeated(enemy_id: StringName)
@@ -18,7 +20,6 @@ signal shop_requested(shop_id: StringName)
 signal shop_closed
 signal currency_changed(current_amount: int)
 signal item_purchased(shop_item_id: StringName, item_data: Resource)
-signal accessory_inventory_changed(accessory_list: Array)
 
 var _respawn_point: Vector2 = Vector2.ZERO
 var _has_respawn_point: bool = false
@@ -31,8 +32,16 @@ func report_player_energy(current_energy: int, max_energy: int) -> void:
 	player_energy_changed.emit(current_energy, max_energy)
 
 
-func report_player_weapon(weapon_name: String, skill_name: String, skill_cost: int) -> void:
-	player_weapon_changed.emit(weapon_name, skill_name, skill_cost)
+func report_player_weapon(weapon_data: WeaponData) -> void:
+	player_weapon_changed.emit(weapon_data)
+
+
+func report_player_weapon_slots(slot_0: WeaponData, slot_1: WeaponData, slot_2: WeaponData, equipped_index: int) -> void:
+	player_weapon_slots_changed.emit(slot_0, slot_1, slot_2, equipped_index)
+
+
+func report_player_ammo(current_ammo: int, max_ammo: int, magazine_ammo: int, magazine_size: int, is_reloading: bool) -> void:
+	player_ammo_changed.emit(current_ammo, max_ammo, magazine_ammo, magazine_size, is_reloading)
 
 
 func report_player_ultimate(ultimate_name: String, ultimate_cost: int, hold_time: float) -> void:
@@ -111,7 +120,3 @@ func report_currency_changed(current_amount: int) -> void:
 
 func report_item_purchased(shop_item_id: StringName, item_data: Resource) -> void:
 	item_purchased.emit(shop_item_id, item_data)
-
-
-func report_accessory_inventory_changed(accessory_list: Array) -> void:
-	accessory_inventory_changed.emit(accessory_list)

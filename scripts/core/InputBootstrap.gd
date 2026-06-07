@@ -10,7 +10,8 @@ const DEFAULT_KEYMAP := {
 	"dash": [KEY_SHIFT],
 	"attack": [MOUSE_BUTTON_LEFT],
 	"skill": [MOUSE_BUTTON_RIGHT],
-	"restart": [KEY_R],
+	"reload": [KEY_R],
+	"restart": [KEY_F],
 	"pause": [KEY_ESCAPE],
 	"weapon_slot_1": [KEY_1],
 	"weapon_slot_2": [KEY_2],
@@ -21,6 +22,7 @@ const DEFAULT_KEYMAP := {
 func _ready() -> void:
 	for action in DEFAULT_KEYMAP:
 		_ensure_action(action, DEFAULT_KEYMAP[action])
+	_reconcile_swapped_keys()
 
 
 func _ensure_action(action: StringName, keys: Array) -> void:
@@ -56,3 +58,16 @@ func _has_mouse_event(action: StringName, button_index: int) -> bool:
 		if event is InputEventMouseButton and event.button_index == button_index:
 			return true
 	return false
+
+
+func _reconcile_swapped_keys() -> void:
+	_remove_key_event(&"reload", KEY_F)
+	_remove_key_event(&"restart", KEY_R)
+	_ensure_action(&"reload", [KEY_R])
+	_ensure_action(&"restart", [KEY_F])
+
+
+func _remove_key_event(action: StringName, keycode: int) -> void:
+	for event: InputEvent in InputMap.action_get_events(action):
+		if event is InputEventKey and event.physical_keycode == keycode:
+			InputMap.action_erase_event(action, event)

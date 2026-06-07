@@ -9,6 +9,10 @@
 ## Runtime Architecture
 
 - `GameEvents`: 全局事件总线，负责生命/能量、VFX、SFX、镜头震动、敌人死亡和重开请求。
+
+当前输入约定：
+- `R`：远程武器换弹
+- `F`：重开当前 Demo
 - `InputBootstrap`: 启动时注册默认输入，避免空项目缺少 InputMap。
 - `CharacterStats`: 角色数值 Resource，玩家、普通敌人、Boss 共用。
 - `AttackData`: 攻击数据 Resource，统一伤害、击退、命中停顿、VFX、SFX，并可通过 `animation_id` 映射角色攻击动画。

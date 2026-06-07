@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/vfx/HitSpark.gd" id="1"]
+
+[node name="SkillSurgeArmorPierce" type="Node2D"]
+script = ExtResource("1")
+lifetime = 0.26
+spark_count = 12
+color_a = Color(0.28, 0.72, 1, 1)
+color_b = Color(0.72, 0.94, 1, 1)
